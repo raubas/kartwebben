@@ -1,3 +1,47 @@
+body{
+	height: 100%;
+}
+
+.pagewrap{
+	height: 100%;
+	width: 100%;
+}
+.topSpace{
+	padding-top: 50px;
+	height: 30em;
+}
+
+.textSpace{
+	min-height: 10em;
+	padding: 1em;
+	background-color: white;
+}
+
+.divider{
+	height: 10em;
+}
+
+#footer{
+	margin-bottom: 0;
+	width: 100%;
+}
+
+#nav-footer{
+	margin-bottom: 0;
+}
+
+.loginForm label{
+	font-size: 1em;
+}
+
+.dropdown-menu{
+	min-width: 100%;
+}
+
+.mapSection{
+	padding-bottom: 3em;
+}
+
 .content {
 	margin-top: 50px;
 }

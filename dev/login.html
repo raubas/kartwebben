@@ -22,8 +22,6 @@
     <script src="../bower_components/bootstrap/dist/js/bootstrap.js"></script>
     <script src="../bower_components/bootstrap-css/js/bootstrap.min.js"></script>
     <script src="../bower_components/vegas/dist/vegas.min.js"></script>
-    <script src="../bower_components/parse/parse.min.js"></script>
-    <script src="../bower_components/angular-animate/angular-animate.js"></script>
     <!-- endbower -->
 
     <!-- css -->
@@ -69,41 +67,38 @@
               </ul>
               <ul class="nav navbar-nav navbar-right">
                   <li><a href="#" data-toggle="modal" data-target="#logoutModal" id="logout">Logga ut</a></li>
-                  <li><a href="/dev/login.html">Logga in</a></li>
+                  <li><a href="/dev/#">Logga in</a></li>
               </ul>
             </div><!-- /.navbar-collapse -->
           </div><!-- /.container-fluid -->
           
         </nav>
-	    <div class="col-md-12 topSpace">
-            <!-- Kanske ska vara någon bild/logga här -->
-	    </div>
+
+        <div class="divider"></div>
+
         <div class="row">
-            <div class="col-md-12 textSpace">
-                <div class="col-md-3 col-md-offset-3">
-                    <h4>Rubrik</h4>
-                    <p>Här kan det stå lite text</p>
-                </div>
-                <div class="col-md-3 col-md-offset-3">
-                    <!-- Här kan det vara en liten bild -->
+            <div class="col-xs-12 col-md-6 col-lg-4 col-lg-offset-4 col-md-offset-3 loginForm">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h2 class="panel-title">Logga in</h2>
+                    </div>
+                    <div class="panel-body lead">
+                        <div class="loginForm">
+                            <div class="form-group">
+                                <label for="userEmailInput">Email</label>
+                                <input type="name" class="form-control" id="inputEmail" placeholder="Email">
+                            </div>
+                        <div class="form-group">
+                            <label for="userPwdInput">Password</label>
+                            <input type="password" class="form-control" id="inputPassword" placeholder="Password">
+                        </div>
+                            <button type="button" id="loginFormSubmit" class="btn btn-default">Logga in</button>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
-        <div class="divider">
-        </div>
-        <div class="row">
-            <div class="col-md-12 textSpace">
-                <div class="col-md-3 col-md-offset-3">
-                    <h4>Hur funkar sidan</h4>
-                    <p>Här kan man beskriva hur sidan fungerar</p>
-                </div>
-                <div class="col-md-3 col-md-offset-3">
-                    <!-- Här kan det vara en liten bild -->
-                </div>
-            </div>
-        </div>
-        <div class="divider">
-        </div>
+
         <div id="footer">
             <nav class="navbar navbar-default " id="nav-footer">
                 <div class="container footer">
