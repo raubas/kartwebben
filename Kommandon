@@ -1,0 +1,22 @@
+
+
+Installera bower-component
+
+bower install <package-name> -S
+//Då laddas den ner och sparas som dependecy till bower.json
+
+
+Lägg till bower-component i html-filer
+
+//I header lägg till:
+
+    <!-- bower:css -->
+    <!-- endbower -->
+
+    <!-- bower:js -->
+    <!-- endbower -->
+
+//Kör Grunt
+
+grunt
+//I gruntfile.js finns en task, 'wiredep', denna adderar js/css dependency till html-filer i /dev

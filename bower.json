@@ -2,6 +2,8 @@
   "name": "kartwebben",
   "version": "0.1.0",
   "dependencies": {
+    "angular": "~1.4.2",
+    "parse-angular-patch": "~0.1.2"
   },
   "private": true
 }
