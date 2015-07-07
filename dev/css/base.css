@@ -49,3 +49,7 @@ body{
 .top-divider {
 	height: 100px;
 }
+
+#addSchoolButton{
+	margin-bottom: 1em;
+}
