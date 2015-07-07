@@ -1,9 +1,17 @@
-//Installera grunt-component
+//Installera ny grunt-component
 
-grunt install <package-name> --save-dev
+npm install <package-name> --save-dev
+
+
+//Uppdatera grunt-components ( installera det som saknas )
+npm install
+
 
 
 //Installera bower-component
+
+//Initiera autoupdate
+grunt changes
 
 bower install <package-name> -S
 //Då laddas den ner och sparas som dependecy till bower.json
@@ -17,8 +25,3 @@ bower install <package-name> -S
 
     <!-- bower:js -->
     <!-- endbower -->
-
-//Kör Grunt
-
-grunt
-//I gruntfile.js finns en task, 'wiredep', denna adderar js/css dependency till html-filer i /dev
