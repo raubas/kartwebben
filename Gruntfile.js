@@ -4,25 +4,26 @@ module.exports = function(grunt) {
     grunt.initConfig({
         pkg: grunt.file.readJSON('package.json'),
 
+        watch: {
+          files: ['bower_components/*'],
+          tasks: ['wiredep']
+        },
+
         wiredep: {
-
-          task: {
-
-            src: [
-              'dev/*.html',   // .html support...
-            ],
-
-            options: {
-            }
-          }
+              task: {
+                src: ['dev/index.html']
+              }
         }
         
     });
 
     // 3. Where we tell Grunt we plan to use this plug-in.
     grunt.loadNpmTasks('grunt-wiredep');
+    grunt.loadNpmTasks('grunt-contrib-watch');
 
     // 4. Where we tell Grunt what to do when we type "grunt" into the terminal.
     grunt.registerTask('default', [ 'wiredep' ]);
+    grunt.registerTask('changes', ['watch']);
+
 
 };
