@@ -3,10 +3,15 @@
 grunt install <package-name> --save-dev
 
 
+
 //Installera bower-component
 
 bower install <package-name> -S
 //Då laddas den ner och sparas som dependecy till bower.json
+
+// Installera befintliga bower componenter när du står i mappen med bower.json
+
+bower install 
 
 //Lägg till bower-component i html-filer
 
