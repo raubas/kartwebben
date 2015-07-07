@@ -24,10 +24,17 @@
     <script src="../dev/js/test.js"></script>
     
 </head>
-<body>
+<body ng-controller="testController">
 
-<div name=></div>
+	<div id="testDiv">
+		<div ng-repeat="school in schools">
+			<p>{{school.attributes.name}}</p>
+			<p>Bananas!</p>
+		</div>
+		<p>YEAH!</p>
+		<pre>{{ schools | json }}</pre>
+	</div>
 
-
+	<h4 ng-click="doQuery()">KLICKA HÄR!!!</h4>
 </body>
 </html>
