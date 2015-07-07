@@ -41,3 +41,15 @@ body{
 .mapSection{
 	padding-bottom: 3em;
 }
+
+.content {
+	margin-top: 50px;
+}
+
+.top-divider {
+	height: 100px;
+}
+
+#addSchoolButton{
+	margin-bottom: 1em;
+}

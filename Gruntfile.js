@@ -13,17 +13,6 @@ module.exports = function(grunt) {
               task: {
                 src: ['dev/*.html']
               }
-        },
-
-        githooks: {
-            all: {
-              
-              // Will bind the bower:install task 
-              // with a specific template 
-              'post-merge': {
-                taskNames: 'bower:install'
-              }
-            }
         }
         
     });
@@ -31,10 +20,9 @@ module.exports = function(grunt) {
     // 3. Where we tell Grunt we plan to use this plug-in.
     grunt.loadNpmTasks('grunt-wiredep');
     grunt.loadNpmTasks('grunt-contrib-watch');
-    grunt.loadNpmTasks('grunt-githooks');
 
     // 4. Where we tell Grunt what to do when we type "grunt" into the terminal.
-    grunt.registerTask('default', [ 'wiredep' , 'githooks']);
+    grunt.registerTask('default', [ 'wiredep' ]);
     grunt.registerTask('changes', ['watch']);
 
 
