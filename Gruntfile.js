@@ -9,7 +9,7 @@ module.exports = function(grunt) {
           task: {
 
             src: [
-              '*.html',   // .html support...
+              'dev/*.html',   // .html support...
             ],
 
             options: {
