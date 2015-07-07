@@ -1,0 +1,29 @@
+body{
+
+}
+
+.pagewrap{
+	height: 100%;
+	width: 100%;
+}
+.topSpace{
+	padding-top: 50px;
+	height: 30em;
+}
+
+.textSpace{
+	height: 10em;
+	background-color: white;
+}
+
+.divider{
+	height: 10em;
+}
+
+#footer{
+	margin-bottom: 0;
+}
+
+#nav-footer{
+	margin-bottom: 0;
+}
