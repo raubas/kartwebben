@@ -1,5 +1,5 @@
 body{
-
+	height: 100%;
 }
 
 .pagewrap{
@@ -12,7 +12,8 @@ body{
 }
 
 .textSpace{
-	height: 10em;
+	min-height: 10em;
+	padding: 1em;
 	background-color: white;
 }
 
@@ -22,8 +23,21 @@ body{
 
 #footer{
 	margin-bottom: 0;
+	width: 100%;
 }
 
 #nav-footer{
 	margin-bottom: 0;
+}
+
+.loginForm label{
+	font-size: 1em;
+}
+
+.dropdown-menu{
+	min-width: 100%;
+}
+
+.mapSection{
+	padding-bottom: 3em;
 }
