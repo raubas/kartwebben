@@ -24,6 +24,7 @@ module.exports = function(grunt) {
                 taskNames: 'bower:install'
               }
             }
+        }
         
     });
 
@@ -33,7 +34,7 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks('grunt-githooks');
 
     // 4. Where we tell Grunt what to do when we type "grunt" into the terminal.
-    grunt.registerTask('default', [ 'wiredep' ]);
+    grunt.registerTask('default', [ 'wiredep' , 'githooks']);
     grunt.registerTask('changes', ['watch']);
 
 
