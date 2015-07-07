@@ -11,18 +11,20 @@
     <meta property="og:description" content="">
 
     <!-- bower:css -->
+    <link rel="stylesheet" href="../bower_components/bootstrap-css/css/bootstrap.min.css" />
     <!-- endbower -->
-    <link href="../bower_components/bootstrap/dist/css/bootstrap.css" rel="stylesheet">
 
     <!-- bower:js -->
     <script src="../bower_components/jquery/dist/jquery.js"></script>
     <script src="../bower_components/angular/angular.js"></script>
     <script src="../bower_components/parse-angular-patch/dist/parse-angular.js"></script>
     <script src="../bower_components/bootstrap/dist/js/bootstrap.js"></script>
+    <script src="../bower_components/bootstrap-css/js/bootstrap.min.js"></script>
     <!-- endbower -->
 
 </head>
 <body>
+<!-- **** Navbar **** -->
     <div class="pagewrap">
         <nav class="navbar navbar-default navbar-fixed-top" id="header" role="navigation">
         
@@ -36,7 +38,7 @@
                 <span class="icon-bar"></span>
               </button>
               <div>
-                <a class="navbar-brand" href="/"><img src="/images/icons/fish.png" class="img-responsive nav-icon" >Wahoo Development</a>
+                <a class="navbar-brand" href="/"><img src="" class="img-responsive nav-icon" >Wahoo Development</a>
               </div>
             </div>
 
@@ -44,29 +46,17 @@
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
             
               <ul class="nav navbar-nav">
-                <li class="dropdown services-nav">
-                        <a class="dropdown-toggle" data-toggle="dropdown" href="#">Tjänster</a>
-                        <ul class="dropdown-menu" role="menu">
-                            <li class="position-nav"><a href="/positionering">Positionering</a></li>
-                            <li class="application-nav"><a href="/apputveckling">Apputveckling</a></li>
-                            <li class="web-nav"><a href="/webbutveckling">Webbutveckling</a></li>
-                        </ul>
-                    </li>
-                <li class="customers-nav"><a href="/kunder">Kunder</a></li>
-                <li class="blog-nav"><a href="/blog">Blogg</a></li>
-                <li class="contact-nav"><a href="/kontakt">Kontakt</a></li>
+                <li class="school-nav"><a href="#">Skolor</a></li>
+                <li class="map-nav"><a href="#">Kartor</a></li>
               </ul>
               <ul class="nav navbar-nav navbar-right">
-                <?php if ($_SERVER['PHP_SELF'] == '/beacon.php') { ?>
-                  <li><a href="#" data-toggle="modal" data-target="#logoutModal" id="logout">Logga ut</a></li>
-                <?php } else { ?>
                   <li><a href="/login.php">Logga in</a></li>
-                <?php } ?>
               </ul>
             </div><!-- /.navbar-collapse -->
           </div><!-- /.container-fluid -->
           
         </nav>
+        <!-- **** Content **** -->
         <div class="col-md-12">
             
         </div>
