@@ -11,6 +11,7 @@
     <meta property="og:description" content="">
 
     <!-- bower:css -->
+    <link href="bower_components/boostrap/dist/css/bootstrap.css" rel="stylesheet">
     <!-- endbower -->
 
     <!-- bower:js -->
@@ -22,7 +23,52 @@
 
 </head>
 <body>
-<div>
-    Site
-</div>
+    <div class="pagewrap">
+        <nav class="navbar navbar-default navbar-fixed-top" id="header" role="navigation">
+        
+          <div class="container-fluid">
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <div class="navbar-header" >
+              <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              <div>
+                <a class="navbar-brand" href="/"><img src="/images/icons/fish.png" class="img-responsive nav-icon" >Wahoo Development</a>
+              </div>
+            </div>
+
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+            
+              <ul class="nav navbar-nav">
+                <li class="dropdown services-nav">
+                        <a class="dropdown-toggle" data-toggle="dropdown" href="#">Tjänster</a>
+                        <ul class="dropdown-menu" role="menu">
+                            <li class="position-nav"><a href="/positionering">Positionering</a></li>
+                            <li class="application-nav"><a href="/apputveckling">Apputveckling</a></li>
+                            <li class="web-nav"><a href="/webbutveckling">Webbutveckling</a></li>
+                        </ul>
+                    </li>
+                <li class="customers-nav"><a href="/kunder">Kunder</a></li>
+                <li class="blog-nav"><a href="/blog">Blogg</a></li>
+                <li class="contact-nav"><a href="/kontakt">Kontakt</a></li>
+              </ul>
+              <ul class="nav navbar-nav navbar-right">
+                <?php if ($_SERVER['PHP_SELF'] == '/beacon.php') { ?>
+                  <li><a href="#" data-toggle="modal" data-target="#logoutModal" id="logout">Logga ut</a></li>
+                <?php } else { ?>
+                  <li><a href="/login.php">Logga in</a></li>
+                <?php } ?>
+              </ul>
+            </div><!-- /.navbar-collapse -->
+          </div><!-- /.container-fluid -->
+          
+        </nav>
+        <div class="col-md-12">
+            
+        </div>
+    </div>
 </body>
