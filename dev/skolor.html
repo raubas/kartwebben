@@ -139,41 +139,41 @@
                     </div>
                   </div>
                 </div>
-                <div ng-controller="schoolController" class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
-
-                    <div ng-repeat="school in schools"></div>
-                  <div class="panel panel-default">
-                    <div class="panel-heading" role="tab" id="headingOne">
-                      <h4 class="panel-title">
-                        <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-                          <p>School #1</p>
-                        </a>
-                      </h4>
-                    </div>
-                    <div id="collapseOne" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">
-                      <div class="panel-body">
-                        <div class="col-md-6">
-                            <p>Areas:</p>
+                <div ng-controller="schoolCtrl" class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+                    <div ng-repeat="school in schools">
+                      <div class="panel panel-default">
+                        <div class="panel-heading" role="tab" id="headingOne">
+                          <h4 class="panel-title">
+                            <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                              <p>School #1</p>
+                            </a>
+                          </h4>
                         </div>
-                        <div class="col-md-6">
-                            <p>Add Area:</p>
+                        <div id="collapseOne" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">
+                          <div class="panel-body">
+                            <div class="col-md-6">
+                                <p>Areas:</p>
+                            </div>
+                            <div class="col-md-6">
+                                <p>Add Area:</p>
+                            </div>
+                          </div>
+                          <div class="panel-footer">
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <p>Kontakt:</p>
+                                </div>
+                                <div class="col-md-4">
+                                    <p>Gunnel Högberg</p>                                
+                                </div>
+                                <div class="col-md-4">
+                                    <p>Tel: 018 12 34 56</p>
+                                </div>
+                            </div>
+                          </div>
                         </div>
                       </div>
-                      <div class="panel-footer">
-                        <div class="row">
-                            <div class="col-md-4">
-                                <p>Kontakt:</p>
-                            </div>
-                            <div class="col-md-4">
-                                <p>Gunnel Högberg</p>                                
-                            </div>
-                            <div class="col-md-4">
-                                <p>Tel: 018 12 34 56</p>
-                            </div>
-                        </div>
-                      </div>
                     </div>
-                  </div>
                   <div class="panel panel-default">
                     <div class="panel-heading" role="tab" id="headingTwo">
                       <h4 class="panel-title">
