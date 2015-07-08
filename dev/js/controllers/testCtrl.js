@@ -1,5 +1,3 @@
-
-
 app.controller('testController', function($scope){
 
 	// Queries
