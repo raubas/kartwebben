@@ -53,3 +53,18 @@ body{
 #addSchoolButton{
 	margin-bottom: 1em;
 }
+
+.mapUpload{
+	padding-bottom: 3em;
+}
+
+.mapHasRemove {
+	position: relative;
+	padding: 1em;
+}
+.mapHasRemove .removeIcon {
+    display: block;
+    position: absolute;
+    top: 0;
+    right: 0;
+}
