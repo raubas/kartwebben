@@ -28,6 +28,10 @@
     <script src="../bower_components/angular-animate/angular-animate.js"></script>
     <!-- endbower -->
 
+    <!-- Javascript -->
+    <script src="../dev/js/app.js"></script>
+    <script src="../dev/js/controllers/schoolController.js"></script>
+
 </head>
 <body>
     <div class="pagewrap">
@@ -66,7 +70,7 @@
             <div class="top-divider">
                 
             </div>
-            <div class="col-md-8 col-md-offset-2" ng-controller="">
+            <div class="col-md-8 col-md-offset-2">
                 <!-- Button trigger modal -->
                 <button type="button" id="addSchoolButton"  class="btn btn-default" data-toggle="modal" data-target="#myModal">Lägg till skola</button>
 
@@ -83,7 +87,7 @@
                             <div class="col-md-12">
                                 <div class="form-group">
                                     <label for="schoolName">Skola</label>
-                                    <input type="text" class="form-control" id="schoolName" placeholder="Namn"></input>
+                                    <input type="text" class="form-control" id="schoolName" placeholder="Namn" ></input>
                                 </div>
                             </div>
                             <div class="col-md-6">
@@ -138,86 +142,47 @@
                       </div>
                     </div>
                   </div>
-                </div>
-                <div ng-controller="schoolCtrl" class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+                </div> <!-- END MODAL -->
+                <div ng-controller="schoolCtrl">
                     <div ng-repeat="school in schools">
-                      <div class="panel panel-default">
-                        <div class="panel-heading" role="tab" id="headingOne">
-                          <h4 class="panel-title">
-                            <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-                              <p>School #1</p>
-                            </a>
-                          </h4>
-                        </div>
-                        <div id="collapseOne" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">
-                          <div class="panel-body">
-                            <div class="col-md-6">
-                                <p>Areas:</p>
+                        <div class="panel-group" id="school-{{$index}}-parent" role="tablist" aria-multiselectable="true">
+                          <div class="panel panel-default">
+                            <div class="panel-heading" role="tab" id="headingOne">
+                              <h4 class="panel-title">
+                                <a role="button" data-toggle="collapse" data-parent="#school-{{$index}}-parent" href="#school-{{$index}}" aria-expanded="true" aria-controls="school-{{$index}}">
+                                  <p>{{school.attributes.name}}</p>
+                                </a>
+                              </h4>
                             </div>
-                            <div class="col-md-6">
-                                <p>Add Area:</p>
+                            <div id="school-{{$index}}" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">
+                              <div class="panel-body">
+                                <div class="col-md-6">
+                                    <p>Områden</p>
+                                    <p>school-{{$index}}</p>
+                                </div>
+                                <div class="col-md-6">
+                                    <p>Add Area:</p>
+                                </div>
+                              </div>
+                              <div class="panel-footer">
+                                <div class="row">
+                                    <div class="col-md-4">
+                                        <p>Kontakt:</p>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <p>{{contactPerson.attributes.name}}</p>                                
+                                    </div>
+                                    <div class="col-md-4">
+                                        <p>Tel: 018 12 34 56</p>
+                                    </div>
+                                </div>
+                              </div>
                             </div>
                           </div>
-                          <div class="panel-footer">
-                            <div class="row">
-                                <div class="col-md-4">
-                                    <p>Kontakt:</p>
-                                </div>
-                                <div class="col-md-4">
-                                    <p>Gunnel Högberg</p>                                
-                                </div>
-                                <div class="col-md-4">
-                                    <p>Tel: 018 12 34 56</p>
-                                </div>
-                            </div>
-                          </div>
                         </div>
-                      </div>
                     </div>
-                  <div class="panel panel-default">
-                    <div class="panel-heading" role="tab" id="headingTwo">
-                      <h4 class="panel-title">
-                        <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
-                          <p>School #2</p>
-                        </a>
-                      </h4>
-                    </div>
-                    <div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
-                      <div class="panel-body">
-                        <div class="col-md-6">
-                            <p>Areas:</p>
-                        </div>
-                        <div class="col-md-6">
-                            <p>Add Area:</p>
-                        </div>
-                      </div>
-                      <div class="panel-footer">
-                            <p>Kontakt: Gunnel Högberg</p>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="panel panel-default">
-                    <div class="panel-heading" role="tab" id="headingThree">
-                      <h4 class="panel-title">
-                        <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
-                          <p>School #3</p>
-                        </a>
-                      </h4>
-                    </div>
-                    <div id="collapseThree" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingThree">
-                      <div class="panel-body">
-                        <div class="col-md-6">
-                            <p>Areas:</p>
-                        </div>
-                        <div class="col-md-6">
-                            <p>Add Area:</p>
-                        </div>
-                      </div>
-                      <div class="panel-footer">
-                            <p>Kontakt: Gunnel Högberg</p>
-                      </div>
-                    </div>
-                  </div>
+                    <pre>{{ contactPerson | json }}</pre>
+                    <pre>{{ schools | json }}</pre>
                 </div>
             </div>
         </div>
