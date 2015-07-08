@@ -1,6 +1,6 @@
 
 
-app.controller('testController', function($scope){
+app.controller('schoolCtrl', function($scope){
 
 	// Queries
 	$scope.doQuery = function(){
