@@ -68,3 +68,11 @@ body{
     top: 0;
     right: 0;
 }
+
+.areaCard {
+	background-color: #F1F1F1;
+	border-radius: 5px;
+	padding: 5px;
+	padding-left: 10px;
+	margin-bottom: 10px;
+}
