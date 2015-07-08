@@ -2,5 +2,3 @@ Parse.initialize("6xK5z0dd13fPSziUDvcLiZTEqjkRc5qQais6zUSo", "dgHEctNMXBRjHFAYSS
 
 var app = angular.module('myApp', ['ngAnimate', 'parse-angular']);
 
-
-
