@@ -139,7 +139,9 @@
                     </div>
                   </div>
                 </div>
-                <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+                <div ng-controller="schoolController" class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+
+                    <div ng-repeat="school in schools"></div>
                   <div class="panel panel-default">
                     <div class="panel-heading" role="tab" id="headingOne">
                       <h4 class="panel-title">
