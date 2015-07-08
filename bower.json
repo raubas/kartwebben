@@ -9,5 +9,8 @@
     "parse": "~1.4.2",
     "angular-animate": "~1.4.2"
   },
-  "private": true
+  "private": true,
+  "resolutions": {
+    "angular": "~1.4.2"
+  }
 }
