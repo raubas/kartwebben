@@ -1,6 +1,4 @@
-
-
-app.controller('testController', function($scope){
+app.controller('testCtrl', function($scope){
 
 	// Queries
 	$scope.doQuery = function(){
