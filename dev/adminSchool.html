@@ -81,12 +81,45 @@
                       <div class="modal-body">
                         <div class="row">
                             <div class="col-md-6">
-                                <p>Areas:</p>
-                                <p> dadf fadfadf</p>
+                                <div class="form-group">
+                                    <label for="schoolName">Skola</label>
+                                    <input type="text" class="form-control" id="schoolName" placeholder="Namn"></input>
+                                </div>
+                                <p>Lägg till område</p>
+                                <!-- Single button -->
+                                <div class="btn-group">
+                                  <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    Action <span class="caret"></span>
+                                  </button>
+                                  <ul class="dropdown-menu">
+                                    <li><a href="#">Action</a></li>
+                                    <li><a href="#">Another action</a></li>
+                                    <li><a href="#">Something else here</a></li>
+                                    <li role="separator" class="divider"></li>
+                                    <li><a href="#">Separated link</a></li>
+                                  </ul>
+                                </div>
+                                <div>
+                                    <p>Välj svårighetsgrader</p>
+                                    <label class="checkbox-inline">
+                                      <input type="checkbox" id="inlineCheckbox1" value="option1"> 1
+                                    </label>
+                                    <label class="checkbox-inline">
+                                      <input type="checkbox" id="inlineCheckbox2" value="option2"> 2
+                                    </label>
+                                    <label class="checkbox-inline">
+                                      <input type="checkbox" id="inlineCheckbox3" value="option3"> 3
+                                    </label>
+                                </div>
+                                <div>
+                                    <button type="button" class="btn btn-default">lägg till område och svårighetsgrad</button>
+                                </div>
                             </div>
                             <div class="col-md-6">
-                                <p>Add Area:</p>
-                                <p>geh hopp </p>
+                                <p>Områden</p>
+                                <div class="areaCard">
+                                    
+                                </div>
                             </div>
                         </div>
                       </div>
@@ -116,7 +149,17 @@
                         </div>
                       </div>
                       <div class="panel-footer">
-                            <p>Kontakt: Gunnel Högberg</p>
+                        <div class="row">
+                            <div class="col-md-4">
+                                <p>Kontakt:</p>
+                            </div>
+                            <div class="col-md-4">
+                                <p>Gunnel Högberg</p>                                
+                            </div>
+                            <div class="col-md-4">
+                                <p>Tel: 018 12 34 56</p>
+                            </div>
+                        </div>
                       </div>
                     </div>
                   </div>
