@@ -47,7 +47,9 @@ app.controller('addSchoolCtrl',
 			newSchool.save(null, {
 			  success: function(newSchool) {
 			    // Execute any logic that should take place after the object is saved.
+
 			    alert('New object created with objectId: ' + newSchool.id);
+			    $scope.school = null;
 			  },
 			  error: function(newSchool, error) {
 			    // Execute any logic that should take place if the save fails.
