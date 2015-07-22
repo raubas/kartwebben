@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" ng-app="myApp">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0">
@@ -30,6 +30,10 @@
     <!-- css -->
     <link rel="stylesheet" type="text/css" href="css/base.css">
 
+    <!-- Javascript -->
+    <script src="../dev/js/app.js"></script>
+    <script src="../dev/js/controllers/areasController.js"></script>
+
     <!-- Init vegas -->
     <script type="text/javascript">
 
@@ -43,10 +47,9 @@
     </script>
 
 </head>
-<body>
+<body ng-controller="areasCtrl">
 	<div class="pagewrap">
 		<nav class="navbar navbar-default navbar-fixed-top" id="header" role="navigation">
-        
           <div class="container-fluid">
             <!-- Brand and toggle get grouped for better mobile display -->
             <div class="navbar-header" >
@@ -80,6 +83,7 @@
 	    </div>
         <div class="row">
             <div class="col-md-12 textSpace">
+                <pre>{{ choosenSchool | json }}</pre>
                 <div class="row">
                 <div class="col-lg-4 col-lg-offset-2">
                 <h2>Hitta kartor!</h2>
@@ -92,75 +96,38 @@
                             Välj skola: <span class="caret"></span>
                           </button>
                           <ul class="dropdown-menu">
-                            <li><a href="#">Här står det olika skolor</a></li>
-                            <li><a href="#">Här står det olika skolor</a></li>
-                            <li><a href="#">Här står det olika skolor</a></li>
+                            <li ng-repeat="school in schools"><a ng-bind="school.attributes.name" ng-click="setSchool(school)">Skola</a></li>
                           </ul>
+
                         </div>
                         <div class="btn-group">
                           <button class="btn btn-default btn-md dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             Välj svårighetsgrad: <span class="caret"></span>
                           </button>
                           <ul class="dropdown-menu">
-                            <li><a href="#">Svårighetsgrad 1</a></li>
-                            <li><a href="#">Svårighetsgrad 2</a></li>
-                            <li><a href="#">Svårighetsgrad 3</a></li>
+                            <li ng-repeat="difficulty in difficulties"><a ng-bind="difficulty.name" ng-click="findAreas(difficulty)">Svårighetsgrad 1</a></li>
                           </ul>
                         </div>
                     </div>
                     <div class="col-lg-4">
-                        <p><strong>Vald skola:</strong> Skola 1</p>
-                        <p><strong>Svårighet:</strong> Svårighet 1</p>
+                        <p><strong>Vald skola:</strong> {{ activeSchool.attributes.name }}</p>
+                        <p><strong>Svårighet:</strong> {{ activeDifficulty.name }}</p>
+                        <p><strong>Test:</strong> {{ choosenSchool.attributes.name }} </p>
                         <!-- Här kan det vara en liten bild -->
                     </div>
                 </div>
                 <div class="row">
                     <div class="col-lg-8 col-lg-offset-2">
                         <h4>Områden</h4>
-                        <h5>Närmaste området</h5>
-                        <div class="row mapSection">
-                            <div class="col-md-3">
-                                <p>Karta 1</p>
-                                <img src="/dev/images/karta01.gif" class="img-responsive" />
-                                <a href="/dev/images/karta01.gif" download="karta">Download</a>
-                            </div>
-                            <div class="col-md-3">
-                                <p>Karta 2</p>
-                                <img src="/dev/images/karta01.gif" class="img-responsive" />
-                                <a href="/dev/images/karta01.gif" download="karta">Download</a>
-                            </div>
-                            <div class="col-md-3">
-                                <p>Karta 3</p>
-                                <img src="/dev/images/karta01.gif" class="img-responsive" />
-                                <a href="/dev/images/karta01.gif" download="karta">Download</a>
-                            </div>
-                            <div class="col-md-3">
-                                <p>Karta 4</p>
-                                <img src="/dev/images/karta01.gif" class="img-responsive" />
-                                <a href="/dev/images/karta01.gif" download="karta">Download</a>
-                            </div>
-                        </div>
-                        <h5>Annat område</h5>
-                        <div class="row mapSection">
-                            <div class="col-md-3">
-                                <p>Karta 1</p>
-                                <img src="/dev/images/karta01.gif" class="img-responsive" />
-                                <a href="/dev/images/karta01.gif" download="karta">Download</a>
-                            </div>
-                            <div class="col-md-3">
-                                <p>Karta 2</p>
-                                <img src="/dev/images/karta01.gif" class="img-responsive" />
-                                <a href="/dev/images/karta01.gif" download="karta">Download</a>
-                            </div>
-                            <div class="col-md-3">
-                                <p>Karta 3</p>
-                                <img src="/dev/images/karta01.gif" class="img-responsive" />
-                                <a href="/dev/images/karta01.gif" download="karta">Download</a>
-                            </div>
-                            <div class="col-md-3">
-                                <p>Karta 4</p>
-                                <img src="/dev/images/karta01.gif" class="img-responsive" />
-                                <a href="/dev/images/karta01.gif" download="karta">Download</a>
+                        <div ng-repeat="area in choosenSchool.attributes.areas">
+                            <h5 ng-bind="area.attributes.name">Närmaste området</h5>
+                            
+                            <div class="row mapSection">
+                                <div class="col-md-3" ng-repeat="map in area.attributes.maps">
+                                    <p ng-bind="map.attributes.name">Karta 1</p>
+                                    <img ng-src="{{displayMap(map.attributes.file._url)}}" class="img-responsive" />
+                                    <p ng-bind="'Svårighetsgrad: ' + map.attributes.difficulty"></p>
+                                </div>
                             </div>
                         </div>
                     </div>
