@@ -82,19 +82,19 @@
                     <div class="modal-content">
                       <div class="modal-header">
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                        <h4 class="modal-title" id="myModalLabel">Lägg till skola</h4>
+                        <h2 class="modal-title" id="myModalLabel">Lägg till skola</h2>
                       </div>
                       <form name="newSchoolForm">
                         <div class="modal-body">
                           <div class="row">
                               <div class="col-md-12">
                                   <div class="form-group">
-                                      <label for="schoolName">Skola</label>
+                                      <h4>Skola</h4>
                                       <input type="text" class="form-control" required ng-model="school.name" placeholder="Namn" >
                                   </div>
                               </div>
                               <div class="col-md-6">
-                                  <p>Välj område</p>
+                                  <label>Välj område</label>
                                   <!-- Single button -->
                                   <div class="btn-group">
                                     <ol class="nya-bs-select" ng-model="school.areas" multiple="true" data-live-search="true">
@@ -110,12 +110,23 @@
                                   </div>
                               </div>
                               <div class="col-md-6">
-                                  <p>Valda områden</p>
+                                  <label>Valda områden</label>
                                   <div class="areaCard" ng-repeat="addedArea in school.areas">
                                       <button type="button" class="close" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                                       <p>{{addedArea.attributes.name}}</p>
                                       <img ng-src="{{addedArea.attributes.maps[0].attributes.file._url}}" width="100px" height="100px">
                                      
+                                  </div>
+                              </div>
+                              <div class="col-md-12">
+                                <div class="form-group">
+                                      <h4>Kontaktperson</h4>
+                                      <label>Namn</label>
+                                      <input type="text" class="form-control" required ng-model="contactPerson.name" placeholder="John Doe" >
+                                      <label>Telefonnummer</label>
+                                      <input type="text" class="form-control" required ng-model="contactPerson.phoneNumber" placeholder="070-00 00 000" >
+                                      <label>Email</label>
+                                      <input type="text" class="form-control" required ng-model="contactPerson.email" placeholder="john.doe@example.com" >
                                   </div>
                               </div>
                               <div class="col-md-12">
@@ -125,7 +136,7 @@
                         </div>
                         <div class="modal-footer">
                         <button type="button" class="btn btn-default" ng-disabled="expression" data-dismiss="modal">Stäng</button>
-                        <button type="submit" ng-click="saveSchool(school, newSchoolForm)" class="btn btn-primary">Lägg till</button>
+                        <button type="submit" ng-click="saveSchool(school,contactPerson, newSchoolForm)" class="btn btn-primary">Lägg till</button>
                       </div>
                       </form>
                       
