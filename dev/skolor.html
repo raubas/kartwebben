@@ -28,6 +28,10 @@
     <script src="../bower_components/angular-animate/angular-animate.js"></script>
     <!-- endbower -->
 
+    <!-- Javascript -->
+    <script src="../dev/js/app.js"></script>
+    <script src="../dev/js/controllers/schoolController.js"></script>
+
 </head>
 <body>
     <div class="pagewrap">
@@ -66,12 +70,12 @@
             <div class="top-divider">
                 
             </div>
-            <div class="col-md-8 col-md-offset-2" ng-controller="addSchoolCtrl">
+            <div class="col-md-8 col-md-offset-2" >
                 <!-- Button trigger modal -->
-                <button type="button" id="addSchoolButton"  class="btn btn-default" data-toggle="modal" data-target="#myModal">Lägg till skola</button>
+                <button type="button" id="addSchoolButton" ng-click="newSchool()" class="btn btn-default" data-toggle="modal" data-target="#myModal">Lägg till skola</button>
 
                 <!-- Modal -->
-                <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+                <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" ng-controller="addSchoolCtrl">
                   <div class="modal-dialog" role="document">
                     <div class="modal-content">
                       <div class="modal-header">
@@ -79,62 +83,46 @@
                         <h4 class="modal-title" id="myModalLabel">Lägg till skola</h4>
                       </div>
                       <div class="modal-body">
+                        <form>
                         <div class="row">
                             <div class="col-md-12">
                                 <div class="form-group">
                                     <label for="schoolName">Skola</label>
-                                    <input type="text" class="form-control" id="schoolName" placeholder="Namn"></input>
+                                    <input type="text" class="form-control" required ng-model="school.name" placeholder="Namn" >
                                 </div>
+                                <div>{{school.name}}</div>
                             </div>
                             <div class="col-md-6">
-                                <p>Lägg till område</p>
+                                <p>Välj område</p>
                                 <!-- Single button -->
                                 <div class="btn-group">
-                                  <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                    Action <span class="caret"></span>
-                                  </button>
-                                  <ul class="dropdown-menu">
-                                    <li><a href="#">Action</a></li>
-                                    <li><a href="#">Another action</a></li>
-                                    <li><a href="#">Something else here</a></li>
-                                    <li role="separator" class="divider"></li>
-                                    <li><a href="#">Separated link</a></li>
-                                  </ul>
+                                  <select class="form-control" >                 
+                                    <option ng-repeat="area in areas" ng-selected="setCurrentArea(area)">{{area.attributes.name}}</option>
+                                  </select>
                                 </div>
+                                <div class="btn-group">
                                 <div>
-                                    <p>Välj svårighetsgrader</p>
-                                    <label class="checkbox-inline">
-                                      <input type="checkbox" id="inlineCheckbox1" value="option1"> 1
-                                    </label>
-                                    <label class="checkbox-inline">
-                                      <input type="checkbox" id="inlineCheckbox2" value="option2"> 2
-                                    </label>
-                                    <label class="checkbox-inline">
-                                      <input type="checkbox" id="inlineCheckbox3" value="option3"> 3
-                                    </label>
+                                    <button type="button" ng-click="addArea(current)" class="btn btn-default">Lägg till område</button>
                                 </div>
-                                <div>
-                                    <button type="button" class="btn btn-default">lägg till område och svårighetsgrad</button>
                                 </div>
                             </div>
                             <div class="col-md-6">
                                 <p>Områden</p>
-                                <div class="areaCard">
+                                <div class="areaCard" ng-repeat="addedArea in addedAreas">
                                     <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                                    <p>Rävskogen</p>
-                                    <p>svårighetsgrader: 1, 2, 3</p>
-                                </div>
-                                <div class="areaCard">
-                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                                    <p>Rävskogen</p>
-                                    <p>svårighetsgrader: 1, 2, 3</p>
+                                    <p>{{addedArea.name}}</p>
+                                    
                                 </div>
                             </div>
+                            <div class="col-md-12">
+                              <p ng-model="error">{{error}}</p>
+                            </div>
                         </div>
+                        </form>
                       </div>
                       <div class="modal-footer">
-                        <button type="button" class="btn btn-default" data-dismiss="modal">Stäng</button>
-                        <button type="button" class="btn btn-primary">Lägg till</button>
+                        <button type="button" class="btn btn-default" ng-disabled="expression" data-dismiss="modal">Stäng</button>
+                        <button type="submit" ng-click="saveSchool(school)" class="btn btn-primary">Lägg till</button>
                       </div>
                     </div>
                   </div>
