@@ -3,16 +3,17 @@
 app.controller('schoolCtrl', function($scope){
 
 	var query = new Parse.Query("Schools");
-		query.include('ContactPerson');
+		query.include("contactPerson","areas", "areas.maps");
 		query.find().then(function(result){
 	        $scope.schools = result;
 	    });
 
-	var queryContact = new Parse.Query("ContactPerson");
-		queryContact.include('ContactPerson');
-		queryContact.find().then(function(result){
-	        $scope.contactPerson = result;
-	    });
+
+	// var queryContact = new Parse.Query("ContactPerson");
+	// 	queryContact.include('ContactPerson');
+	// 	queryContact.find().then(function(result){
+	//         $scope.contactPerson = result;
+	//     });
 
 	// // Queries
 	// $scope.doQuery = function(){

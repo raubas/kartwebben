@@ -123,12 +123,12 @@
                             </div>
                             <div class="col-md-6">
                                 <p>Områden</p>
-                                <div class="areaCard">
+                                <div class="areaCard">                     <!-- Closes modal doesn't remove card -->
                                     <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                                     <p>Rävskogen</p>
                                     <p>svårighetsgrader: 1, 2, 3</p>
                                 </div>
-                                <div class="areaCard">
+                                <div class="areaCard">                     <!-- Closes modal doesn't remove card -->
                                     <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                                     <p>Rävskogen</p>
                                     <p>svårighetsgrader: 1, 2, 3</p>
@@ -147,33 +147,43 @@
                     <div ng-repeat="school in schools">
                         <div class="panel-group" id="school-{{$index}}-parent" role="tablist" aria-multiselectable="true">
                           <div class="panel panel-default">
-                            <div class="panel-heading" role="tab" id="headingOne">
+                            <div class="panel-heading" role="tab" id="school-{{$index}}-heading">
                               <h4 class="panel-title">
                                 <a role="button" data-toggle="collapse" data-parent="#school-{{$index}}-parent" href="#school-{{$index}}" aria-expanded="true" aria-controls="school-{{$index}}">
                                   <p>{{school.attributes.name}}</p>
                                 </a>
                               </h4>
                             </div>
-                            <div id="school-{{$index}}" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">
+                                                                            <!-- Remove in to collapse all -->
+                            <div id="school-{{$index}}" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="school-{{$index}}-heading">
                               <div class="panel-body">
-                                <div class="col-md-6">
-                                    <p>Områden</p>
-                                    <p>school-{{$index}}</p>
+                                <div class="col-md-10">
+                                    <h4>Områden</h4>
+                                    <div ng-repeat="area in school.attributes.areas">
+                                        <!-- <pre>{{area | json}}</pre> -->
+                                        <p ng-bind="area.attributes.name"></p>
+                                        <div ng-repeat="map in area.attributes.maps">
+                                            <p ng-bind="map.attributes.name"> ete</p>
+                                        </div>
+                                    </div>
                                 </div>
-                                <div class="col-md-6">
-                                    <p>Add Area:</p>
+                                <div class="col-md-2">
+                                    <button type="button" class="btn btn-default">Lägg till område</button>
                                 </div>
                               </div>
                               <div class="panel-footer">
                                 <div class="row">
                                     <div class="col-md-4">
-                                        <p>Kontakt:</p>
+                                        <p>Kontakt</p>
+                                        <p ng-bind="school.attributes.contactPerson.attributes.name">namn</p>                                
                                     </div>
                                     <div class="col-md-4">
-                                        <p>{{contactPerson.attributes.name}}</p>                                
+                                        <p>Epost</p>
+                                        <p ng-bind="school.attributes.contactPerson.attributes.email"></p>
                                     </div>
                                     <div class="col-md-4">
-                                        <p>Tel: 018 12 34 56</p>
+                                        <p>Telefon</p>
+                                        <p ng-bind="school.attributes.contactPerson.attributes.phoneNumber">Telefon</p>
                                     </div>
                                 </div>
                               </div>
