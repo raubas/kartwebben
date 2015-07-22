@@ -34,18 +34,6 @@
     <script src="../dev/js/app.js"></script>
     <script src="../dev/js/controllers/schoolController.js"></script>
 
-    <!-- Init vegas -->
-    <script type="text/javascript">
-
-      $(function() {
-          $('body').vegas({
-              slides: [
-                  { src: '/dev/images/skylines_blur.jpg' }
-              ]
-          });
-      });
-    </script>
-
 </head>
 <body>
     <div class="pagewrap">
@@ -96,51 +84,52 @@
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                         <h4 class="modal-title" id="myModalLabel">Lägg till skola</h4>
                       </div>
-                      <div class="modal-body">
-                        <form>
-                        <div class="row">
-                            <div class="col-md-12">
-                                <div class="form-group">
-                                    <label for="schoolName">Skola</label>
-                                    <input type="text" class="form-control" required ng-model="school.name" placeholder="Namn" >
-                                </div>
-                                <div>{{school.name}}</div>
-                            </div>
-                            <div class="col-md-6">
-                                <p>Välj område</p>
-                                <!-- Single button -->
-                                <div class="btn-group">
-                                  <ol class="nya-bs-select" ng-model="school.areas" multiple="true" data-live-search="true">
-                                    <li nya-bs-option="area in areas">
-                                      <a>
-                                      {{area.attributes.name}}
-                                      <span class="glyphicon glyphicon-ok check-mark"></span>
-                                      </a>
-                                    </li>
-                                  </ol>
-                                </div>
-                                <div class="btn-group">
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-                                <p>Områden</p>
-                                <div class="areaCard" ng-repeat="addedArea in school.areas">
-                                    <button type="button" class="close" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                                    <p>{{addedArea.attributes.name}}</p>
-                                    <img ng-src="{{addedArea.attributes.maps.file}}">
-                                    <pre>{{addedArea.attributes.maps.attributes}}</pre>
-                                </div>
-                            </div>
-                            <div class="col-md-12">
-                              <p ng-model="error">{{error}}</p>
-                            </div>
+                      <form name="newSchoolForm">
+                        <div class="modal-body">
+                          <div class="row">
+                              <div class="col-md-12">
+                                  <div class="form-group">
+                                      <label for="schoolName">Skola</label>
+                                      <input type="text" class="form-control" required ng-model="school.name" placeholder="Namn" >
+                                  </div>
+                              </div>
+                              <div class="col-md-6">
+                                  <p>Välj område</p>
+                                  <!-- Single button -->
+                                  <div class="btn-group">
+                                    <ol class="nya-bs-select" ng-model="school.areas" multiple="true" data-live-search="true">
+                                      <li nya-bs-option="area in areas">
+                                        <a>
+                                        {{area.attributes.name}}
+                                        <span class="glyphicon glyphicon-ok check-mark"></span>
+                                        </a>
+                                      </li>
+                                    </ol>
+                                  </div>
+                                  <div class="btn-group">
+                                  </div>
+                              </div>
+                              <div class="col-md-6">
+                                  <p>Valda områden</p>
+                                  <div class="areaCard" ng-repeat="addedArea in school.areas">
+                                      <button type="button" class="close" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                      <p>{{addedArea.attributes.name}}</p>
+                                      <img ng-src="{{addedArea.attributes.maps[0].attributes.file._url}}" width="100px" height="100px">
+                                     
+                                  </div>
+                              </div>
+                              <div class="col-md-12">
+                                <p ng-model="error">{{error}}</p>
+                              </div>
+                          </div>
                         </div>
-                        </form>
-                      </div>
-                      <div class="modal-footer">
+                        <div class="modal-footer">
                         <button type="button" class="btn btn-default" ng-disabled="expression" data-dismiss="modal">Stäng</button>
-                        <button type="submit" ng-click="saveSchool(school)" class="btn btn-primary">Lägg till</button>
+                        <button type="submit" ng-click="saveSchool(school, newSchoolForm)" class="btn btn-primary">Lägg till</button>
                       </div>
+                      </form>
+                      
+                      
                     </div>
                   </div>
                 </div>
