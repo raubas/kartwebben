@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" ng-app="myApp">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0">
@@ -15,6 +15,9 @@
     <link rel="stylesheet" href="../bower_components/vegas/dist/vegas.min.css" />
     <!-- endbower -->
 
+    <!-- css -->
+    <link rel="stylesheet" type="text/css" href="css/base.css">
+
     <!-- bower:js -->
     <script src="../bower_components/jquery/dist/jquery.js"></script>
     <script src="../bower_components/angular/angular.js"></script>
@@ -25,8 +28,9 @@
     <script src="../bower_components/angular-animate/angular-animate.js"></script>
     <!-- endbower -->
 
-    <!-- css -->
-    <link rel="stylesheet" type="text/css" href="css/base.css">
+    <!-- Javascript -->
+    <script src="../dev/js/app.js"></script>
+    <script src="../dev/js/controllers/uploadMapController.js"></script>
 
     <!-- Init vegas -->
     <script type="text/javascript">
@@ -74,162 +78,43 @@
           </div><!-- /.container-fluid -->
           
         </nav>
-	    <div class="divider">
-	    </div>
-        <div class="row">
-            <div class="col-md-12 textSpace">
-                <div class="col-md-8 col-md-offset-2">
-                    <h4>Områden</h4>
-                    <p>Här kan man lägga till kartor osv!</p>
-                    <table class="table table-hover table-responsive">
-                        <tr>
-                            <th>#</th>
-                            <th>Område</th>
-                            <th>Meta</th>
-                        </tr>
-                        <tr data-toggle="collapse" href="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
-                            <td>1</td>
-                            <td>Namn på område</td>
-                            <td>Meta om område</td>
-                            <div class="collapse" id="collapseExample">
-                              <div class="col-md-12">
-                                <h2>Namn på område</h2>
-                                <h4>Svårighet 1</h4>
-                                <div class="row">
-                                    <div class="col-md-3">
-                                        <p>Karta 1</p>
-                                        <div class=" mapHasRemove">
-                                            <img src="/dev/images/karta01.gif" class="img-responsive" />
-                                            <span class="removeIcon glyphicon glyphicon-remove" aria-hidden="true"></span>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-3">
-                                        <p>Karta 2</p>
-                                        <div class=" mapHasRemove">
-                                            <img src="/dev/images/karta01.gif" class="img-responsive" />
-                                            <span class="removeIcon glyphicon glyphicon-remove" aria-hidden="true"></span>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-3">
-                                        <p>Karta 3</p>
-                                        <div class=" mapHasRemove">
-                                            <img src="/dev/images/karta01.gif" class="img-responsive" />
-                                            <span class="removeIcon glyphicon glyphicon-remove" aria-hidden="true"></span>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-3">
-                                        <p>Karta 4</p>
-                                        <div class=" mapHasRemove">
-                                            <img src="/dev/images/karta01.gif" class="img-responsive" />
-                                            <span class="removeIcon glyphicon glyphicon-remove" aria-hidden="true"></span>
-                                        </div>
+        <!-- **** Content **** -->
+        <div class="col-md-12 content">
+            <div class="top-divider">
+            </div>
+            <div class="col-md-8 col-md-offset-2">
+                <div ng-controller="uploadMapCtrl">
+                <pre>{{ areeas | json }}</pre>
+                    <div ng-repeat="area in areeas">
+                        <div class="panel-group" id="area-{{$index}}-parent" role="tablist" aria-multiselectable="true">
+                          <div class="panel panel-default">
+                            <div class="panel-heading" role="tab" id="area-{{$index}}-heading">
+                              <h4 class="panel-title">
+                                <a role="button" data-toggle="collapse" data-parent="#area-{{$index}}-parent" href="#area-{{$index}}" aria-expanded="true" aria-controls="area-{{$index}}">
+                                  <p>{{area.attributes.name}}</p>
+                                </a>
+                              </h4>
+                            </div>
+                                                                            <!-- Remove in to collapse all -->
+                            <div id="area-{{$index}}" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="area-{{$index}}-heading">
+                              <div class="panel-body">
+                                <div class="col-md-12">
+                                    <h4>Kartor</h4>
+                                    <div ng-repeat="map in area.attributes.maps">
+                                        <p ng-bind="map.attributes.name"></p>
                                     </div>
                                 </div>
-                                <h4>Svårighet 2</h4>
-                                <div class="row">
-                                    <div class="col-md-3">
-                                        <p>Karta 1</p>
-                                        <div class=" mapHasRemove">
-                                            <img src="/dev/images/karta01.gif" class="img-responsive" />
-                                            <span class="removeIcon glyphicon glyphicon-remove" aria-hidden="true"></span>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-3">
-                                        <p>Karta 2</p>
-                                        <div class=" mapHasRemove">
-                                            <img src="/dev/images/karta01.gif" class="img-responsive" />
-                                            <span class="removeIcon glyphicon glyphicon-remove" aria-hidden="true"></span>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-3">
-                                        <p>Karta 3</p>
-                                        <div class=" mapHasRemove">
-                                            <img src="/dev/images/karta01.gif" class="img-responsive" />
-                                            <span class="removeIcon glyphicon glyphicon-remove" aria-hidden="true"></span>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-3">
-                                        <p>Karta 4</p>
-                                        <div class=" mapHasRemove">
-                                            <img src="/dev/images/karta01.gif" class="img-responsive" />
-                                            <span class="removeIcon glyphicon glyphicon-remove" aria-hidden="true"></span>
-                                        </div>
-                                    </div>
-                                </div>
-                                <h4>Svårighet 3</h4>
-                                <div class="row">
-                                    <div class="col-md-3">
-                                        <p>Karta 1</p>
-                                        <div class=" mapHasRemove">
-                                            <img src="/dev/images/karta01.gif" class="img-responsive" />
-                                            <span class="removeIcon glyphicon glyphicon-remove" aria-hidden="true"></span>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-3">
-                                        <p>Karta 2</p>
-                                        <div class=" mapHasRemove">
-                                            <img src="/dev/images/karta01.gif" class="img-responsive" />
-                                            <span class="removeIcon glyphicon glyphicon-remove" aria-hidden="true"></span>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-3">
-                                        <p>Karta 3</p>
-                                        <div class=" mapHasRemove">
-                                            <img src="/dev/images/karta01.gif" class="img-responsive" />
-                                            <span class="removeIcon glyphicon glyphicon-remove" aria-hidden="true"></span>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-3">
-                                        <p>Karta 4</p>
-                                        <div class=" mapHasRemove">
-                                            <img src="/dev/images/karta01.gif" class="img-responsive" />
-                                            <span class="removeIcon glyphicon glyphicon-remove" aria-hidden="true"></span>
-                                        </div>
-                                    </div>
-                                </div>
-                              </div>
-                              <div class="col-md-12 mapUpload">
-                                  <h4>Lägg till karta</h4>
-                                  <div class="row">
-                                      <div class="col-md-4">
-                                          <button type="button" class="btn btn-default">Välj fil</button>
-                                      </div>
-                                      <div class="col-md-4">
-                                          <div class="btn-group">
-                                            <button class="btn btn-default btn-md dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                              Välj svårighetsgrad: <span class="caret"></span>
-                                            </button>
-                                            <ul class="dropdown-menu">
-                                              <li><a href="#">Svårighetsgrad 1</a></li>
-                                              <li><a href="#">Svårighetsgrad 2</a></li>
-                                              <li><a href="#">Svårighetsgrad 3</a></li>
-                                            </ul>
-                                          </div>
-                                      </div>
-                                      <div class="col-md-4">
-                                          <button type="button" class="btn btn-default">Skicka in!</button>
-                                      </div>
-                                  </div>
                               </div>
                             </div>
-                        </tr>
-                        <tr>
-                            <td>1</td>
-                            <td>Namn på område</td>
-                            <td>Meta om område</td>
-                        </tr>
-                        <tr>
-                            <td>1</td>
-                            <td>Namn på område</td>
-                            <td>Meta om område</td>
-                        </tr>
-                    </table>
+                          </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
         <div class="divider">
         </div>
-        <div id="footer">
+       <!--  <div id="footer">
             <nav class="navbar navbar-default " id="nav-footer">
                 <div class="container footer">
                     <div class="row">
@@ -253,7 +138,7 @@
                     </div>
                 </div>
             </nav>
-        </div>
+        </div> -->
 	</div>
 </body>
 
