@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" ng-app="myApp">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0">
@@ -28,6 +28,10 @@
     <!-- css -->
     <link rel="stylesheet" type="text/css" href="css/base.css">
 
+    <!-- Javascript -->
+    <script src="../dev/js/app.js"></script>
+    <script src="../dev/js/controllers/loginController.js"></script>
+
     <!-- Init vegas -->
     <script type="text/javascript">
 
@@ -41,7 +45,7 @@
     </script>
 
 </head>
-<body>
+<body ng-controller="loginCtrl">
 	<div class="pagewrap">
 		<nav class="navbar navbar-default navbar-fixed-top" id="header" role="navigation">
         
