@@ -13,6 +13,7 @@
     <!-- bower:css -->
     <link rel="stylesheet" href="../bower_components/bootstrap-css/css/bootstrap.min.css" />
     <link rel="stylesheet" href="../bower_components/vegas/dist/vegas.min.css" />
+    <link rel="stylesheet" href="../bower_components/nya-bootstrap-select/dist/css/nya-bs-select.css" />
     <!-- endbower -->
 
     <!-- own css -->
@@ -26,6 +27,7 @@
     <script src="../bower_components/vegas/dist/vegas.min.js"></script>
     <script src="../bower_components/parse/parse.min.js"></script>
     <script src="../bower_components/angular-animate/angular-animate.js"></script>
+    <script src="../bower_components/nya-bootstrap-select/dist/js/nya-bs-select.js"></script>
     <!-- endbower -->
 
     <!-- Javascript -->
@@ -70,7 +72,7 @@
             <div class="top-divider">
                 
             </div>
-            <div class="col-md-8 col-md-offset-2" ng-controller="addSchoolCtrl">
+            <div class="col-md-8 col-md-offset-2">
                 <!-- Button trigger modal -->
                 <button type="button" id="addSchoolButton"  class="btn btn-default" data-toggle="modal" data-target="#myModal">Lägg till skola</button>
 
@@ -96,22 +98,25 @@
                                 <p>Välj område</p>
                                 <!-- Single button -->
                                 <div class="btn-group">
-                                  <select class="form-control" >                 
-                                    <option ng-repeat="area in areas" ng-selected="setCurrentArea(area)">{{area.attributes.name}}</option>
-                                  </select>
+                                  <ol class="nya-bs-select" ng-model="school.areas" multiple="true" data-live-search="true">
+                                    <li nya-bs-option="area in areas">
+                                      <a>
+                                      {{area.attributes.name}}
+                                      <span class="glyphicon glyphicon-ok check-mark"></span>
+                                      </a>
+                                    </li>
+                                  </ol>
                                 </div>
                                 <div class="btn-group">
-                                <div>
-                                    <button type="button" ng-click="addArea(current)" class="btn btn-default">Lägg till område</button>
-                                </div>
                                 </div>
                             </div>
                             <div class="col-md-6">
                                 <p>Områden</p>
-                                <div class="areaCard" ng-repeat="addedArea in addedAreas">
-                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                                    <p>{{addedArea.name}}</p>
-                                    
+                                <div class="areaCard" ng-repeat="addedArea in school.areas">
+                                    <button type="button" class="close" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                    <p>{{addedArea.attributes.name}}</p>
+                                    <img ng-src="{{addedArea.attributes.maps.file}}">
+                                    <pre>{{addedArea.attributes.maps.attributes}}</pre>
                                 </div>
                             </div>
                             <div class="col-md-12">

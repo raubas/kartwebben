@@ -34,30 +34,15 @@ app.controller('addSchoolCtrl',
  		var query = new Parse.Query("Areas");
 		query.find().then(function(result){
 	        $scope.areas = result;
+	        console.log($scope.areas);
 	    });
 
  		$scope.saveSchool = function(school){
 
  			var Schools = Parse.Object.extend("Schools");
-			var school = new Schools();
-			school.set("name", school.name)
+			var newSchool = new Schools();
+			newSchool.set("name", school.name)
+			newSchool.set("areas", school.areas)
  		}
-
- 		$scope.addArea = function(area){
- 			for (var i = $scope.addedAreas.length - 1; i >= 0; i--) {
- 				if ($scope.addedAreas[i] == area) {
- 					$scope.error = "Du har redan lagt till detta område";
- 					return;
- 				}	
- 			};
- 			$scope.addedAreas.push(area); 
- 			console.log($scope.addedAreas);
- 		}
-
- 		$scope.setCurrentArea = function(area){
- 			console.log(area);
- 			$scope.currentArea = area
- 		}
-
 
 });
