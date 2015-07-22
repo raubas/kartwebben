@@ -38,24 +38,33 @@ app.controller('addSchoolCtrl',
 	        console.log($scope.areas);
 	    });
 
- 		$scope.saveSchool = function(school, newSchoolForm){
+ 		$scope.saveSchool = function(school, contactPerson, newSchoolForm){
  			if (newSchoolForm.$valid) {
  				var Schools = Parse.Object.extend("Schools");
-			var newSchool = new Schools();
-			newSchool.set("name", school.name);
-			newSchool.set("areas", school.areas);
-			newSchool.save(null, {
-			  success: function(newSchool) {
-			    // Execute any logic that should take place after the object is saved.
+ 				var ContactPerson = Parse.Object.extend("ContactPerson");
 
-			    alert('New object created with objectId: ' + newSchool.id);
-			    $scope.school = null;
-			  },
-			  error: function(newSchool, error) {
-			    // Execute any logic that should take place if the save fails.
-			    // error is a Parse.Error with an error code and message.
-			    alert('Failed to create new object, with error code: ' + error.message);
-			  }
+ 				var newContactPerson = new ContactPerson();
+ 				newContactPerson.set("name", contactPerson.name);
+ 				newContactPerson.set("phoneNumber", contactPerson.phoneNumber);
+ 				newContactPerson.set("email", contactPerson.email);
+
+				var newSchool = new Schools();
+				newSchool.set("name", school.name);
+				newSchool.set("areas", school.areas);
+				newSchool.set("contactPerson", newContactPerson);
+				newSchool.save(null, {
+				  success: function(newSchool) {
+				    // Execute any logic that should take place after the object is saved.
+
+				    alert('New object created with objectId: ' + newSchool.id);
+				    $scope.school = null;
+				    $scope.contactPerson = null;
+				  },
+				  error: function(newSchool, error) {
+				    // Execute any logic that should take place if the save fails.
+				    // error is a Parse.Error with an error code and message.
+				    alert('Failed to create new object, with error code: ' + error.message);
+				  }
 			});
  			}
  			
