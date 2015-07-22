@@ -16,14 +16,29 @@ app.controller('uploadMapCtrl', function($scope){
 	});
 
 
-	$scope.saveArea = function(name, level, file){
+	$scope.saveArea = function(areaName, mapName, mapLevel, mapFile){
 		var Areas = Parse.Object.extend("Areas");
 		var area = new Areas();
-		area.set("name",name);
+		var Maps = Parse.Object.extend("Maps");
+		var map = new Maps();
+
+		map.set("name", mapName);
+		map.set("difficulty", parseInt(mapLevel,1));
+		map.save(null, {
+			success: function(map) {
+
+			},
+			error: function(map, error) {
+				alert('Failed to create new object, with error code: ' + error.message);
+			}
+		});
+
+		area.set("name", areaName);
+		area.push("maps", [map])
 		area.save(null, {
 		  success: function(area) {
 		    // Execute any logic that should take place after the object is saved.
-		    alert('New object created with objectId: ' + area.id);
+		    //alert('New object created with objectId: ' + area.id);
 		  },
 		  error: function(area, error) {
 		    // Execute any logic that should take place if the save fails.

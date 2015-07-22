@@ -108,7 +108,14 @@
                                 </div>
                                 <div ng-bind="area.name">areanamn</div>
                             </div>
-                            <div class="col-md-6">
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label for="Mapname">Kartans namn</label>
+                                    <input type="text" class="form-control" required ng-model="map.name" placeholder="Namn" >
+                                </div>
+                                <div ng-bind="map.name">kartnamn</div>
+                            </div>
+                            <div class="col-md-4">
                                 <p>Välj Svårighetsgrad</p>
                                 <label class="radio-inline">
                                   <input type="radio" name="levelRadio" ng-model="levelRadio" id="levelRadio1" value="1"> 1
@@ -121,7 +128,7 @@
                                 </label>
                                 <div ng-bind="levelRadio">Level</div>
                             </div>
-                            <div class="col-md-6">
+                            <div class="col-md-4">
                                 <p>Ladda upp fil</p>
                                 <form class="dropzone" method="post" enctype="multipart/form-data" ng-dropzone dropzone="dropzone" dropzone-config="dropzoneConfig">
                                     <input name="file" type="file"/>
@@ -135,7 +142,7 @@
                       </div>
                       <div class="modal-footer">
                         <button type="button" class="btn btn-default" ng-disabled="expression" data-dismiss="modal">Stäng</button>
-                        <button type="submit" ng-click="saveArea(area.name, levelRadio, file)" class="btn btn-primary">Lägg till</button>
+                        <button type="submit" ng-click="saveArea(area.name, map.name, levelRadio, file)" class="btn btn-primary">Lägg till</button>
                       </div>
                     </div>
                   </div>
