@@ -32,32 +32,33 @@ app.controller('addSchoolCtrl',
  		$scope.addedAreas = [];
  		$scope.error = ""; 
  		var query = new Parse.Query("Areas");
+ 		query.include("maps");
 		query.find().then(function(result){
 	        $scope.areas = result;
+	        console.log($scope.areas);
 	    });
 
- 		$scope.saveSchool = function(school){
+ 		$scope.saveSchool = function(school, newSchoolForm){
+ 			if (newSchoolForm.$valid) {
+ 				var Schools = Parse.Object.extend("Schools");
+			var newSchool = new Schools();
+			newSchool.set("name", school.name);
+			newSchool.set("areas", school.areas);
+			newSchool.save(null, {
+			  success: function(newSchool) {
+			    // Execute any logic that should take place after the object is saved.
 
- 			var Schools = Parse.Object.extend("Schools");
-			var school = new Schools();
-			school.set("name", school.name)
+			    alert('New object created with objectId: ' + newSchool.id);
+			    $scope.school = null;
+			  },
+			  error: function(newSchool, error) {
+			    // Execute any logic that should take place if the save fails.
+			    // error is a Parse.Error with an error code and message.
+			    alert('Failed to create new object, with error code: ' + error.message);
+			  }
+			});
+ 			}
+ 			
  		}
-
- 		$scope.addArea = function(area){
- 			for (var i = $scope.addedAreas.length - 1; i >= 0; i--) {
- 				if ($scope.addedAreas[i] == area) {
- 					$scope.error = "Du har redan lagt till detta område";
- 					return;
- 				}	
- 			};
- 			$scope.addedAreas.push(area); 
- 			console.log($scope.addedAreas);
- 		}
-
- 		$scope.setCurrentArea = function(area){
- 			console.log(area);
- 			$scope.currentArea = area
- 		}
-
 
 });

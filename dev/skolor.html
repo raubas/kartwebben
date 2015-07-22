@@ -13,7 +13,7 @@
     <!-- bower:css -->
     <link rel="stylesheet" href="../bower_components/bootstrap-css/css/bootstrap.min.css" />
     <link rel="stylesheet" href="../bower_components/vegas/dist/vegas.min.css" />
-    <link rel="stylesheet" href="../bower_components/dropzone/downloads/css/dropzone.css" />
+    <link rel="stylesheet" href="../bower_components/nya-bootstrap-select/dist/css/nya-bs-select.css" />
     <!-- endbower -->
 
     <!-- own css -->
@@ -27,25 +27,12 @@
     <script src="../bower_components/vegas/dist/vegas.min.js"></script>
     <script src="../bower_components/parse/parse.min.js"></script>
     <script src="../bower_components/angular-animate/angular-animate.js"></script>
-    <script src="../bower_components/dropzone/downloads/dropzone.min.js"></script>
-    <script src="../bower_components/angular-dropzone/lib/angular-dropzone.js"></script>
+    <script src="../bower_components/nya-bootstrap-select/dist/js/nya-bs-select.js"></script>
     <!-- endbower -->
 
     <!-- Javascript -->
     <script src="../dev/js/app.js"></script>
     <script src="../dev/js/controllers/schoolController.js"></script>
-
-    <!-- Init vegas -->
-    <script type="text/javascript">
-
-      $(function() {
-          $('body').vegas({
-              slides: [
-                  { src: '/dev/images/skylines_blur.jpg' }
-              ]
-          });
-      });
-    </script>
 
 </head>
 <body>
@@ -97,48 +84,52 @@
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                         <h4 class="modal-title" id="myModalLabel">Lägg till skola</h4>
                       </div>
-                      <div class="modal-body">
-                        <form>
-                        <div class="row">
-                            <div class="col-md-12">
-                                <div class="form-group">
-                                    <label for="schoolName">Skola</label>
-                                    <input type="text" class="form-control" required ng-model="school.name" placeholder="Namn" >
-                                </div>
-                                <div>{{school.name}}</div>
-                            </div>
-                            <div class="col-md-6">
-                                <p>Välj område</p>
-                                <!-- Single button -->
-                                <div class="btn-group">
-                                  <select class="form-control" >                 
-                                    <option ng-repeat="area in areas" ng-selected="setCurrentArea(area)">{{area.attributes.name}}</option>
-                                  </select>
-                                </div>
-                                <div class="btn-group">
-                                <div>
-                                    <button type="button" ng-click="addArea(current)" class="btn btn-default">Lägg till område</button>
-                                </div>
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-                                <p>Områden</p>
-                                <div class="areaCard" ng-repeat="addedArea in addedAreas">
-                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                                    <p>{{addedArea.name}}</p>
-                                    
-                                </div>
-                            </div>
-                            <div class="col-md-12">
-                              <p ng-model="error">{{error}}</p>
-                            </div>
+                      <form name="newSchoolForm">
+                        <div class="modal-body">
+                          <div class="row">
+                              <div class="col-md-12">
+                                  <div class="form-group">
+                                      <label for="schoolName">Skola</label>
+                                      <input type="text" class="form-control" required ng-model="school.name" placeholder="Namn" >
+                                  </div>
+                              </div>
+                              <div class="col-md-6">
+                                  <p>Välj område</p>
+                                  <!-- Single button -->
+                                  <div class="btn-group">
+                                    <ol class="nya-bs-select" ng-model="school.areas" multiple="true" data-live-search="true">
+                                      <li nya-bs-option="area in areas">
+                                        <a>
+                                        {{area.attributes.name}}
+                                        <span class="glyphicon glyphicon-ok check-mark"></span>
+                                        </a>
+                                      </li>
+                                    </ol>
+                                  </div>
+                                  <div class="btn-group">
+                                  </div>
+                              </div>
+                              <div class="col-md-6">
+                                  <p>Valda områden</p>
+                                  <div class="areaCard" ng-repeat="addedArea in school.areas">
+                                      <button type="button" class="close" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                      <p>{{addedArea.attributes.name}}</p>
+                                      <img ng-src="{{addedArea.attributes.maps[0].attributes.file._url}}" width="100px" height="100px">
+                                     
+                                  </div>
+                              </div>
+                              <div class="col-md-12">
+                                <p ng-model="error">{{error}}</p>
+                              </div>
+                          </div>
                         </div>
-                        </form>
-                      </div>
-                      <div class="modal-footer">
+                        <div class="modal-footer">
                         <button type="button" class="btn btn-default" ng-disabled="expression" data-dismiss="modal">Stäng</button>
-                        <button type="submit" ng-click="saveSchool(school)" class="btn btn-primary">Lägg till</button>
+                        <button type="submit" ng-click="saveSchool(school, newSchoolForm)" class="btn btn-primary">Lägg till</button>
                       </div>
+                      </form>
+                      
+                      
                     </div>
                   </div>
                 </div>
