@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" ng-app="myApp">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0">
@@ -28,6 +28,10 @@
     <script src="../bower_components/angular-animate/angular-animate.js"></script>
     <!-- endbower -->
 
+    <!-- Javascript -->
+    <script src="../dev/js/app.js"></script>
+    <script src="../dev/js/controllers/schoolController.js"></script>
+
 </head>
 <body>
     <div class="pagewrap">
@@ -45,7 +49,7 @@
               <div>
                 <a class="navbar-brand" href="/"><img src="" class="img-responsive nav-icon" >Wahoo Development</a>
               </div>
-            </div>
+            </div> 
 
             <!-- Collect the nav links, forms, and other content for toggling -->
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
@@ -66,12 +70,12 @@
             <div class="top-divider">
                 
             </div>
-            <div class="col-md-8 col-md-offset-2">
+            <div class="col-md-8 col-md-offset-2" ng-controller="addSchoolCtrl">
                 <!-- Button trigger modal -->
                 <button type="button" id="addSchoolButton"  class="btn btn-default" data-toggle="modal" data-target="#myModal">Lägg till skola</button>
 
                 <!-- Modal -->
-                <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+                <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" ng-controller="addSchoolCtrl">
                   <div class="modal-dialog" role="document">
                     <div class="modal-content">
                       <div class="modal-header">
@@ -79,143 +83,98 @@
                         <h4 class="modal-title" id="myModalLabel">Lägg till skola</h4>
                       </div>
                       <div class="modal-body">
+                        <form>
                         <div class="row">
                             <div class="col-md-12">
                                 <div class="form-group">
                                     <label for="schoolName">Skola</label>
-                                    <input type="text" class="form-control" id="schoolName" placeholder="Namn"></input>
+                                    <input type="text" class="form-control" required ng-model="school.name" placeholder="Namn" >
                                 </div>
+                                <div>{{school.name}}</div>
                             </div>
                             <div class="col-md-6">
-                                <p>Lägg till område</p>
+                                <p>Välj område</p>
                                 <!-- Single button -->
                                 <div class="btn-group">
-                                  <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                    Action <span class="caret"></span>
-                                  </button>
-                                  <ul class="dropdown-menu">
-                                    <li><a href="#">Action</a></li>
-                                    <li><a href="#">Another action</a></li>
-                                    <li><a href="#">Something else here</a></li>
-                                    <li role="separator" class="divider"></li>
-                                    <li><a href="#">Separated link</a></li>
-                                  </ul>
+                                  <select class="form-control" >                 
+                                    <option ng-repeat="area in areas" ng-selected="setCurrentArea(area)">{{area.attributes.name}}</option>
+                                  </select>
                                 </div>
+                                <div class="btn-group">
                                 <div>
-                                    <p>Välj svårighetsgrader</p>
-                                    <label class="checkbox-inline">
-                                      <input type="checkbox" id="inlineCheckbox1" value="option1"> 1
-                                    </label>
-                                    <label class="checkbox-inline">
-                                      <input type="checkbox" id="inlineCheckbox2" value="option2"> 2
-                                    </label>
-                                    <label class="checkbox-inline">
-                                      <input type="checkbox" id="inlineCheckbox3" value="option3"> 3
-                                    </label>
+                                    <button type="button" ng-click="addArea(current)" class="btn btn-default">Lägg till område</button>
                                 </div>
-                                <div>
-                                    <button type="button" class="btn btn-default">lägg till område och svårighetsgrad</button>
                                 </div>
                             </div>
                             <div class="col-md-6">
                                 <p>Områden</p>
-                                <div class="areaCard">
+                                <div class="areaCard" ng-repeat="addedArea in addedAreas">
                                     <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                                    <p>Rävskogen</p>
-                                    <p>svårighetsgrader: 1, 2, 3</p>
-                                </div>
-                                <div class="areaCard">
-                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                                    <p>Rävskogen</p>
-                                    <p>svårighetsgrader: 1, 2, 3</p>
+                                    <p>{{addedArea.name}}</p>
+                                    
                                 </div>
                             </div>
+                            <div class="col-md-12">
+                              <p ng-model="error">{{error}}</p>
+                            </div>
                         </div>
+                        </form>
                       </div>
                       <div class="modal-footer">
-                        <button type="button" class="btn btn-default" data-dismiss="modal">Stäng</button>
-                        <button type="button" class="btn btn-primary">Lägg till</button>
+                        <button type="button" class="btn btn-default" ng-disabled="expression" data-dismiss="modal">Stäng</button>
+                        <button type="submit" ng-click="saveSchool(school)" class="btn btn-primary">Lägg till</button>
                       </div>
                     </div>
                   </div>
                 </div>
-                <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
-                  <div class="panel panel-default">
-                    <div class="panel-heading" role="tab" id="headingOne">
-                      <h4 class="panel-title">
-                        <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-                          <p>School #1</p>
-                        </a>
-                      </h4>
-                    </div>
-                    <div id="collapseOne" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">
-                      <div class="panel-body">
-                        <div class="col-md-6">
-                            <p>Areas:</p>
-                        </div>
-                        <div class="col-md-6">
-                            <p>Add Area:</p>
-                        </div>
-                      </div>
-                      <div class="panel-footer">
-                        <div class="row">
-                            <div class="col-md-4">
-                                <p>Kontakt:</p>
+                <div ng-controller="schoolCtrl">
+                    <div ng-repeat="school in schools">
+                        <div class="panel-group" id="school-{{$index}}-parent" role="tablist" aria-multiselectable="true">
+                          <div class="panel panel-default">
+                            <div class="panel-heading" role="tab" id="school-{{$index}}-heading">
+                              <h4 class="panel-title">
+                                <a role="button" data-toggle="collapse" data-parent="#school-{{$index}}-parent" href="#school-{{$index}}" aria-expanded="true" aria-controls="school-{{$index}}">
+                                  <p>{{school.attributes.name}}</p>
+                                </a>
+                              </h4>
                             </div>
-                            <div class="col-md-4">
-                                <p>Gunnel Högberg</p>                                
+                                                                            <!-- Remove in to collapse all -->
+                            <div id="school-{{$index}}" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="school-{{$index}}-heading">
+                              <div class="panel-body">
+                                <div class="col-md-10">
+                                    <h4>Områden</h4>
+                                    <div ng-repeat="area in school.attributes.areas">
+                                        <strong><p ng-bind="area.attributes.name"></p></strong>
+                                        <div ng-repeat="map in area.attributes.maps">
+                                            <p ng-bind="map.attributes.name"> ete</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-2">
+                                    <button type="button" class="btn btn-default">Lägg till område</button>
+                                </div>
+                              </div>
+                              <div class="panel-footer">
+                                <div class="row">
+                                    <div class="col-md-4">
+                                        <p>Kontakt</p>
+                                        <p ng-bind="school.attributes.contactPerson.attributes.name">namn</p>                                
+                                    </div>
+                                    <div class="col-md-4">
+                                        <p>Epost</p>
+                                        <p ng-bind="school.attributes.contactPerson.attributes.email"></p>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <p>Telefon</p>
+                                        <p ng-bind="school.attributes.contactPerson.attributes.phoneNumber">Telefon</p>
+                                    </div>
+                                </div>
+                              </div>
                             </div>
-                            <div class="col-md-4">
-                                <p>Tel: 018 12 34 56</p>
-                            </div>
+                          </div>
                         </div>
-                      </div>
                     </div>
-                  </div>
-                  <div class="panel panel-default">
-                    <div class="panel-heading" role="tab" id="headingTwo">
-                      <h4 class="panel-title">
-                        <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
-                          <p>School #2</p>
-                        </a>
-                      </h4>
-                    </div>
-                    <div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
-                      <div class="panel-body">
-                        <div class="col-md-6">
-                            <p>Areas:</p>
-                        </div>
-                        <div class="col-md-6">
-                            <p>Add Area:</p>
-                        </div>
-                      </div>
-                      <div class="panel-footer">
-                            <p>Kontakt: Gunnel Högberg</p>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="panel panel-default">
-                    <div class="panel-heading" role="tab" id="headingThree">
-                      <h4 class="panel-title">
-                        <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
-                          <p>School #3</p>
-                        </a>
-                      </h4>
-                    </div>
-                    <div id="collapseThree" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingThree">
-                      <div class="panel-body">
-                        <div class="col-md-6">
-                            <p>Areas:</p>
-                        </div>
-                        <div class="col-md-6">
-                            <p>Add Area:</p>
-                        </div>
-                      </div>
-                      <div class="panel-footer">
-                            <p>Kontakt: Gunnel Högberg</p>
-                      </div>
-                    </div>
-                  </div>
+                    <pre>{{ schools | json }}</pre>
                 </div>
             </div>
         </div>
