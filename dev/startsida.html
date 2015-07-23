@@ -31,11 +31,13 @@
     <script src="../bower_components/nya-bootstrap-select/dist/js/nya-bs-select.js"></script>
     <script src="../bower_components/dropzone/downloads/dropzone.min.js"></script>
     <script src="../bower_components/angular-dropzone/lib/angular-dropzone.js"></script>
+    <script src="../bower_components/lodash/lodash.js"></script>
+    <script src="../bower_components/angular-google-maps/dist/angular-google-maps.js"></script>
     <!-- endbower -->
 
     <!-- Javascript -->
     <script src="../dev/js/app.js"></script>
-    <script src="../dev/js/controllers/uploadMapController.js"></script>
+    <script src="../dev/js/controllers/findMapsController.js"></script>
     <script src="../dev/js/base.js"></script>
 
    
@@ -73,42 +75,26 @@
       </div><!-- /.container-fluid -->
     </nav>
     <!-- **** Content **** -->
-    <div class="content">
+    <div class="content" ng-controller="findMapsCtrl">
         <div class="col-md-8 ">
           <div class="row">
+            <div id="search-school">
+              <form class="form-inline">
+                <div class="form-group">
+                  <label for="searchSchool">Skola</label>
+                  <input id="searchSchool" type="text" class="form-control" placeholder="Skola">
+                </div>
+              </form>
+            </div>
             <div id="map-canvas">
+              <ui-gmap-google-map center='map.center' zoom='map.zoom'>
+              </ui-gmap-google-map>
             </div>
           </div>
         </div>
         <div class="col-md-4">
-          <div class="rightbar" ng-controller="uploadMapCtrl">
-            <div ng-repeat="area in areas">
-                <div class="panel-group" id="area-{{$index}}-parent" role="tablist" aria-multiselectable="true">
-                  <div class="panel panel-default">
-                    <div class="panel-heading" role="tab" id="area-{{$index}}-heading">
-                      <h4 class="panel-title">
-                        <a role="button" data-toggle="collapse" data-parent="#area-{{$index}}-parent" href="#area-{{$index}}" aria-expanded="true" aria-controls="area-{{$index}}">
-                          <p ng-bind="area.attributes.name">Område</p>
-                        </a>
-                      </h4>
-                    </div>
-                                                                    <!-- Remove in to collapse all -->
-                    <div id="area-{{$index}}" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="area-{{$index}}-heading">
-                      <div class="panel-body">
-                        <div class="col-md-12">
-                            <h4>Kartor</h4>
-                            <div ng-repeat="map in area.attributes.maps">
-                                <div class="col-md-4">
-                                    <p ng-bind="map.attributes.name"></p>
-                                    <img ng-src="{{displayMap(map.attributes.file._url)}}" class="img-responsive" />
-                                </div>
-                            </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-            </div>
+          <div class="rightbar">
+            
           </div>
         </div>
     </div>
