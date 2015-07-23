@@ -48,20 +48,16 @@ app.controller('uploadMapCtrl', function($scope){
 		});
 	};
 
-
-
-	// var queryContact = new Parse.Query("ContactPerson");
-	// 	queryContact.include('ContactPerson');
-	// 	queryContact.find().then(function(result){
-	//         $scope.contactPerson = result;
-	//     });
-
-	// // Queries
-	// $scope.doQuery = function(){
-	// 	var query = new Parse.Query("Schools");
-	// 	query.find().then(function(result){
-	//         $scope.schools = result;
-	// });
-	// }
+	$scope.dropzoneConfig = {
+    'options': { // passed into the Dropzone constructor
+      'url': 'upload.php'
+    },
+    'eventHandlers': {
+      'sending': function (file, xhr, formData) {
+      },
+      'success': function (file, response) {
+      }
+    }
+  };
 	
 });
