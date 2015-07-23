@@ -32,9 +32,9 @@ app.controller('uploadMapCtrl', function($scope){
 				alert('Failed to create new object, with error code: ' + error.message);
 			}
 		});
-
+		
 		area.set("name", areaName);
-		area.push("maps", [map])
+		area.set("maps", [map])
 		area.save(null, {
 		  success: function(area) {
 		    // Execute any logic that should take place after the object is saved.
