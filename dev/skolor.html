@@ -39,7 +39,7 @@
 
 </head>
 <body>
-    <div class="pagewrap">
+    <div class="pagewrap" ng-controller="schoolCtrl">
     <!-- **** Navbar **** -->
         <nav class="navbar navbar-default navbar-fixed-top" id="header" role="navigation">
           <div class="container-fluid">
@@ -76,19 +76,9 @@
                 
             </div>
             <div class="col-md-8 col-md-offset-2">
-                <!-- Button trigger modal -->
-                <button type="button" id="addSchoolButton"  class="btn btn-default" data-toggle="modal" data-target="#myModal">Lägg till skola</button>
 
-                <!-- Modal -->
-                <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" ng-controller="addSchoolCtrl">
-                  <div class="modal-dialog" role="document">
-                    <div class="modal-content">
-                      <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                        <h2 class="modal-title" id="myModalLabel">Lägg till skola</h2>
-                      </div>
-                      <form name="newSchoolForm">
-                        <div class="modal-body">
+                <!-- New School -->
+                 <form name="newSchoolForm">
                           <div class="row">
                               <div class="col-md-12">
                                   <div class="form-group">
@@ -96,58 +86,35 @@
                                       <input type="text" class="form-control" required ng-model="school.name" placeholder="Namn" >
                                   </div>
                               </div>
-                              <div class="col-md-6">
-                                  <label>Välj område</label>
-                                  <!-- Single button -->
-                                  <div class="btn-group">
-                                    <ol class="nya-bs-select" ng-model="school.areas" multiple="true" data-live-search="true">
-                                      <li nya-bs-option="area in areas">
-                                        <a>
-                                        {{area.attributes.name}}
-                                        <span class="glyphicon glyphicon-ok check-mark"></span>
-                                        </a>
-                                      </li>
-                                    </ol>
-                                  </div>
-                                  <div class="btn-group">
-                                  </div>
-                              </div>
-                              <div class="col-md-6">
-                                  <label>Valda områden</label>
-                                  <div class="areaCard" ng-repeat="addedArea in school.areas">
-                                      <button type="button" class="close" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                                      <p>{{addedArea.attributes.name}}</p>
-                                      <img ng-src="{{addedArea.attributes.maps[0].attributes.file._url}}" width="100px" height="100px">
-                                     
-                                  </div>
-                              </div>
                               <div class="col-md-12">
                                 <div class="form-group">
                                       <h4>Kontaktperson</h4>
                                       <label>Namn</label>
-                                      <input type="text" class="form-control" required ng-model="contactPerson.name" placeholder="John Doe" >
+                                      <input type="text" class="form-control" name="name" required ng-model="contactPerson.name" placeholder="John Doe" >
+                                </div>
+                                <div class="form-group">
                                       <label>Telefonnummer</label>
-                                      <input type="text" class="form-control" required ng-model="contactPerson.phoneNumber" placeholder="070-00 00 000" >
+                                      <input type="text" class="form-control" name="phone" integer required ng-pattern="/^(?:[0-9] ?){5,9}[0-9]$/" ng-model="contactPerson.phoneNumber" placeholder="070-00 00 000" >
+                                      <span class="error-message" ng-show="newSchoolForm.phone.$error.pattern">Telefonnummret måste vara mellan 6 och 10 siffor!</span>
+                                </div>
+                                <div class="form-group">
                                       <label>Email</label>
-                                      <input type="text" class="form-control" required ng-model="contactPerson.email" placeholder="john.doe@example.com" >
-                                  </div>
+                                      <input type="email" class="form-control" name="name" required ng-model="contactPerson.email" placeholder="john.doe@example.com">
+                                </div>
+
+                                  
                               </div>
                               <div class="col-md-12">
                                 <p ng-model="error">{{error}}</p>
                               </div>
                           </div>
-                        </div>
-                        <div class="modal-footer">
-                        <button type="button" class="btn btn-default" ng-disabled="expression" data-dismiss="modal">Stäng</button>
-                        <button type="submit" ng-click="saveSchool(school,contactPerson, newSchoolForm)" class="btn btn-primary">Lägg till</button>
+                        <div>
+                        <button type="submit" ng-click="saveSchool(school, contactPerson, newSchoolForm)" class="btn btn-primary">Lägg till</button>
                       </div>
-                      </form>
-                      
-                      
-                    </div>
-                  </div>
-                </div>
-                <div ng-controller="schoolCtrl">
+
+                      </form><!-- END New School -->
+
+                <div >
                     <div ng-repeat="school in schools">
                         <div class="panel-group" id="school-{{$index}}-parent" role="tablist" aria-multiselectable="true">
                           <div class="panel panel-default">
@@ -159,9 +126,9 @@
                               </h4>
                             </div>
                                                                             <!-- Remove in to collapse all -->
-                            <div id="school-{{$index}}" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="school-{{$index}}-heading">
+                            <div id="school-{{$index}}" class="panel-collapse collapse" role="tabpanel" aria-labelledby="school-{{$index}}-heading">
                               <div class="panel-body">
-                                <div class="col-md-10">
+                                <div class="col-md-6">
                                     <h4>Områden</h4>
                                     <div ng-repeat="area in school.attributes.areas">
                                         <strong><p ng-bind="area.attributes.name"></p></strong>
@@ -170,8 +137,8 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-md-2">
-                                    <button type="button" class="btn btn-default">Lägg till område</button>
+                                <div class="col-md-6">
+                                    
                                 </div>
                               </div>
                               <div class="panel-footer">

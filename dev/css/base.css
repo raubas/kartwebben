@@ -76,3 +76,10 @@ body{
 	padding-left: 10px;
 	margin-bottom: 10px;
 }
+
+.error-message {
+      color: red;
+}
+input.ng-dirty.ng-invalid {
+      border-color: red;
+}
