@@ -1,4 +1,9 @@
-app.controller('uploadMapCtrl', function($scope){
+app.controller('uploadMapCtrl', function($scope, uiGmapGoogleMapApi){
+
+	uiGmapGoogleMapApi.then(function(maps) {
+        $scope.map = { center: { latitude: 65.588946, longitude: 22.157324 }, zoom: 11 };
+        console.log('laddad');
+    });
 
 	var query = new Parse.Query("Areas");
 		query.include("maps");

@@ -14,7 +14,6 @@
     <link rel="stylesheet" href="../bower_components/bootstrap-css/css/bootstrap.min.css" />
     <link rel="stylesheet" href="../bower_components/vegas/dist/vegas.min.css" />
     <link rel="stylesheet" href="../bower_components/nya-bootstrap-select/dist/css/nya-bs-select.css" />
-    <link rel="stylesheet" href="../bower_components/dropzone/downloads/css/dropzone.css" />
     <!-- endbower -->
 
     <!-- css -->
@@ -29,8 +28,6 @@
     <script src="../bower_components/parse/parse.min.js"></script>
     <script src="../bower_components/angular-animate/angular-animate.js"></script>
     <script src="../bower_components/nya-bootstrap-select/dist/js/nya-bs-select.js"></script>
-    <script src="../bower_components/dropzone/downloads/dropzone.min.js"></script>
-    <script src="../bower_components/angular-dropzone/lib/angular-dropzone.js"></script>
     <script src="../bower_components/lodash/lodash.js"></script>
     <script src="../bower_components/angular-google-maps/dist/angular-google-maps.js"></script>
     <script src="../bower_components/angularjs-geolocation/src/geolocation.js"></script>
@@ -77,15 +74,17 @@
       </div><!-- /.container-fluid -->
     </nav>
     <!-- **** Content **** -->
-    <div class="content">
+    <div class="content" ng-controller="uploadMapCtrl">
         <div class="col-md-8 ">
           <div class="row">
             <div id="map-canvas">
+              <ui-gmap-google-map center='map.center' zoom='map.zoom'>
+              </ui-gmap-google-map>
             </div>
           </div>
         </div>
         <div class="col-md-4">
-          <div class="rightbar" ng-controller="uploadMapCtrl">
+          <div class="rightbar">
             <div ng-repeat="area in areas">
                 <div class="panel-group" id="area-{{$index}}-parent" role="tablist" aria-multiselectable="true">
                   <div class="panel panel-default">
