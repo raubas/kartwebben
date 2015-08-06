@@ -20,14 +20,24 @@ app.controller('uploadMapCtrl', function($scope, uiGmapGoogleMapApi){
 		$scope.maps = result;
 	});
 
+	$scope.addArea = {
+				open: false
+			};
+
+	$scope.newMaps = [{'id': 'map1'}];
+
+	$scope.addNewMap = function() {
+		var newMapId = $scope.newMaps.length+1
+		$scope.newMaps.push({'id': 'map'+newMapId});
+	}
 
 	$scope.saveArea = function(areaName, mapName, mapLevel, mapFile){
 		var Areas = Parse.Object.extend("Areas");
 		var area = new Areas();
 		var Maps = Parse.Object.extend("Maps");
 		var map = new Maps();
-
-		console.log(mapLevel);
+		
+			
 		map.set("name", mapName);
 		map.set("difficulty", parseInt(mapLevel));
 		map.save(null, {
@@ -39,42 +49,32 @@ app.controller('uploadMapCtrl', function($scope, uiGmapGoogleMapApi){
 				  success: function(area) {
 				    // Execute any logic that should take place after the object is saved.
 				    //alert('New object created with objectId: ' + area.id);
+				    // Collapse addnewarea
+				    $scope.addArea = {
+				    		open: false
+				    	};
 				    // Reset form when its saved.
-				    $scope.newArea = {
+				    $scope.addArea = {
 				    	areaName: "",
 				    	mapName: "",
 				    	levelRadio: 0
 				    }
-
+				    console.log('deepinside');
 
 				  },
 				  error: function(area, error) {
 				    // Execute any logic that should take place if the save fails.
 				    // error is a Parse.Error with an error code and message.
-				    alert('Failed to create new object, with error code: ' + error.message);
+				    //alert('Failed to create new object, with error code: ' + error.message);
+				    console.log('error area');
 				  }
 				});
 
 			},
 			error: function(map, error) {
-				alert('Failed to create new object, with error code: ' + error.message);
+				//alert('Failed to create new object, with error code: ' + error.message);
+				console.log('error map');
 			}
 		});
-		
-		
-
 	};
-
-	$scope.dropzoneConfig = {
-    'options': { // passed into the Dropzone constructor
-      'url': 'upload.php'
-    },
-    'eventHandlers': {
-      'sending': function (file, xhr, formData) {
-      },
-      'success': function (file, response) {
-      }
-    }
-  };
-	
 });
