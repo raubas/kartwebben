@@ -27,10 +27,33 @@ app.controller('uploadMapCtrl', function($scope, uiGmapGoogleMapApi){
 		var Maps = Parse.Object.extend("Maps");
 		var map = new Maps();
 
+		console.log(mapLevel);
 		map.set("name", mapName);
-		map.set("difficulty", parseInt(mapLevel,1));
+		map.set("difficulty", parseInt(mapLevel));
 		map.save(null, {
 			success: function(map) {
+
+				area.set("name", areaName);
+				area.set("maps", [map])
+				area.save(null, {
+				  success: function(area) {
+				    // Execute any logic that should take place after the object is saved.
+				    //alert('New object created with objectId: ' + area.id);
+				    // Reset form when its saved.
+				    $scope.newArea = {
+				    	areaName: "",
+				    	mapName: "",
+				    	levelRadio: 0
+				    }
+
+
+				  },
+				  error: function(area, error) {
+				    // Execute any logic that should take place if the save fails.
+				    // error is a Parse.Error with an error code and message.
+				    alert('Failed to create new object, with error code: ' + error.message);
+				  }
+				});
 
 			},
 			error: function(map, error) {
@@ -38,19 +61,8 @@ app.controller('uploadMapCtrl', function($scope, uiGmapGoogleMapApi){
 			}
 		});
 		
-		area.set("name", areaName);
-		area.set("maps", [map])
-		area.save(null, {
-		  success: function(area) {
-		    // Execute any logic that should take place after the object is saved.
-		    //alert('New object created with objectId: ' + area.id);
-		  },
-		  error: function(area, error) {
-		    // Execute any logic that should take place if the save fails.
-		    // error is a Parse.Error with an error code and message.
-		    alert('Failed to create new object, with error code: ' + error.message);
-		  }
-		});
+		
+
 	};
 
 	$scope.dropzoneConfig = {
