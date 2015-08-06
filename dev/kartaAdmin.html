@@ -85,34 +85,60 @@
         </div>
         <div class="col-md-4">
           <div class="rightbar">
-            <div ng-repeat="area in areas">
-                <div class="panel-group" id="area-{{$index}}-parent" role="tablist" aria-multiselectable="true">
-                  <div class="panel panel-default">
-                    <div class="panel-heading" role="tab" id="area-{{$index}}-heading">
-                      <h4 class="panel-title">
-                        <a role="button" data-toggle="collapse" data-parent="#area-{{$index}}-parent" href="#area-{{$index}}" aria-expanded="true" aria-controls="area-{{$index}}">
-                          <p ng-bind="area.attributes.name">Område</p>
-                          <p ng-bind="area.attributes.position">X/Y</p>
-                        </a>
-                      </h4>
-                    </div>
-                                                                    <!-- Remove in to collapse all -->
-                    <div id="area-{{$index}}" class="panel-collapse collapse " role="tabpanel" aria-labelledby="area-{{$index}}-heading">
-                      <div class="panel-body">
-                        <div class="col-md-12">
-                            <h4>Kartor</h4>
-                            <div ng-repeat="map in area.attributes.maps">
-                                <div class="col-md-4">
-                                    <p ng-bind="map.attributes.name"></p>
-                                    <img ng-src="{{displayMap(map.attributes.file._url)}}" class="img-responsive" />
-                                </div>
-                            </div>
+            <accordion close-others="false">
+              <accordion-group heading="Lägg till nytt område" is-open="addArea.open" class="barpanel">
+                <div class="col-md-12">
+                  <form name="addArea" class="form-group">
+                      <div class="col-md-12">
+                          <div class="form-group">
+                              <input ng-required="!addArea.areaName" ng-model="addArea.areaName" placeholder="Namn på området" >
+                          </div>
+                      </div>
+                      <div class="newMap" ng-repeat="newMap in newMaps"> 
+                        <div class="col-md-6">
+                         <div class="form-group">
+                             <input ng-required="!newMap.addArea.mapName" ng-model="newMap.addArea.mapName" placeholder="Namn på kartan" >
+                         </div>
+                        </div>
+                        <div class="col-md-6">
+                         <p>Välj Svårighetsgrad</p>
+                         <label class="radio">
+                           <input type="radio" ng-required="!newMap.addArea.levelRadio" ng-model="newMap.addArea.levelRadio" ng-value="1"> 1
+                         </label>
+                         <label class="radio">
+                           <input type="radio" ng-required="!newMap.addArea.levelRadio" ng-model="newMap.addArea.levelRadio" ng-value="2"> 2
+                         </label>
+                         <label class="radio">
+                           <input type="radio" ng-required="!newMap.addArea.levelRadio" ng-model="newMap.addArea.levelRadio" ng-value="3"> 3
+                         </label>
                         </div>
                       </div>
-                    </div>
-                  </div>
+                      <button ng-click="addNewMap()">Add fields</button>
+                      <div>
+                            {{ newMaps }}
+                         </div>
+                      <!-- <div class="col-md-12">
+                          <p>Ladda upp fil</p>
+                          <form class="dropzone" method="post" enctype="multipart/form-data" ng-dropzone dropzone="dropzone" dropzone-config="dropzoneConfig">
+                              <input name="file" type="file"/>
+                          </form>
+                      </div> -->
+                    <button ng-click="saveArea(addArea.areaName, addArea.mapName, addArea.levelRadio, addArea.file)" class="btn btn-primary">Lägg till</button>
+                  </form>
                 </div>
-            </div>
+              </accordion-group>
+              <accordion-group heading="{{area.attributes.name}}" ng-repeat="area in areas" is-open="clickedMarker[area.id]" class="barpanel">
+                <div class="col-md-12">
+                    <h4>Kartor</h4>
+                    <div ng-repeat="map in area.attributes.maps">
+                        <div class="col-md-4">
+                            <p ng-bind="map.attributes.name"></p>
+                            <img ng-src="{{displayMap(map.attributes.file._url)}}" class="img-responsive" />
+                        </div>
+                    </div>
+                </div>
+              </accordion-group>
+            </accordion>
           </div>
         </div>
     </div>
