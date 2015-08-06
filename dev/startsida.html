@@ -30,6 +30,8 @@
     <script src="../bower_components/nya-bootstrap-select/dist/js/nya-bs-select.js"></script>
     <script src="../bower_components/lodash/lodash.js"></script>
     <script src="../bower_components/angular-google-maps/dist/angular-google-maps.js"></script>
+    <script src="../bower_components/angularjs-geolocation/src/geolocation.js"></script>
+    <script src="../bower_components/angular-bootstrap/ui-bootstrap-tpls.js"></script>
     <!-- endbower -->
 
     <!-- Javascript -->
@@ -78,20 +80,42 @@
             <div id="search-school">
               <form class="form-inline">
                 <div class="form-group">
-                  <label for="searchSchool">Skola</label>
-                  <input id="searchSchool" type="text" class="form-control" placeholder="Skola">
+                  <div class="btn-group dropup" dropdown is-open="status.isopen">
+                    <button id="single-button" type="button" class="btn btn-primary" dropdown-toggle ng-disabled="disabled">
+                      Välj skola här! <span class="caret"></span>
+                    </button>
+                    <ul class="dropdown-menu" role="menu" aria-labelledby="single-button">
+                      <li role="menuitem" ng-repeat="school in schools">
+                      <a href ng-bind="school.attributes.name" ng-click="focusOnSchool(school.attributes.position)">Skola</a>
+                      </li>
+                    </ul>
+                  </div>
                 </div>
               </form>
             </div>
             <div id="map-canvas">
-              <ui-gmap-google-map center='map.center' zoom='map.zoom'>
+              <ui-gmap-google-map center='map.center' zoom='map.zoom' pan="true">
+                <ui-gmap-markers models="areaMarkers" coords="'self'" icon="'icon'" click="markerClick">
+                </ui-gmap-markers>
               </ui-gmap-google-map>
             </div>
           </div>
         </div>
         <div class="col-md-4">
           <div class="rightbar">
-            
+            <accordion close-others="true">
+              <accordion-group heading="{{area.attributes.name}}" ng-repeat="area in areas" is-open="clickedMarker[area.id]" class="barpanel">
+                <div class="col-md-12">
+                    <h4>Kartor</h4>
+                    <div ng-repeat="map in area.attributes.maps">
+                        <div class="col-md-4">
+                            <p ng-bind="map.attributes.name"></p>
+                            <img ng-src="{{displayMap(map.attributes.file._url)}}" class="img-responsive" />
+                        </div>
+                    </div>
+                </div>
+              </accordion-group>
+            </accordion>
           </div>
         </div>
     </div>
