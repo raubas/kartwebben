@@ -86,7 +86,7 @@
                     </button>
                     <ul class="dropdown-menu" role="menu" aria-labelledby="single-button">
                       <li role="menuitem" ng-repeat="school in schools">
-                      <a href ng-bind="school.attributes.name" ng-click="focusOnSchool(school.attributes.position)">Skola</a>
+                      <a href ng-bind="school.attributes.name" ng-click="focusOnSchool(school)">Skola</a>
                       </li>
                     </ul>
                   </div>
@@ -97,6 +97,8 @@
               <ui-gmap-google-map center='map.center' zoom='map.zoom' pan="true">
                 <ui-gmap-markers models="areaMarkers" coords="'self'" icon="'icon'" click="markerClick">
                 </ui-gmap-markers>
+                <ui-gmap-marker coords="choosenSchool.coords" idkey="' << choosenSchool.key >> '" options="choosenSchool.options">
+                </ui-gmap-marker>
               </ui-gmap-google-map>
             </div>
           </div>
@@ -104,7 +106,7 @@
         <div class="col-md-4">
           <div class="rightbar">
             <accordion close-others="true">
-              <accordion-group heading="{{area.attributes.name}}" ng-repeat="area in areas" is-open="clickedMarker[area.id]" class="barpanel">
+              <accordion-group heading="{{area.attributes.name}}" ng-repeat="area in areas" is-open="clickedMarker[area.id]" class="barpanel" id="{{ area.id }}">
                 <div class="col-md-12">
                     <h4>Kartor</h4>
                     <div ng-repeat="map in area.attributes.maps">

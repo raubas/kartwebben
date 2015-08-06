@@ -39,19 +39,43 @@ app.controller('findMapsCtrl', function ($scope, uiGmapGoogleMapApi, geolocation
 		$scope.schools = result;
 	});
 
+	//Tvek om detta funkar
+	$scope.scrollTo = function(container, anchor) {
+		    console.log(container);
+		    console.log(anchor);
+		    var element = angular.element(anchor);
+		    angular.element(container).animate({scrollTop: element.offset().top}, "slow");
+		    
+		}
 
 	$scope.markerClick = function(data){
 		var obj = { id: data.key };
 		obj[data.key] = true;
 		$scope.clickedMarker = obj;
+
+		//Tveksam till denna
+		//$scope.scrollTo('rightbar', data.key);
+
 	};
 
 	$scope.displayMap = function($url){
 		return $url;
 	}
 
-	$scope.focusOnSchool = function(position){
-		
+	$scope.focusOnSchool = function(school){
+		$scope.map = { 	center: { 	latitude: school.attributes.position._latitude,
+									longitude: school.attributes.position._longitude },
+						zoom: 12 };
+		$scope.choosenSchool = { 	coords: { 	latitude: school.attributes.position._latitude,
+												longitude: school.attributes.position._longitude },
+									key: school.id,
+									options: {	labelContent: school.attributes.name,
+            									labelAnchor: "100 0",
+            									labelClass: "marker-labels",
+            									icon: 'http://kartor:8888/dev/images/icons/fish.png'
+											}
+								};
+		console.log(school.id);
 	}
 
 	// $scope.difficulties = { 'one' : {name:'Åk 1', number:'1'},
