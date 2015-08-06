@@ -5,9 +5,22 @@ app.controller('uploadMapCtrl', function($scope, uiGmapGoogleMapApi){
         console.log('laddad');
     });
 
+	$scope.areaMarkers = [];
 	var query = new Parse.Query("Areas");
 		query.include("maps");
 		query.find().then(function(result){
+	        angular.forEach(result, function(value, key){
+	        	//Nullcheck for position attribute due to fucked up db
+	        	if (value.attributes.position != null) {
+	        		var marker = {
+	        			latitude: value.attributes.position._latitude,
+	        			longitude: value.attributes.position._longitude,
+	        			title: value.attributes.name
+	        		};
+	        		marker['id'] = value.id;
+	        		$scope.areaMarkers.push(marker);
+	        	};
+	        });
 	        $scope.areas = result;
 	    });
 
