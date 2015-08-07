@@ -30,6 +30,16 @@ body, html{
 	padding: 0.5em;
 }
 
+/*#changeWidthOfContainer {
+	z-index: 10;
+	position: absolute;
+	right: 0;
+	top: 30px;
+	height: 30px;
+	width: 30px;
+	background-color: rgba(255,255,255,1);
+}*/
+
 .rightbar{
 	height: calc(100vh - 50px);
     margin: 0;

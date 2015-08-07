@@ -77,7 +77,10 @@
     </nav>
     <!-- **** Content **** -->
     <div class="content" ng-controller="uploadMapCtrl">
-        <div class="col-md-8 ">
+        <div class="col-md-8">
+          <!-- <div id="changeWidthOfContainer" ng-click="toggleRightBar()">
+            <span class="glyphicon glyphicon-star" aria-hidden="true"></span>
+          </div> -->
           <div class="row">
             <div id="map-canvas">
               <ui-gmap-google-map center='map.center' zoom='map.zoom' events="map.options.events" control="map.control">
