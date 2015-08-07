@@ -28,3 +28,16 @@ app.directive('dropzone', function(){
   };
 });
 
+
+var ModalInstanceCtrl = function($scope, $modalInstance, $modal, item) {
+    
+	$scope.item = item;
+
+	$scope.ok = function () {
+	$modalInstance.close();
+	};
+
+	$scope.cancel = function () {
+	$modalInstance.dismiss('cancel');
+	};
+}

@@ -1,4 +1,4 @@
-app.controller('findMapsCtrl', function ($scope, uiGmapGoogleMapApi, geolocation){
+app.controller('findMapsCtrl', function ($scope, uiGmapGoogleMapApi, geolocation, $modal){
 
 	//Initiate google map on Luleå
 	uiGmapGoogleMapApi.then(function (maps) {
@@ -79,6 +79,37 @@ app.controller('findMapsCtrl', function ($scope, uiGmapGoogleMapApi, geolocation
 								};
 		console.log(school.id);
 	}
+
+	//Open modal for preview
+	$scope.name = 'theNameHasBeenPassed';
+	
+	$scope.showModal = function(url) {
+	  
+	  $scope.opts = {
+	  backdrop: true,
+	  backdropClick: true,
+	  dialogFade: false,
+	  keyboard: true,
+	  templateUrl : 'mapPreviewModal.html',
+	  controller : ModalInstanceCtrl,
+	  resolve: {} // empty storage
+	    };
+	    
+	  
+	  $scope.opts.resolve.item = function() {
+	      return angular.copy({	previewUrl: url,
+	      						pdfUrl: '/dev/images/icons/fish.png'}); // pass name to Dialog
+	  }
+	  
+	    var modalInstance = $modal.open($scope.opts);
+	    
+	    modalInstance.result.then(function(){
+	      //on ok button press 
+	    },function(){
+	      //on cancel button press
+	      console.log("Modal Closed");
+	    });
+	}; 
 
 	// $scope.difficulties = { 'one' : {name:'Åk 1', number:'1'},
 	// 						'two' : {name:'Åk 2', number:'2'},

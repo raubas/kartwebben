@@ -114,7 +114,7 @@
                     <div ng-repeat="map in area.attributes.maps">
                         <div class="col-md-4">
                             <p ng-bind="map.attributes.name"></p>
-                            <img ng-src="{{displayMap(map.attributes.file._url)}}" class="img-responsive" />
+                            <img ng-src="{{displayMap(map.attributes.file._url)}}" class="img-responsive" ng-click="showModal(map.attributes.file._url)"/>
                         </div>
                     </div>
                 </div>

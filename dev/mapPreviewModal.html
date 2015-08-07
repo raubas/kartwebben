@@ -1,0 +1,11 @@
+<!-- * Modal for previewing map * -->
+<div class="modal-header">
+    <h3 class="modal-title">I'm a modal!</h3>
+</div>
+<div class="modal-body">
+    <img ng-src="{{ item.previewUrl }}" class="img-responsive"/>
+</div>
+<div class="modal-footer">
+    <a class="btn btn-success" download ng-href="{{ item.pdfUrl }}" target="_self">Ladda ned!</a>
+    <button class="btn btn-primary" ng-click="ok()">Stäng</button>
+</div>
