@@ -1,13 +1,65 @@
-app.controller('uploadMapCtrl', function($scope, uiGmapGoogleMapApi){
+app.controller('uploadMapCtrl', function ($scope, uiGmapGoogleMapApi){
 
+	$scope.clickedPostition = {};
+	$scope.clickedLocation = {};
+	//Config map
 	uiGmapGoogleMapApi.then(function(maps) {
-        $scope.map = { center: { latitude: 65.588946, longitude: 22.157324 }, zoom: 11 };
-        console.log('laddad');
+        $scope.map = { 	center: { latitude: 65.588946, longitude: 22.157324 },
+        				zoom: 12,
+        				options: { events: {click: function(mapModel, eventName, originalEventArgs){
+														var obj = 	{
+																	latitude: originalEventArgs[0].latLng.k,
+																	longitude: originalEventArgs[0].latLng.D
+																	};
+														$scope.clickedPostition = obj;
+														//console.log(obj);
+
+														$scope.addMarker(obj);
+														
+
+													}
+											}
+								},
+						control: {}
+					};
     });
 
+	$scope.addMarker = function (obj) {
+		console.log(obj.longitude);
+		//Set marker at clicked location
+		$scope.clickedLocation = { 	coords: { 	latitude: obj.latitude,
+												longitude: obj.longitude },
+									options: { draggable: true }
+								};
+		//Refresh map to see marker
+		$scope.map.control.refresh({ 	latitude: obj.latitude,
+										longitude: obj.longitude 
+										});
+		//Watch for new location
+		$scope.$watchCollection("clickedLocation.coords", function (newVal, oldVal) {
+		  if (_.isEqual(newVal, oldVal))
+		    return;
+		  console.log(newVal);
+		  console.log($scope.clickedLocation.coords);
+		});
+	};
+
+	$scope.areaMarkers = [];
 	var query = new Parse.Query("Areas");
 		query.include("maps");
 		query.find().then(function(result){
+	        angular.forEach(result, function(value, key){
+	        	//Nullcheck for position attribute due to fucked up db
+	        	if (value.attributes.position != null) {
+	        		var marker = {
+	        			latitude: value.attributes.position._latitude,
+	        			longitude: value.attributes.position._longitude,
+	        			title: value.attributes.name
+	        		};
+	        		marker['id'] = value.id;
+	        		$scope.areaMarkers.push(marker);
+	        	};
+	        });
 	        $scope.areas = result;
 	    });
 
