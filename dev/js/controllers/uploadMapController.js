@@ -67,23 +67,28 @@ app.controller('uploadMapCtrl', function ($scope, uiGmapGoogleMapApi){
 		return $url;
 	}
 
+	// Denna kanske inte behövs?
 	var queryMaps = new Parse.Query("Maps");
 		queryMaps.find().then(function(result){
 		$scope.maps = result;
 	});
 
+	// Set var to collapse add new area.
 	$scope.newAreaPanel = {
 				open: false
 			};
-
+	// Array of new map objects
 	$scope.newMaps = [{'id': 'map1'}];
+	// Array of maps that should be saved with the area.
 	$scope.arrayMaps = [];
 
+	// adds a new map object to newMaps array.
 	$scope.addNewMap = function() {
 		var newMapId = $scope.newMaps.length+1;
 		$scope.newMaps.push({'id': 'map'+newMapId});
 	}
 
+	// Saves the new map when the file is uploaded
 	$scope.uploadFile = function(files) {
 		var Map = Parse.Object.extend("Maps");
 		var mapfile = new Parse.File("map.png", files[0]);
@@ -110,6 +115,7 @@ app.controller('uploadMapCtrl', function ($scope, uiGmapGoogleMapApi){
 		});
 	};
 
+	// Saves the area with pointers to all the maps included.
 	$scope.saveArea = function(areaName){
 		var Area = Parse.Object.extend("Areas");
 		var area = new Area();
