@@ -26,7 +26,11 @@ app.controller('uploadMapCtrl', function ($scope, uiGmapGoogleMapApi){
 		//Set marker at clicked location
 		$scope.clickedLocation = { 	coords: { 	latitude: obj.latitude,
 																						longitude: obj.longitude },
-																options: { draggable: true }
+																options: { 	draggable: true,
+																						labelContent: 'Dra mig till rätt position!',
+							            									labelAnchor: "100 0",
+							            									labelClass: "marker-labels",
+							            									icon: 'http://kartor:8888/dev/images/icons/fish.png' }
 															};
 		//Refresh map to see marker
 		$scope.map.control.refresh({ 	latitude: obj.latitude,
