@@ -2,12 +2,14 @@ app.controller('findMapsCtrl', function ($scope, uiGmapGoogleMapApi, geolocation
 
 	//Initiate google map on Luleå
 	uiGmapGoogleMapApi.then(function (maps) {
-		$scope.map = { center: { latitude: 65.588946, longitude: 22.157324 }, zoom: 12 };
+		$scope.map = { 	center: { latitude: 65.588946, longitude: 22.157324 },
+						zoom: 12
+						};
 		
 		//Focus on user location if enabled
 		geolocation.getLocation().then(function(data){
 			//Comment to get user location
-			//$scope.map = { center: { latitude: data.coords.latitude, longitude: data.coords.longitude }, zoom: 12 };
+			//$scope.map = { center: { latitude: data.coords.latitude, longitude: data.coords.longitude }, zoom: 12};
     	});
 	});
 

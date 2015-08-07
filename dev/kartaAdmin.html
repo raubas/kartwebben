@@ -78,9 +78,11 @@
         <div class="col-md-8 ">
           <div class="row">
             <div id="map-canvas">
-              <ui-gmap-google-map center='map.center' zoom='map.zoom'>
-                <ui-gmap-markers models="areaMarkers" coords="'self'" icon="'icon'" click="markerClick">
+              <ui-gmap-google-map center='map.center' zoom='map.zoom' events="map.options.events" control="map.control">
+                <ui-gmap-markers models="areaMarkers" coords="'self'" icon="'icon'">
                 </ui-gmap-markers>
+                <ui-gmap-marker coords="clickedLocation.coords" idkey="'aaaaaasdkljasdljkads'" options="clickedLocation.options">
+                </ui-gmap-marker>
               </ui-gmap-google-map>
             </div>
           </div>
@@ -131,6 +133,10 @@
               </accordion-group>
               <accordion-group heading="{{area.attributes.name}}" ng-repeat="area in areas" is-open="clickedMarker[area.id]" class="barpanel">
                 <div class="col-md-12">
+                    <h4>Postition</h4>
+                    <p ng-bind="'Lat: ' + area.attributes.position._latitude">Lat</p>
+                    <p ng-bind="'Long: ' + area.attributes.position._longitude">Lat</p>
+                    <button>Ändra plats</button>
                     <h4>Kartor</h4>
                     <div ng-repeat="map in area.attributes.maps">
                         <div class="col-md-4">
