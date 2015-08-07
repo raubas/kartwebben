@@ -162,6 +162,30 @@ app.controller('uploadMapCtrl', function ($scope, $filter, uiGmapGoogleMapApi){
 		});
 	};
 
+	$scope.deleteMap = function(area, map){
+		console.log(area.attributes.maps)
+		area.attributes.maps.splice(area.attributes.maps.indexOf(map), 1);
+		map.destroy({
+			success: function(map) {
+				console.log(area.attributes.maps);
+				area.set("maps", area.attributes.maps);
+				area.save(area, {
+					success: function(area) {
+						console.log('Map deleted!');
+						$scope.queryForAreas();
+					},
+					error: function(area, error) {
+						//alert('Failed to create new object, with error code: ' + error.message);
+						console.log('error area');
+					}
+				});
+			},
+			error: function(map, error){
+
+			}
+		});
+	}
+
 	$scope.saveChangesToArea = function(area){
 		var position = new Parse.GeoPoint($scope.clickedLocation.coords);
 		area.set("position", position);
