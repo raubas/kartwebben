@@ -100,10 +100,10 @@
 						<button ng-click="addPositionToArea()">Välj position</button>
                       </div>
                       <div class="col-md-6">
-                        <input ng-required="!addArea.position.lat" ng-model="addArea.position.lat" placeholder="Lat"/>
+                        <input ng-required="!addArea.position.latitude" ng-model="addArea.position.latitude" placeholder="Lat"/>
                       </div>
                        <div class="col-md-6">
-                        <input ng-required="!addArea.position.long" ng-model="addArea.position.long" placeholder="Long"/>
+                        <input ng-required="!addArea.position.longitude" ng-model="addArea.position.longitude" placeholder="Long"/>
                       </div>
                       <div class="newMap row" ng-repeat="newMap in newMaps"> 
                         <div class="col-md-6">

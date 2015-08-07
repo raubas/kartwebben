@@ -42,6 +42,7 @@ app.controller('uploadMapCtrl', function ($scope, uiGmapGoogleMapApi){
 		    return;
 		  console.log($scope.clickedLocation.coords);
 		});
+		$scope.addArea.position = $scope.clickedLocation.coords;
 	};
 
 	$scope.addPositionToArea = function () {
@@ -83,6 +84,7 @@ app.controller('uploadMapCtrl', function ($scope, uiGmapGoogleMapApi){
 	// });
 
 	$scope.addArea = {};
+
 	// Set var to collapse add new area.
 	$scope.newAreaPanel = {
 				open: false
@@ -129,8 +131,10 @@ app.controller('uploadMapCtrl', function ($scope, uiGmapGoogleMapApi){
 	$scope.saveArea = function(){
 		var Area = Parse.Object.extend("Areas");
 		var area = new Area();
+		var position = new Parse.GeoPoint($scope.addArea.position);
 		area.set("name", $scope.addArea.areaName);
 		area.set("maps", $scope.arrayMaps);
+		area.set("position", position);
 		area.save(null, {
 			success: function(area) {
 				console.log('sparad area');
