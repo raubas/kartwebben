@@ -1,7 +1,6 @@
 app.controller('uploadMapCtrl', function ($scope, uiGmapGoogleMapApi){
 
-	$scope.clickedPostition = {};
-	$scope.clickedLocation = {};
+
 	//Config map
 	uiGmapGoogleMapApi.then(function(maps) {
         $scope.map = { 	center: { latitude: 65.588946, longitude: 22.157324 },
@@ -11,12 +10,7 @@ app.controller('uploadMapCtrl', function ($scope, uiGmapGoogleMapApi){
 																	latitude: originalEventArgs[0].latLng.k,
 																	longitude: originalEventArgs[0].latLng.D
 																	};
-														$scope.clickedPostition = obj;
-														//console.log(obj);
-
 														$scope.addMarker(obj);
-														
-
 													}
 											}
 								},
@@ -24,8 +18,11 @@ app.controller('uploadMapCtrl', function ($scope, uiGmapGoogleMapApi){
 					};
     });
 
+	//Set varible to scope for a marker on the map
+	$scope.clickedLocation = {};
+
+	//Config marker after click on map, updates coords for clickedlocation
 	$scope.addMarker = function (obj) {
-		console.log(obj.longitude);
 		//Set marker at clicked location
 		$scope.clickedLocation = { 	coords: { 	latitude: obj.latitude,
 												longitude: obj.longitude },
@@ -44,19 +41,24 @@ app.controller('uploadMapCtrl', function ($scope, uiGmapGoogleMapApi){
 		});
 	};
 
+	//Define array of markers
 	$scope.areaMarkers = [];
+
+	//Query for areas with maps
 	var query = new Parse.Query("Areas");
 		query.include("maps");
 		query.find().then(function(result){
 	        angular.forEach(result, function(value, key){
 	        	//Nullcheck for position attribute due to fucked up db
 	        	if (value.attributes.position != null) {
+	        		//Set marker attributes from db
 	        		var marker = {
 	        			latitude: value.attributes.position._latitude,
 	        			longitude: value.attributes.position._longitude,
 	        			title: value.attributes.name
 	        		};
 	        		marker['id'] = value.id;
+	        		//Push to array of markers
 	        		$scope.areaMarkers.push(marker);
 	        	};
 	        });
@@ -67,10 +69,10 @@ app.controller('uploadMapCtrl', function ($scope, uiGmapGoogleMapApi){
 		return $url;
 	}
 
-	var queryMaps = new Parse.Query("Maps");
-		queryMaps.find().then(function(result){
-		$scope.maps = result;
-	});
+	// var queryMaps = new Parse.Query("Maps");
+	// 	queryMaps.find().then(function(result){
+	// 	$scope.maps = result;
+	// });
 
 	$scope.newAreaPanel = {
 				open: false
