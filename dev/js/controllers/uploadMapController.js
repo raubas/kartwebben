@@ -49,6 +49,16 @@ app.controller('uploadMapCtrl', function ($scope, $filter, uiGmapGoogleMapApi){
 		$scope.addMarker(obj);
 	}
 
+	$scope.markerClick = function(data){
+		var obj = { id: data.key };
+		obj[data.key] = true;
+		$scope.clickedMarker = obj;
+
+		//Tveksam till denna
+		//$scope.scrollTo('rightbar', data.key);
+
+	};
+
 	//Define array of markers
 	$scope.areaMarkers = [];
 
@@ -183,6 +193,28 @@ app.controller('uploadMapCtrl', function ($scope, $filter, uiGmapGoogleMapApi){
 			error: function(map, error){
 
 			}
+		});
+	}
+
+	//Ta bort area + associerade kartor, fungerer icke!
+	$scope.deleteArea = function(area){
+		Parse.Object.destroyAll(area.attributes.maps, {
+			success: function(){
+				area.destroy({
+					  success: function(myObject) {
+					    // The object was deleted from the Parse Cloud.
+					    console.log('allt borta');
+					  },
+					  error: function(myObject, error) {
+					    // The delete failed.
+					    // error is a Parse.Error with an error code and message.
+					    console.log('fel');
+					  }
+					})
+			},
+			error: function(error) {
+      	console.error("Error deleting related comments " + error.code + ": " + error.message);
+      }
 		});
 	}
 

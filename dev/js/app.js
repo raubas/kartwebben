@@ -28,6 +28,15 @@ app.directive('dropzone', function(){
   };
 });
 
+app.factory('scrollTo', function (){
+	return {
+		classId: function(container, anchor){
+		    var element = angular.element('#'+anchor);
+		    angular.element('.'+container).animate({scrollTop: element.offset().top}, "slow");
+		}
+	};
+});
+
 
 var ModalInstanceCtrl = function($scope, $modalInstance, $modal, item) {
     
