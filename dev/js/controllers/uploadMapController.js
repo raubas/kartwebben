@@ -1,4 +1,4 @@
-app.controller('uploadMapCtrl', function ($scope, uiGmapGoogleMapApi){
+app.controller('uploadMapCtrl', function ($scope, $filter, uiGmapGoogleMapApi){
 
 	//Config map
 	uiGmapGoogleMapApi.then(function(maps) {
@@ -30,7 +30,7 @@ app.controller('uploadMapCtrl', function ($scope, uiGmapGoogleMapApi){
 																						labelContent: 'Dra mig till rätt position!',
 							            									labelAnchor: "100 0",
 							            									labelClass: "marker-labels",
-							            									icon: 'http://kartor:8888/dev/images/icons/fish.png' }
+							            									icon: '/dev/images/icons/fish.png' }
 															};
 		//Refresh map to see marker
 		$scope.map.control.refresh({ 	latitude: obj.latitude,
@@ -75,7 +75,6 @@ app.controller('uploadMapCtrl', function ($scope, uiGmapGoogleMapApi){
 		        $scope.areas = result;
 		    });
 	}
-
 
 	$scope.displayMap = function($url){
 		return $url;

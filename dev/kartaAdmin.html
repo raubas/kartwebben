@@ -126,9 +126,6 @@
                       </div>
                       <button ng-click="addNewMap()">Add fields</button>
                       <div>
-                        {{ newMaps }}
-                        {{ addArea }}
-
                       </div>
                     <button ng-click="saveArea()" class="btn btn-primary">Lägg till</button>
                   </form>
@@ -136,17 +133,38 @@
               </accordion-group>
               <accordion-group heading="{{area.attributes.name}}" ng-repeat="area in areas" is-open="clickedMarker[area.id]" class="barpanel">
                 <div class="col-md-12">
-                    <h4>Postition</h4>
-                    <p ng-bind="'Lat: ' + area.attributes.position._latitude">Lat</p>
-                    <p ng-bind="'Long: ' + area.attributes.position._longitude">Lat</p>
-                    <button>Ändra plats</button>
-                    <h4>Kartor</h4>
-                    <div ng-repeat="map in area.attributes.maps">
-                        <div class="col-md-4">
-                            <p ng-bind="map.attributes.name"></p>
-                            <img ng-src="{{displayMap(map.attributes.file._url)}}" class="img-responsive" />
-                        </div>
+                  <h4>Postition</h4>
+                  <p ng-bind="'Lat: ' + area.attributes.position._latitude">Lat</p>
+                  <p ng-bind="'Long: ' + area.attributes.position._longitude">Lat</p>
+                  <button>Ändra plats</button>
+                  <h4>Kartor</h4>
+                	<strong><p>Nivå 1</p></strong>
+                	<div class="row">
+                    <div ng-repeat="map in area.attributes.maps | filter: { attributes: { difficulty: '1' } } ">
+                      <div class="col-md-4">
+                          <p ng-bind="map.attributes.name"></p>
+                          <img ng-src="{{displayMap(map.attributes.file._url)}}" class="img-responsive" />
+                      </div>
                     </div>
+                   </div>
+                	<strong><p>Nivå 2</p></strong>
+                	<div class="row">
+                    <div ng-repeat="map in area.attributes.maps | filter: { attributes: { difficulty: '2' } } ">
+                      <div class="col-md-4">
+                          <p ng-bind="map.attributes.name"></p>
+                          <img ng-src="{{displayMap(map.attributes.file._url)}}" class="img-responsive" />
+                      </div>
+                    </div>
+                   </div>
+                	<strong><p>Nivå 3</p></strong>
+                	<div class="row">
+                    <div ng-repeat="map in area.attributes.maps | filter: { attributes: { difficulty: '3' } } ">
+                      <div class="col-md-4">
+                          <p ng-bind="map.attributes.name"></p>
+                          <img ng-src="{{displayMap(map.attributes.file._url)}}" class="img-responsive" />
+                      </div>
+                    </div>
+                   </div>
                 </div>
               </accordion-group>
             </accordion>
