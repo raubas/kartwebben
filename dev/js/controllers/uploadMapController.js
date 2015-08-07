@@ -25,22 +25,26 @@ app.controller('uploadMapCtrl', function ($scope, uiGmapGoogleMapApi){
 	$scope.addMarker = function (obj) {
 		//Set marker at clicked location
 		$scope.clickedLocation = { 	coords: { 	latitude: obj.latitude,
-												longitude: obj.longitude },
-									options: { draggable: true }
-								};
+																						longitude: obj.longitude },
+																options: { draggable: true }
+															};
 		//Refresh map to see marker
 		$scope.map.control.refresh({ 	latitude: obj.latitude,
-										longitude: obj.longitude 
-										});
+																	longitude: obj.longitude 
+															});
 		//Watch for new location
 		$scope.$watchCollection("clickedLocation.coords", function (newVal, oldVal) {
 		  if (_.isEqual(newVal, oldVal))
 		    return;
-		  console.log(newVal);
 		  console.log($scope.clickedLocation.coords);
 		});
 		$scope.addArea.position = $scope.clickedLocation.coords;
 	};
+
+	$scope.addPositionToArea = function () {
+		var obj = $scope.map.center;
+		$scope.addMarker(obj);
+	}
 
 	//Define array of markers
 	$scope.areaMarkers = [];
