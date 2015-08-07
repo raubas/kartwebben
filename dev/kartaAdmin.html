@@ -94,13 +94,17 @@
             <accordion close-others="false">
               <accordion-group heading="Lägg till nytt område" is-open="newAreaPanel.open" class="barpanel">
                 <div class="col-md-12">
-                  <form name="addArea" class="form-group">
+                  <form name="addAreaForm" class="form-group">
                       <div class="col-md-12">
-                          <div class="form-group">
-                              <input ng-required="!addArea.areaName" ng-model="addArea.areaName" placeholder="Namn på området" >
-                          </div>
+                        <input ng-required="!addArea.areaName" ng-model="addArea.areaName" placeholder="Namn på området" >
                       </div>
-                      <div class="newMap" ng-repeat="newMap in newMaps"> 
+                      <div class="col-md-6">
+                        <input ng-required="!addArea.position.lat" ng-model="addArea.position.lat" placeholder="Lat"/>
+                      </div>
+                       <div class="col-md-6">
+                        <input ng-required="!addArea.position.long" ng-model="addArea.position.long" placeholder="Long"/>
+                      </div>
+                      <div class="newMap row" ng-repeat="newMap in newMaps"> 
                         <div class="col-md-6">
                          <div class="form-group">
                              <input ng-required="!newMap.mapName" ng-model="newMap.mapName" placeholder="Namn på kartan" >
@@ -118,23 +122,20 @@
                            <input type="radio" ng-required="!newMap.mapLevel" ng-model="newMap.mapLevel" ng-value="3"> 3
                          </label>
                         </div>
-                        <input type="file" onchange="angular.element(this).scope().uploadFile(this.files)"/>
+                        <div class="col-md-12">
+                          <input type="file" onchange="angular.element(this).scope().uploadFile(this.files)"/>
+                        </div>
                         <!-- <button dropzone="dropzoneConfig">
                           Drag and drop files here or click to upload
                         </button> -->
                       </div>
-                      <p ng-bind="addArea.areaName">tesd</p>
                       <button ng-click="addNewMap()">Add fields</button>
                       <div>
-                            {{ newMaps }}
-                         </div>
-                      <!-- <div class="col-md-12">
-                          <p>Ladda upp fil</p>
-                          <form class="dropzone" method="post" enctype="multipart/form-data" ng-dropzone dropzone="dropzone" dropzone-config="dropzoneConfig">
-                              <input name="file" type="file"/>
-                          </form>
-                      </div> -->
-                    <button ng-click="saveArea(addArea.areaName)" class="btn btn-primary">Lägg till</button>
+                        {{ newMaps }}
+                        {{ addArea }}
+
+                      </div>
+                    <button ng-click="saveArea()" class="btn btn-primary">Lägg till</button>
                   </form>
                 </div>
               </accordion-group>

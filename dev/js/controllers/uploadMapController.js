@@ -74,6 +74,7 @@ app.controller('uploadMapCtrl', function ($scope, uiGmapGoogleMapApi){
 	// 	$scope.maps = result;
 	// });
 
+	$scope.addArea = {};
 	// Set var to collapse add new area.
 	$scope.newAreaPanel = {
 				open: false
@@ -117,10 +118,10 @@ app.controller('uploadMapCtrl', function ($scope, uiGmapGoogleMapApi){
 	};
 
 	// Saves the area with pointers to all the maps included.
-	$scope.saveArea = function(areaName){
+	$scope.saveArea = function(){
 		var Area = Parse.Object.extend("Areas");
 		var area = new Area();
-		area.set("name", areaName);
+		area.set("name", $scope.addArea.areaName);
 		area.set("maps", $scope.arrayMaps);
 		area.save(null, {
 			success: function(area) {
