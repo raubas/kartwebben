@@ -97,13 +97,7 @@
                   <form name="addAreaForm" class="form-group">
                       <div class="col-md-12">
                         <input ng-required="!addArea.areaName" ng-model="addArea.areaName" placeholder="Namn på området" >
-						<button ng-click="addPositionToArea()">Välj position</button>
-                      </div>
-                      <div class="col-md-6">
-                        <input ng-required="!addArea.position.latitude" ng-model="addArea.position.latitude" placeholder="Lat"/>
-                      </div>
-                       <div class="col-md-6">
-                        <input ng-required="!addArea.position.longitude" ng-model="addArea.position.longitude" placeholder="Long"/>
+												<button ng-click="addPositionToArea()">Välj position</button>
                       </div>
                       <div class="newMap row" ng-repeat="newMap in newMaps"> 
                         <div class="col-md-6">
