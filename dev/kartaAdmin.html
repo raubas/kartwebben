@@ -142,10 +142,11 @@
               </accordion-group>
               <accordion-group heading="{{area.attributes.name}}" ng-repeat="area in areas" is-open="clickedMarker[area.id]" class="barpanel">
                 <div class="col-md-12">
+                    <button ng-click="saveChangesToArea(area)">Spara!</button>
                     <h4>Postition</h4>
                     <p ng-bind="'Lat: ' + area.attributes.position._latitude">Lat</p>
                     <p ng-bind="'Long: ' + area.attributes.position._longitude">Lat</p>
-                    <button>Ändra plats</button>
+                    <button ng-click="changeLocationOfArea(area)">Ändra plats</button>
                     <h4>Kartor</h4>
                     <div ng-repeat="map in area.attributes.maps">
                         <div class="col-md-4">

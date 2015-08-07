@@ -74,7 +74,7 @@ app.controller('findMapsCtrl', function ($scope, uiGmapGoogleMapApi, geolocation
 									options: {	labelContent: school.attributes.name,
             									labelAnchor: "100 0",
             									labelClass: "marker-labels",
-            									icon: 'http://kartor:8888/dev/images/icons/fish.png'
+            									icon: '/dev/images/icons/fish.png'
 											}
 								};
 		console.log(school.id);
