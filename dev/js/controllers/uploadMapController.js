@@ -1,19 +1,19 @@
 app.controller('uploadMapCtrl', function ($scope, uiGmapGoogleMapApi){
 
-
 	//Config map
 	uiGmapGoogleMapApi.then(function(maps) {
         $scope.map = { 	center: { latitude: 65.588946, longitude: 22.157324 },
         				zoom: 12,
-        				options: { events: {click: function(mapModel, eventName, originalEventArgs){
-														var obj = 	{
-																	latitude: originalEventArgs[0].latLng.k,
-																	longitude: originalEventArgs[0].latLng.D
-																	};
-														$scope.addMarker(obj);
-													}
-											}
-								},
+        // 				options: { 	events: {click: function(mapModel, eventName, originalEventArgs){
+								// 															var obj = 	{
+								// 																		latitude: originalEventArgs[0].latLng.k,
+								// 																		longitude: originalEventArgs[0].latLng.D
+								// 																		};
+								// 															$scope.addMarker(obj);
+								// 														}
+								// 										},
+														
+								// },
 						control: {}
 					};
     });
@@ -26,7 +26,11 @@ app.controller('uploadMapCtrl', function ($scope, uiGmapGoogleMapApi){
 		//Set marker at clicked location
 		$scope.clickedLocation = { 	coords: { 	latitude: obj.latitude,
 																						longitude: obj.longitude },
-																options: { draggable: true }
+																options: { 	draggable: true,
+																						labelContent: 'Dra mig till rätt position!',
+							            									labelAnchor: "100 0",
+							            									labelClass: "marker-labels",
+							            									icon: 'http://kartor:8888/dev/images/icons/fish.png' }
 															};
 		//Refresh map to see marker
 		$scope.map.control.refresh({ 	latitude: obj.latitude,
@@ -49,26 +53,29 @@ app.controller('uploadMapCtrl', function ($scope, uiGmapGoogleMapApi){
 	//Define array of markers
 	$scope.areaMarkers = [];
 
-	//Query for areas with maps
-	var query = new Parse.Query("Areas");
-		query.include("maps");
-		query.find().then(function(result){
-	        angular.forEach(result, function(value, key){
-	        	//Nullcheck for position attribute due to fucked up db
-	        	if (value.attributes.position != null) {
-	        		//Set marker attributes from db
-	        		var marker = {
-	        			latitude: value.attributes.position._latitude,
-	        			longitude: value.attributes.position._longitude,
-	        			title: value.attributes.name
-	        		};
-	        		marker['id'] = value.id;
-	        		//Push to array of markers
-	        		$scope.areaMarkers.push(marker);
-	        	};
-	        });
-	        $scope.areas = result;
-	    });
+	$scope.queryForAreas = function () {
+		//Query for areas with maps
+		var query = new Parse.Query("Areas");
+			query.include("maps");
+			query.find().then(function(result){
+		        angular.forEach(result, function(value, key){
+		        	//Nullcheck for position attribute due to fucked up db
+		        	if (value.attributes.position != null) {
+		        		//Set marker attributes from db
+		        		var marker = {
+		        			latitude: value.attributes.position._latitude,
+		        			longitude: value.attributes.position._longitude,
+		        			title: value.attributes.name
+		        		};
+		        		marker['id'] = value.id;
+		        		//Push to array of markers
+		        		$scope.areaMarkers.push(marker);
+		        	};
+		        });
+		        $scope.areas = result;
+		    });
+	}
+
 
 	$scope.displayMap = function($url){
 		return $url;
@@ -138,6 +145,8 @@ app.controller('uploadMapCtrl', function ($scope, uiGmapGoogleMapApi){
 				  $scope.newAreaPanel = {
 			    		open: false
 			    	};
+			    $scope.clickedLocation = {};
+			    $scope.queryForAreas();
 			    // Reset form when its saved.
 			},
 			error: function(area, error) {
@@ -146,4 +155,15 @@ app.controller('uploadMapCtrl', function ($scope, uiGmapGoogleMapApi){
 			}
 		});
 	};
+
+	//Make queries
+	var init = function () {
+	   $scope.queryForAreas();
+	   // check if there is query in url
+	   // and fire search in case its value is not empty
+	};
+
+	//Init function
+	init();
+
 });
