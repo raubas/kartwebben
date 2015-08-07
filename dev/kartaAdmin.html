@@ -14,7 +14,7 @@
     <link rel="stylesheet" href="../bower_components/bootstrap-css/css/bootstrap.min.css" />
     <link rel="stylesheet" href="../bower_components/vegas/dist/vegas.min.css" />
     <link rel="stylesheet" href="../bower_components/nya-bootstrap-select/dist/css/nya-bs-select.css" />
-    <link rel="stylesheet" href="../bower_components/dropzone/dist/min/dropzone.min.css" />
+    <link rel="stylesheet" href="../bower_components/dropzone/downloads/css/dropzone.css" />
     <!-- endbower -->
 
     <!-- css -->
@@ -31,7 +31,7 @@
     <script src="../bower_components/nya-bootstrap-select/dist/js/nya-bs-select.js"></script>
     <script src="../bower_components/lodash/lodash.js"></script>
     <script src="../bower_components/angular-google-maps/dist/angular-google-maps.js"></script>
-    <script src="../bower_components/dropzone/dist/min/dropzone.min.js"></script>
+    <script src="../bower_components/dropzone/downloads/dropzone.min.js"></script>
     <script src="../bower_components/angularjs-geolocation/src/geolocation.js"></script>
     <script src="../bower_components/angular-bootstrap/ui-bootstrap-tpls.js"></script>
     <!-- endbower -->
@@ -98,6 +98,7 @@
                       <div class="col-md-12">
                           <div class="form-group">
                               <input ng-required="!addArea.areaName" ng-model="addArea.areaName" placeholder="Namn på området" >
+                              <button ng-click="addPositionToArea()">Välj position</button>
                           </div>
                       </div>
                       <div class="newMap" ng-repeat="newMap in newMaps"> 
