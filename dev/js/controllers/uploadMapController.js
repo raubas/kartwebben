@@ -225,14 +225,15 @@ app.controller('uploadMapCtrl', function ($scope, $filter, uiGmapGoogleMapApi, s
 		});
 	}
 
-	//Ta bort area + associerade kartor, fungerer icke!
+	//Ta bort area + associerade kartor,
 	$scope.deleteArea = function(area){
 		Parse.Object.destroyAll(area.attributes.maps, {
 			success: function(){
 				area.destroy({
 					  success: function(myObject) {
 					    // The object was deleted from the Parse Cloud.
-					    console.log('allt borta');
+					    console.log('area och kartor deleted');
+					    $scope.queryForAreas();
 					  },
 					  error: function(myObject, error) {
 					    // The delete failed.
