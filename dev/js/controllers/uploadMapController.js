@@ -92,16 +92,11 @@ app.controller('uploadMapCtrl', function ($scope, $filter, uiGmapGoogleMapApi){
 		$scope.addMarker(area.attributes.position);
 	}
 
-	$scope.addArea = {};
 
 	// Set var to collapse add new area.
 	$scope.newAreaPanel = {
 				open: false
 			};
-	// Array of new map objects
-	$scope.newMaps = [{'id': 'map1'}];
-	// Array of maps that should be saved with the area.
-	$scope.arrayMaps = [];
 
 	// adds a new map object to newMaps array.
 	$scope.addNewMap = function() {
@@ -116,33 +111,36 @@ app.controller('uploadMapCtrl', function ($scope, $filter, uiGmapGoogleMapApi){
 		
 		mapfile.save().then(function(){
 			console.log("file saved");
+			$scope.uploadedMap = mapfile;
 		}, function(error){
 			console.log(error);
 		});
-		var currentIndex = $scope.newMaps.length-1;
+	};
+
+	// Save uploaded map
+	$scope.saveMap = function(area) {
 		var map = new Map();
-		map.set("name", $scope.newMaps[currentIndex].mapName);
-		map.set("difficulty", parseInt($scope.newMaps[currentIndex].mapLevel));
-		map.set("file", mapfile);
+		map.set("name", newMap.mapName;
+		map.set("difficulty", parseInt(newMap.mapLevel));
+		map.set("file", $scope.uploadedMap);
 		map.save(null, {
 			success: function(map) {
 				console.log('sparad karta');
-				$scope.arrayMaps.push(map);
+				area.attributes.maps.push(map);
 			},
 			error: function(map, error) {
 				//alert('Failed to create new object, with error code: ' + error.message);
 				console.log('error map');
 			}
 		});
-	};
+	}
 
 	// Saves the area with pointers to all the maps included.
 	$scope.saveArea = function(){
 		var Area = Parse.Object.extend("Areas");
 		var area = new Area();
 		var position = new Parse.GeoPoint($scope.addArea.position);
-		area.set("name", $scope.addArea.areaName);
-		area.set("maps", $scope.arrayMaps);
+		area.set("name", addArea.areaName;
 		area.set("position", position);
 		area.save(null, {
 			success: function(area) {
@@ -184,6 +182,55 @@ app.controller('uploadMapCtrl', function ($scope, $filter, uiGmapGoogleMapApi){
 
 			}
 		});
+	}
+
+	// Try to save new map to existing area.
+	$scope.addMapToExistingArea = function(area){
+		console.log(area.attributes.maps);
+
+		var Map = Parse.Object.extend("Maps");
+		var mapfile = new Parse.File("map.png", $scope.fileToArea);
+		
+		mapfile.save().then(function(){
+			console.log("file saved");
+		}, function(error){
+			console.log(error);
+		});
+		var map = new Map();
+		map.set("name", newMapToArea.mapName);
+		map.set("difficulty", parseInt(newMapToArea.mapLevel));
+		map.set("file", mapfile);
+		map.save(null, {
+			success: function(map) {
+				console.log('sparad karta');
+				area.attributes.maps.push(map);
+				area.save(null, {
+					success: function(area) {
+						console.log('sparad area');
+						// Close panel 
+						  $scope.newAreaPanel = {
+					    		open: false
+					    	};
+					    $scope.clickedLocation = {};
+					    $scope.queryForAreas();
+					    // Reset form when its saved.
+					},
+					error: function(area, error) {
+						//alert('Failed to create new object, with error code: ' + error.message);
+						console.log('error area');
+					}
+				});
+			},
+			error: function(map, error) {
+				//alert('Failed to create new object, with error code: ' + error.message);
+				console.log('error map');
+			}
+		});
+	}
+
+	$scope.uploadFileToArea = function(file){
+		$scope.fileToArea = file[0];
+
 	}
 
 	$scope.saveChangesToArea = function(area){

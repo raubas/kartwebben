@@ -100,9 +100,10 @@
                   <form name="addAreaForm" class="form-group">
                       <div class="col-md-12">
                         <input ng-required="!addArea.areaName" ng-model="addArea.areaName" placeholder="Namn på området" >
-						<button ng-click="addPositionToArea()">Välj position</button>
+												<button ng-click="addPositionToArea()">Välj position</button>
+												<button ng-click="saveArea()" class="btn btn-primary">Lägg till</button>
                       </div>
-                      <div class="newMap row" ng-repeat="newMap in newMaps"> 
+                      <div class="newMap row"> 
                         <div class="col-md-6">
                          <div class="form-group">
                              <input ng-required="!newMap.mapName" ng-model="newMap.mapName" placeholder="Namn på kartan" >
@@ -123,14 +124,10 @@
                         <div class="col-md-12">
                           <input type="file" onchange="angular.element(this).scope().uploadFile(this.files)"/>
                         </div>
-                        <!-- <button dropzone="dropzoneConfig">
-                          Drag and drop files here or click to upload
-                        </button> -->
                       </div>
-                      <button ng-click="addNewMap()">Add fields</button>
                       <div>
+                      	<button ng-click="addNewMap()">Add fields</button>
                       </div>
-                    <button ng-click="saveArea()" class="btn btn-primary">Lägg till</button>
                   </form>
                 </div>
               </accordion-group>
@@ -138,10 +135,33 @@
                 <div class="col-md-12">
                   <button ng-click="saveChangesToArea(area)">Spara!</button>
 				  				<h4>Postition</h4>
-                  <p ng-bind="'Lat: ' + area.attributes.position._latitude">Lat</p>
-                  <p ng-bind="'Long: ' + area.attributes.position._longitude">Lat</p>
+                  <!-- <p ng-bind="'Lat: ' + area.attributes.position._latitude">Lat</p>
+                  <p ng-bind="'Long: ' + area.attributes.position._longitude">Lat</p> -->
                   <button ng-click="changeLocationOfArea(area)">Ändra plats</button>
                   <h4>Kartor</h4>
+                  <div class="newMapToArea row"> 
+                    <div class="col-md-6">
+                     <div class="form-group">
+                         <input ng-required="!newMapToArea.mapName" ng-model="newMapToArea.mapName" placeholder="Namn på kartan" >
+                     </div>
+                    </div>
+                    <div class="col-md-6">
+                     <p>Välj Svårighetsgrad</p>
+                     <label class="radio">
+                       <input type="radio" ng-required="!newMapToArea.mapLevel" ng-model="newMapToArea.mapLevel" ng-value="1"> 1
+                     </label>
+                     <label class="radio">
+                       <input type="radio" ng-required="!newMapToArea.mapLevel" ng-model="newMapToArea.mapLevel" ng-value="2"> 2
+                     </label>
+                     <label class="radio">
+                       <input type="radio" ng-required="!newMapToArea.mapLevel" ng-model="newMapToArea.mapLevel" ng-value="3"> 3
+                     </label>
+                    </div>
+                    <div class="col-md-12">
+                      <input type="file" onchange="angular.element(this).scope().uploadFileToArea(this.files)"/>
+                    </div>
+                  </div>
+                  <button ng-click="addMapToExistingArea(area)">lägg ägg</button>
                 	<strong><p>Nivå 1</p></strong>
                 	<div class="row">
                     <div ng-repeat="map in area.attributes.maps | filter: { attributes: { difficulty: '1' } } ">
