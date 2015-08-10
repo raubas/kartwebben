@@ -1,6 +1,6 @@
 
 
-app.controller('schoolCtrl',
+app.controller('schoolCtrlold',
 
 	
 

@@ -179,6 +179,7 @@ app.controller('uploadMapCtrl', function ($scope, $filter, uiGmapGoogleMapApi, s
 	// Update area maps new and deleted, called from saveMap and from deleteMap
 	$scope.updateAreaMaps = function(area){
 		area.set("maps", area.attributes.maps);
+		// Kankse inte ska vara null här utan area? men det verkar updatera rätt så kanske inte...
 		area.save(null, {
 			success: function(area) {
 				console.log('sparad area');
