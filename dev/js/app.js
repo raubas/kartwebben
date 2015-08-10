@@ -28,6 +28,20 @@ app.directive('dropzone', function(){
   };
 });
 
+app.directive('emitWhen', function () {
+    return {
+        restrict: 'A',
+        link: function (scope, element, attrs) {
+            var params = scope.$eval(attrs.emitWhen),
+                event = params.event,
+                condition = params.condition;
+            if (condition) {
+                scope.$emit(event, condition);
+            }
+        }
+    };
+});
+
 app.factory('scrollTo', function (){
 	return {
 		classId: function(container, anchor){
