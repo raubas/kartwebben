@@ -39,7 +39,7 @@ app.controller('findMapsCtrl', function ($scope, uiGmapGoogleMapApi, geolocation
 	//Define array of markers
 	$scope.schoolMarkers = [];
 	$scope.markerprops = { 	school: { url: '/dev/images/icons/fish.png'},
-							area: 	{ url: '/dev/images/icons/fish.png'}};
+							area: 	{ url: '/dev/images/icons/pin.png'}};
 	//Get schools from db
 	var query = new Parse.Query("Schools");
 	query.find().then(function (result){

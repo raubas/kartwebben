@@ -13,12 +13,6 @@ app.controller('navCtrl', function($scope, $location, $modal, userManagement){
 		}
 	});
 
-	$scope.navClass = function (page) {
-	        var currentRoute = $location.path().substring(1) || 'home';
-	        console.log(currentRoute);
-	        return page === currentRoute ? 'active' : '';
-	};  
-
 	$scope.logOut = function(){
 		userManagement.logOut();
 		console.log('utloggad');
