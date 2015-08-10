@@ -23,6 +23,8 @@ app.controller('uploadMapCtrl', function ($scope, $filter, uiGmapGoogleMapApi, s
 	$scope.addArea = {};
 	$scope.newMap = {};
 
+
+
 	//Config marker after click on map, updates coords for clickedlocation
 	$scope.addMarker = function (obj) {
 		//Set marker at clicked location
@@ -145,7 +147,8 @@ app.controller('uploadMapCtrl', function ($scope, $filter, uiGmapGoogleMapApi, s
 		
 		mapfile.save().then(function(){
 			console.log("file saved");
-			$scope.uploadedMap = mapfile;
+			$scope.newMap.uploadedMap = mapfile;
+			$scope.$apply();
 		}, function(error){
 			console.log(error);
 		});
@@ -157,7 +160,7 @@ app.controller('uploadMapCtrl', function ($scope, $filter, uiGmapGoogleMapApi, s
 		var map = new Map();
 		map.set("name", $scope.newMap.mapName);
 		map.set("difficulty", parseInt($scope.newMap.mapLevel));
-		map.set("file", $scope.uploadedMap);
+		map.set("file", $scope.newMap.uploadedMap);
 		map.save(null, {
 			success: function(map) {
 				console.log('sparad karta');
