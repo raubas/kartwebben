@@ -83,7 +83,8 @@ app.controller('uploadMapCtrl', function ($scope, $filter, uiGmapGoogleMapApi, s
 						var marker = {
 							latitude: value.attributes.position._latitude,
 							longitude: value.attributes.position._longitude,
-							title: value.attributes.name
+							options: { 	labelContent: value.attributes.name,
+													labelAnchor: "100 0" }
 						};
 						marker['id'] = value.id;
 						//Push to array of markers
@@ -106,6 +107,13 @@ app.controller('uploadMapCtrl', function ($scope, $filter, uiGmapGoogleMapApi, s
 		var markerOfArea = $filter('filter')($scope.areaMarkers, { id: area.id }, true)[0];
 		$scope.areaMarkers.splice($scope.areaMarkers.indexOf(markerOfArea), 1);
 		$scope.addMarker(area.attributes.position);
+	}
+
+	//Function to remove marker from map
+	function removeAreaMarker (area){
+		//Find current marker, delete from area markers
+		var markerOfArea = $filter('filter')($scope.areaMarkers, { id: area.id }, true)[0];
+		$scope.areaMarkers.splice($scope.areaMarkers.indexOf(markerOfArea), 1);
 	}
 
 
@@ -214,7 +222,7 @@ app.controller('uploadMapCtrl', function ($scope, $filter, uiGmapGoogleMapApi, s
 	} 
 
 	// Updates area postion, called from interface button.
-	$scope.updataAreaPosition = function(area){
+	$scope.updateAreaPosition = function(area){
 		var position = new Parse.GeoPoint($scope.clickedLocation.coords);
 		area.set("position", position);
 		area.save(area, {
@@ -252,6 +260,7 @@ app.controller('uploadMapCtrl', function ($scope, $filter, uiGmapGoogleMapApi, s
 					    // The object was deleted from the Parse Cloud.
 					    console.log('area och kartor deleted');
 					    $scope.queryForAreas();
+					    removeAreaMarker(myObject);
 					  },
 					  error: function(myObject, error) {
 					    // The delete failed.
@@ -267,7 +276,7 @@ app.controller('uploadMapCtrl', function ($scope, $filter, uiGmapGoogleMapApi, s
 	}
 
 
-	//Make queries
+	//Init controller
 	var init = function () {
 	   $scope.queryForAreas();
 	   // check if there is query in url
