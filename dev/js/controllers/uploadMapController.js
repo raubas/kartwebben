@@ -21,6 +21,7 @@ app.controller('uploadMapCtrl', function ($scope, $filter, uiGmapGoogleMapApi, s
 	//Set varible to scope for a marker on the map
 	$scope.clickedLocation = {};
 	$scope.addArea = {};
+	$scope.newMap = {};
 
 	//Config marker after click on map, updates coords for clickedlocation
 	$scope.addMarker = function (obj) {
@@ -111,15 +112,36 @@ app.controller('uploadMapCtrl', function ($scope, $filter, uiGmapGoogleMapApi, s
 				open: false
 			};
 
-	// adds a new map object to newMaps array.
-	$scope.addNewMap = function() {
-		var newMapId = $scope.newMaps.length+1;
-		$scope.newMaps.push({'id': 'map'+newMapId});
-	}
+	// Saves the new area without any maps.
+	$scope.saveNewArea = function(){
+		var Area = Parse.Object.extend("Areas");
+		var area = new Area();
+		var position = new Parse.GeoPoint($scope.addArea.position);
+		area.set("name", $scope.addArea.areaName);
+		area.set("position", position);
+		area.set("maps", []);
+		area.save(null, {
+			success: function(area) {
+				console.log('sparad area');
+				// Close panel 
+				  $scope.newAreaPanel = {
+			    		open: false
+			    	};
+			    $scope.clickedLocation = {};
+			    if ($scope.queryForAreas()){
+			    	scrollTo.classId('rightbar', area.id);
+			    };
+			    // Reset form when its saved.
+			},
+			error: function(area, error) {
+				//alert('Failed to create new object, with error code: ' + error.message);
+				console.log('error area');
+			}
+		});
+	};
 
-	// Saves the new map when the file is uploaded
+	// Saves the new mapfile when the file is uploaded
 	$scope.uploadFile = function(files) {
-		var Map = Parse.Object.extend("Maps");
 		var mapfile = new Parse.File("map.png", files[0]);
 		
 		mapfile.save().then(function(){
@@ -130,16 +152,19 @@ app.controller('uploadMapCtrl', function ($scope, $filter, uiGmapGoogleMapApi, s
 		});
 	};
 
-	// Save uploaded map
+	// Save uploaded map to area, and call updateAreaMaps
 	$scope.saveMap = function(area) {
+		var Map = Parse.Object.extend("Maps");
 		var map = new Map();
-		map.set("name", newMap.mapName);
-		map.set("difficulty", parseInt(newMap.mapLevel));
+		map.set("name", $scope.newMap.mapName);
+		map.set("difficulty", parseInt($scope.newMap.mapLevel));
 		map.set("file", $scope.uploadedMap);
 		map.save(null, {
 			success: function(map) {
 				console.log('sparad karta');
 				area.attributes.maps.push(map);
+				$scope.updateAreaMaps(area, map);
+				$scope.uploadedMap = null;
 			},
 			error: function(map, error) {
 				//alert('Failed to create new object, with error code: ' + error.message);
@@ -148,13 +173,9 @@ app.controller('uploadMapCtrl', function ($scope, $filter, uiGmapGoogleMapApi, s
 		});
 	}
 
-	// Saves the area with pointers to all the maps included.
-	$scope.saveArea = function(){
-		var Area = Parse.Object.extend("Areas");
-		var area = new Area();
-		var position = new Parse.GeoPoint($scope.addArea.position);
-		area.set("name", $scope.addArea.areaName);
-		area.set("position", position);
+	// Update area maps new and deleted, called from saveMap and from deleteMap
+	$scope.updateAreaMaps = function(area){
+		area.set("maps", area.attributes.maps);
 		area.save(null, {
 			success: function(area) {
 				console.log('sparad area');
@@ -187,55 +208,10 @@ app.controller('uploadMapCtrl', function ($scope, $filter, uiGmapGoogleMapApi, s
 				console.log('error area');
 			}
 		});
-	};
+	} 
 
-	$scope.deleteMap = function(area, map){
-		console.log(area.attributes.maps)
-		area.attributes.maps.splice(area.attributes.maps.indexOf(map), 1);
-		map.destroy({
-			success: function(map) {
-				console.log(area.attributes.maps);
-				area.set("maps", area.attributes.maps);
-				area.save(area, {
-					success: function(area) {
-						console.log('Map deleted!');
-						$scope.queryForAreas();
-					},
-					error: function(area, error) {
-						//alert('Failed to create new object, with error code: ' + error.message);
-						console.log('error area');
-					}
-				});
-			},
-			error: function(map, error){
-
-			}
-		});
-	}
-
-	//Ta bort area + associerade kartor, fungerer icke!
-	$scope.deleteArea = function(area){
-		Parse.Object.destroyAll(area.attributes.maps, {
-			success: function(){
-				area.destroy({
-					  success: function(myObject) {
-					    // The object was deleted from the Parse Cloud.
-					    console.log('allt borta');
-					  },
-					  error: function(myObject, error) {
-					    // The delete failed.
-					    // error is a Parse.Error with an error code and message.
-					    console.log('fel');
-					  }
-					})
-			},
-			error: function(error) {
-      	console.error("Error deleting related comments " + error.code + ": " + error.message);
-      }
-		});
-	}
-
-	$scope.saveChangesToArea = function(area){
+	// Updates area postion, called from interface button.
+	$scope.updataAreaPosition = function(area){
 		var position = new Parse.GeoPoint($scope.clickedLocation.coords);
 		area.set("position", position);
 		area.save(area, {
@@ -250,6 +226,43 @@ app.controller('uploadMapCtrl', function ($scope, $filter, uiGmapGoogleMapApi, s
 			}
 		});
 	}
+	
+	// Delets a map inside a area.
+	$scope.deleteMap = function(area, map){
+		area.attributes.maps.splice(area.attributes.maps.indexOf(map), 1);
+		map.destroy({
+			success: function(map) {
+				$scope.updateAreaMaps(area);
+			},
+			error: function(map, error){
+
+			}
+		});
+	}
+
+	//Ta bort area + associerade kartor,
+	$scope.deleteArea = function(area){
+		Parse.Object.destroyAll(area.attributes.maps, {
+			success: function(){
+				area.destroy({
+					  success: function(myObject) {
+					    // The object was deleted from the Parse Cloud.
+					    console.log('area och kartor deleted');
+					    $scope.queryForAreas();
+					  },
+					  error: function(myObject, error) {
+					    // The delete failed.
+					    // error is a Parse.Error with an error code and message.
+					    console.log('fel');
+					  }
+					})
+			},
+			error: function(error) {
+      	console.error("Error deleting related comments " + error.code + ": " + error.message);
+      }
+		});
+	}
+
 
 	//Make queries
 	var init = function () {
