@@ -17,6 +17,9 @@ app.controller('schoolCtrl', function ($scope, uiGmapGoogleMapApi, geolocation, 
 
 	//Set varible to scope for a marker on the map
 	$scope.clickedLocation = {};
+	$scope.addSchool = {};
+	$scope.contactPerson = {};
+	// $scope.error = "";
 
 	//Config marker after click on map, updates coords for clickedlocation
 	$scope.addMarker = function (obj) {
@@ -38,14 +41,27 @@ app.controller('schoolCtrl', function ($scope, uiGmapGoogleMapApi, geolocation, 
 		  if (_.isEqual(newVal, oldVal))
 		    return;
 		});
-		$scope.addArea.position = $scope.clickedLocation.coords;
+		$scope.addSchool.position = $scope.clickedLocation.coords;
 	};
 
-	$scope.addedAreas = [];
-	$scope.error = "";
+	$scope.addPositionToSchool = function () {
+		var obj = $scope.map.center;
+		$scope.addMarker(obj);
+	}
+
+	$scope.markerClick = function(data){
+		var obj = { id: data.key };
+		obj[data.key] = true;
+		$scope.clickedMarker = obj;
+		console.log('marker click');
+		//Scroll to area
+		scrollTo.classId('rightbar', data.key);
+
+	};
 
 	//Define array of markers
-	$scope.areaMarkers = [];
+	$scope.schoolMarkers = [];
+
  	$scope.queryForSchools = function() {
  		var query = new Parse.Query("Schools");
 		query.include("contactPerson","areas", "areas.maps");
@@ -54,7 +70,7 @@ app.controller('schoolCtrl', function ($scope, uiGmapGoogleMapApi, geolocation, 
 		        	//Nullcheck for position attribute due to fucked up db
 		        	if (value.attributes.position != null) {
 		        		//Check if marker already exists, if not - add to markers
-		        		if ($filter('filter')($scope.areaMarkers, { id: value.id }, true)[0] == null ) {
+		        		if ($filter('filter')($scope.schoolMarkers, { id: value.id }, true)[0] == null ) {
 		        			//Set marker attributes from db
 		        			var marker = {
 		        				latitude: value.attributes.position._latitude,
@@ -63,7 +79,7 @@ app.controller('schoolCtrl', function ($scope, uiGmapGoogleMapApi, geolocation, 
 		        			};
 		        			marker['id'] = value.id;
 		        			//Push to array of markers
-		        			$scope.areaMarkers.push(marker);
+		        			$scope.schoolMarkers.push(marker);
 		        		}
 		        	};
 		        });
@@ -71,42 +87,107 @@ app.controller('schoolCtrl', function ($scope, uiGmapGoogleMapApi, geolocation, 
 	    });
  	}
  		
+ 	//Return url-string from parse-url
+	$scope.displayMap = function($url){
+		return $url;
+	}
 
- 		$scope.saveSchool = function(school, contactPerson, newSchoolForm){
- 			console.log(newSchoolForm.$valid);
- 			if (newSchoolForm.$valid) {
- 				var Schools = Parse.Object.extend("Schools");
- 				var ContactPerson = Parse.Object.extend("ContactPerson");
+	//Function to place draggable marker for changing of school location
+	$scope.changeLocationOfSchool = function (school){
+		//Find current marker, delete from school markers and add draggable marker to map
+		var markerOfSchool = $filter('filter')($scope.schoolMarkers, { id: school.id }, true)[0];
+		$scope.schoolMarkers.splice($scope.schoolMarkers.indexOf(markerOfSchool), 1);
+		$scope.addMarker(school.attributes.position);
+	}
 
- 				var newContactPerson = new ContactPerson();
- 				newContactPerson.set("name", contactPerson.name);
- 				newContactPerson.set("phoneNumber", contactPerson.phoneNumber);
- 				newContactPerson.set("email", contactPerson.email);
+	// Set var to collapse add new school.
+	$scope.newSchoolPanel = {
+				open: false
+			};
 
-				var newSchool = new Schools();
-				newSchool.set("name", school.name);
-				newSchool.set("contactPerson", newContactPerson);
-				newSchool.save(null, {
-				  success: function(newSchool) {
-				    // Execute any logic that should take place after the object is saved.
+	$scope.saveNewSchool = function(school, contactPerson, newSchoolForm){
+		var School = Parse.Object.extend("Schools");
+		var ContactPerson = Parse.Object.extend("ContactPerson");
 
-				    alert('New object created with objectId: ' + newSchool.id);
-				    $scope.school = null;
-				    $scope.contactPerson = null;
-			    	query.find().then(function(result){
-			            $scope.schools = result;
-			        });
+		var newContactPerson = new ContactPerson();
+		newContactPerson.set("name", $scope.contactPerson.name);
+		newContactPerson.set("phoneNumber", $scope.contactPerson.phoneNumber);
+		newContactPerson.set("email", $scope.contactPerson.email);
 
-				  },
-				  error: function(newSchool, error) {
-				    // Execute any logic that should take place if the save fails.
-				    // error is a Parse.Error with an error code and message.
-				    alert('Failed to create new object, with error code: ' + error.message);
-				  }
-			});
- 			}
- 			
- 		}
+		var school = new School();
+		var position = new Parse.GeoPoint($scope.addSchool.position);
+		school.set("name", $scope.addSchool.schoolName);
+		school.set("position", position);
+		school.set("contactPerson", newContactPerson);
+		school.save(null, {
+			success: function(school) {
+				console.log('sparad school');
+				// Close panel 
+				  $scope.newSchoolPanel = {
+			    		open: false
+			    	};
+			    $scope.clickedLocation = {};
+			    if ($scope.queryForSchools()){
+			    	scrollTo.classId('rightbar', school.id);
+			    };
+			    // Reset form when its saved.
+			},
+			error: function(school, error) {
+				//alert('Failed to create new object, with error code: ' + error.message);
+				console.log('error school');
+			}
+		});
+	};
+
+	// Updates area postion, called from interface button.
+	$scope.updateSchool = function(school){
+		var position = new Parse.GeoPoint($scope.clickedLocation.coords);
+		console.log(position);
+		if (position.latitude == 0) {
+
+		} else {
+			school.set("position", position);
+		}
+		school.attributes.contactPerson.set("name", school.attributes.contactPerson.attributes.name);
+		school.attributes.contactPerson.set("phoneNumber", school.attributes.contactPerson.attributes.phoneNumber);
+		school.attributes.contactPerson.set("email", school.attributes.contactPerson.attributes.email);
+		school.save(school, {
+			success: function(school) {
+				console.log('Uppdaterat!');
+				$scope.queryForSchools();
+				$scope.clickedLocation = {};
+				console.log(school);
+			},
+			error: function(school, error) {
+				//alert('Failed to create new object, with error code: ' + error.message);
+				console.log('error school');
+			}
+		});
+	}
+
+	//Ta bort skola + associerade kontaktperson,
+	$scope.deleteSchool = function(school){
+		Parse.Object.destroyAll([school.attributes.contactPerson], {
+			success: function(){
+				school.destroy({
+					  success: function(myObject) {
+					    // The object was deleted from the Parse Cloud.
+					    console.log('school och contactPerson deleted');
+					    $scope.queryForSchools();
+					  },
+					  error: function(myObject, error) {
+					    // The delete failed.
+					    // error is a Parse.Error with an error code and message.
+					    console.log('fel');
+					  }
+					})
+			},
+			error: function(error) {
+      	console.error("Error deleting related comments " + error.code + ": " + error.message);
+      }
+		});
+	}
+
  		//Make queries
 	var init = function () {
 	   $scope.queryForSchools();
