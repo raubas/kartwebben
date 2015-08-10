@@ -1,4 +1,4 @@
-app.controller('uploadMapCtrl', function ($scope, $filter, uiGmapGoogleMapApi, scrollTo, $q){
+app.controller('uploadMapCtrl', function ($scope, $filter, uiGmapGoogleMapApi, scrollTo, $timeout){
 
 	//Config map
 	uiGmapGoogleMapApi.then(function(maps) {
@@ -54,7 +54,7 @@ app.controller('uploadMapCtrl', function ($scope, $filter, uiGmapGoogleMapApi, s
 		var obj = { id: data.key };
 		obj[data.key] = true;
 		$scope.clickedMarker = obj;
-
+		console.log('marker click');
 		//Scroll to area
 		scrollTo.classId('rightbar', data.key);
 
@@ -68,27 +68,28 @@ app.controller('uploadMapCtrl', function ($scope, $filter, uiGmapGoogleMapApi, s
 		var query = new Parse.Query("Areas");
 		query.include("maps");
 		query.find().then(function(result){
-	        angular.forEach(result, function(value, key){
-	        	//Nullcheck for position attribute due to fucked up db
-	        	if (value.attributes.position != null) {
-	        		//Check if marker already exists, if not - add to markers
-	        		if ($filter('filter')($scope.areaMarkers, { id: value.id }, true)[0] == null ) {
-	        			//Set marker attributes from db
-	        			var marker = {
-	        				latitude: value.attributes.position._latitude,
-	        				longitude: value.attributes.position._longitude,
-	        				title: value.attributes.name
-	        			};
-	        			marker['id'] = value.id;
-	        			//Push to array of markers
-	        			$scope.areaMarkers.push(marker);
-	        		}
-	        	};
-	        });
-	        //Save results to scope
-	        $scope.areas = result;
-	        return true;
-	    });
+			//Save results to scope
+			$scope.areas = result;
+			console.log('areas updated');
+			angular.forEach(result, function(value, key){
+				//Nullcheck for position attribute due to fucked up db
+				if (value.attributes.position != null) {
+					//Check if marker already exists, if not - add to markers
+					if ($filter('filter')($scope.areaMarkers, { id: value.id }, true)[0] == null ) {
+						//Set marker attributes from db
+						var marker = {
+							latitude: value.attributes.position._latitude,
+							longitude: value.attributes.position._longitude,
+							title: value.attributes.name
+						};
+						marker['id'] = value.id;
+						//Push to array of markers
+						$scope.areaMarkers.push(marker);
+					}
+				};
+			});
+		});
+
 	}
 
 	//Return url-string from parse-url
@@ -162,9 +163,23 @@ app.controller('uploadMapCtrl', function ($scope, $filter, uiGmapGoogleMapApi, s
 			    		open: false
 			    	};
 			    $scope.clickedLocation = {};
-			    if ($scope.queryForAreas()){
-			    	scrollTo.classId('rightbar', area.id);
+			    $scope.queryForAreas();
+			    //Set data object for markerClick-function
+			    var dataObj = {key: area.id};
+			    //Internal function to call markerclick after query + DOM-update
+			    var runClickFunc = function (data){
+			    	if(data){
+			    		//Timeout to wait for DOM-update
+			    		$timeout(function(){
+			    			$scope.markerClick(dataObj);
+			    			//Unregister scope.on-event
+			    			listenForRender();
+			    		}, 1000);
+			    	}
 			    };
+			    //Register listener for when all elements are added to rightbar
+			    var listenForRender = $scope.$on('newRendered', function(event, data) { runClickFunc(data); });
+			    
 			    // Reset form when its saved.
 			},
 			error: function(area, error) {
