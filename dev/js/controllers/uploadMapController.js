@@ -214,7 +214,7 @@ app.controller('uploadMapCtrl', function ($scope, $filter, uiGmapGoogleMapApi, s
 	} 
 
 	// Updates area postion, called from interface button.
-	$scope.updataAreaPosition = function(area){
+	$scope.updateAreaPosition = function(area){
 		var position = new Parse.GeoPoint($scope.clickedLocation.coords);
 		area.set("position", position);
 		area.save(area, {

@@ -109,7 +109,7 @@
               </accordion-group>
               <accordion-group heading="{{area.attributes.name}}" ng-repeat="area in areas" is-open="clickedMarker[area.id]" class="barpanel" id="{{ area.id }}" emit-when="{event: 'newRendered', condition: $last}">
                 <div class="col-md-12">
-                  <button ng-click="updataAreaPosition(area)">Spara!</button>
+                  <button ng-click="updateAreaPosition(area)">Spara!</button>
                   <button ng-click="deleteArea(area)">Ta bort område + kartor!</button>
 				  				<h4>Postition</h4>
                   <!-- <p ng-bind="'Lat: ' + area.attributes.position._latitude">Lat</p>
@@ -181,12 +181,3 @@
     </div>
   </div>
 </body>
-
-
-
-
-
-
-
-
-
