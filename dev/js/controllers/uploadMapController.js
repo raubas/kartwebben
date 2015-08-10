@@ -1,4 +1,4 @@
-app.controller('uploadMapCtrl', function ($scope, $filter, uiGmapGoogleMapApi){
+app.controller('uploadMapCtrl', function ($scope, $filter, uiGmapGoogleMapApi, scrollTo){
 
 	//Config map
 	uiGmapGoogleMapApi.then(function(maps) {
@@ -48,6 +48,16 @@ app.controller('uploadMapCtrl', function ($scope, $filter, uiGmapGoogleMapApi){
 		var obj = $scope.map.center;
 		$scope.addMarker(obj);
 	}
+
+	$scope.markerClick = function(data){
+		var obj = { id: data.key };
+		obj[data.key] = true;
+		$scope.clickedMarker = obj;
+
+		//Scroll to area
+		scrollTo.classId('rightbar', data.key);
+
+	};
 
 	//Define array of markers
 	$scope.areaMarkers = [];
@@ -184,53 +194,26 @@ app.controller('uploadMapCtrl', function ($scope, $filter, uiGmapGoogleMapApi){
 		});
 	}
 
-	// Try to save new map to existing area.
-	$scope.addMapToExistingArea = function(area){
-		console.log(area.attributes.maps);
-
-		var Map = Parse.Object.extend("Maps");
-		var mapfile = new Parse.File("map.png", $scope.fileToArea);
-		
-		mapfile.save().then(function(){
-			console.log("file saved");
-		}, function(error){
-			console.log(error);
-		});
-		var map = new Map();
-		map.set("name", newMapToArea.mapName);
-		map.set("difficulty", parseInt(newMapToArea.mapLevel));
-		map.set("file", mapfile);
-		map.save(null, {
-			success: function(map) {
-				console.log('sparad karta');
-				area.attributes.maps.push(map);
-				area.save(null, {
-					success: function(area) {
-						console.log('sparad area');
-						// Close panel 
-						  $scope.newAreaPanel = {
-					    		open: false
-					    	};
-					    $scope.clickedLocation = {};
-					    $scope.queryForAreas();
-					    // Reset form when its saved.
-					},
-					error: function(area, error) {
-						//alert('Failed to create new object, with error code: ' + error.message);
-						console.log('error area');
-					}
-				});
+	//Ta bort area + associerade kartor, fungerer icke!
+	$scope.deleteArea = function(area){
+		Parse.Object.destroyAll(area.attributes.maps, {
+			success: function(){
+				area.destroy({
+					  success: function(myObject) {
+					    // The object was deleted from the Parse Cloud.
+					    console.log('allt borta');
+					  },
+					  error: function(myObject, error) {
+					    // The delete failed.
+					    // error is a Parse.Error with an error code and message.
+					    console.log('fel');
+					  }
+					})
 			},
-			error: function(map, error) {
-				//alert('Failed to create new object, with error code: ' + error.message);
-				console.log('error map');
-			}
+			error: function(error) {
+      	console.error("Error deleting related comments " + error.code + ": " + error.message);
+      }
 		});
-	}
-
-	$scope.uploadFileToArea = function(file){
-		$scope.fileToArea = file[0];
-
 	}
 
 	$scope.saveChangesToArea = function(area){

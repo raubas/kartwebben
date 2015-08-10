@@ -28,3 +28,29 @@ app.directive('dropzone', function(){
   };
 });
 
+app.factory('scrollTo', function (){
+	return {
+		classId: function(container, anchor){
+		    var element = angular.element('#'+anchor);
+		    angular.element('.'+container).animate({scrollTop: element.offset().top}, "slow");
+		},
+		idClass: function(container, anchor){
+			var element = angular.element('.'+anchor);
+		    angular.element('#'+container).animate({scrollTop: element.offset().top}, "slow");
+		}
+	};
+});
+
+
+var ModalInstanceCtrl = function($scope, $modalInstance, $modal, item) {
+    
+	$scope.item = item;
+
+	$scope.ok = function () {
+	$modalInstance.close();
+	};
+
+	$scope.cancel = function () {
+	$modalInstance.dismiss('cancel');
+	};
+}

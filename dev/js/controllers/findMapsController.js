@@ -1,9 +1,10 @@
-app.controller('findMapsCtrl', function ($scope, uiGmapGoogleMapApi, geolocation){
+app.controller('findMapsCtrl', function ($scope, uiGmapGoogleMapApi, geolocation, $modal, $filter, scrollTo){
 
 	//Initiate google map on Luleå
 	uiGmapGoogleMapApi.then(function (maps) {
 		$scope.map = { 	center: { latitude: 65.588946, longitude: 22.157324 },
-						zoom: 12
+						zoom: 12,
+						pan: {val: true}
 						};
 		
 		//Focus on user location if enabled
@@ -35,28 +36,40 @@ app.controller('findMapsCtrl', function ($scope, uiGmapGoogleMapApi, geolocation
 		$scope.areas = result;
 	});
 
+	//Define array of markers
+	$scope.schoolMarkers = [];
+	$scope.markerprops = { 	school: { url: '/dev/images/icons/fish.png'},
+							area: 	{ url: '/dev/images/icons/fish.png'}};
 	//Get schools from db
 	var query = new Parse.Query("Schools");
 	query.find().then(function (result){
+		angular.forEach(result, function(value, key){
+			//Nullcheck for position attribute due to fucked up db
+			if (value.attributes.position != null) {
+				//Check if marker already exists, if not - add to markers
+				if ($filter('filter')($scope.schoolMarkers, { id: value.id }, true)[0] == null ) {
+					//Set marker attributes from db
+					var marker = {
+						latitude: value.attributes.position._latitude,
+						longitude: value.attributes.position._longitude,
+						title: value.attributes.name
+					};
+					marker['id'] = value.id;
+					//Push to array of markers
+					$scope.schoolMarkers.push(marker);
+				}
+			};
+		});
 		$scope.schools = result;
 	});
-
-	//Tvek om detta funkar
-	$scope.scrollTo = function(container, anchor) {
-		    console.log(container);
-		    console.log(anchor);
-		    var element = angular.element(anchor);
-		    angular.element(container).animate({scrollTop: element.offset().top}, "slow");
-		    
-		}
 
 	$scope.markerClick = function(data){
 		var obj = { id: data.key };
 		obj[data.key] = true;
 		$scope.clickedMarker = obj;
 
-		//Tveksam till denna
-		//$scope.scrollTo('rightbar', data.key);
+		//Scroll to area
+		scrollTo.classId('rightbar', data.key);
 
 	};
 
@@ -79,6 +92,39 @@ app.controller('findMapsCtrl', function ($scope, uiGmapGoogleMapApi, geolocation
 								};
 		console.log(school.id);
 	}
+
+	//Open modal for preview
+	$scope.name = 'theNameHasBeenPassed';
+	
+	$scope.showModal = function(url, areaName, mapName) {
+	  
+	  $scope.opts = {
+		  backdrop: true,
+		  backdropClick: true,
+		  dialogFade: false,
+		  keyboard: true,
+		  templateUrl : 'mapPreviewModal.html',
+		  controller : ModalInstanceCtrl,
+		  resolve: {} // empty storage
+	    };
+	    
+	  
+	  $scope.opts.resolve.item = function() {
+	      return angular.copy({	previewUrl: url,
+	      						pdfUrl: '/dev/images/icons/fish.png',
+	      						areaName: areaName,
+	      						mapName: mapName }); // pass name to Dialog
+	  }
+	  
+	    var modalInstance = $modal.open($scope.opts);
+	    
+	    modalInstance.result.then(function(){
+	      //on ok button press 
+	    },function(){
+	      //on cancel button press
+	      console.log("Modal Closed");
+	    });
+	}; 
 
 	// $scope.difficulties = { 'one' : {name:'Åk 1', number:'1'},
 	// 						'two' : {name:'Åk 2', number:'2'},
