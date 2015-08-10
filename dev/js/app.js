@@ -33,6 +33,10 @@ app.factory('scrollTo', function (){
 		classId: function(container, anchor){
 		    var element = angular.element('#'+anchor);
 		    angular.element('.'+container).animate({scrollTop: element.offset().top}, "slow");
+		},
+		idClass: function(container, anchor){
+			var element = angular.element('.'+anchor);
+		    angular.element('#'+container).animate({scrollTop: element.offset().top}, "slow");
 		}
 	};
 });

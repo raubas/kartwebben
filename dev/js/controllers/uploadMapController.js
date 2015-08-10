@@ -1,4 +1,4 @@
-app.controller('uploadMapCtrl', function ($scope, $filter, uiGmapGoogleMapApi){
+app.controller('uploadMapCtrl', function ($scope, $filter, uiGmapGoogleMapApi, scrollTo){
 
 	//Config map
 	uiGmapGoogleMapApi.then(function(maps) {
@@ -54,8 +54,8 @@ app.controller('uploadMapCtrl', function ($scope, $filter, uiGmapGoogleMapApi){
 		obj[data.key] = true;
 		$scope.clickedMarker = obj;
 
-		//Tveksam till denna
-		//$scope.scrollTo('rightbar', data.key);
+		//Scroll to area
+		scrollTo.classId('rightbar', data.key);
 
 	};
 

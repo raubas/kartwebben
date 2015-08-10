@@ -134,7 +134,7 @@
                   </form>
                 </div>
               </accordion-group>
-              <accordion-group heading="{{area.attributes.name}}" ng-repeat="area in areas" is-open="clickedMarker[area.id]" class="barpanel">
+              <accordion-group heading="{{area.attributes.name}}" ng-repeat="area in areas" is-open="clickedMarker[area.id]" class="barpanel" id="{{ area.id }}">
                 <div class="col-md-12">
                   <button ng-click="saveChangesToArea(area)">Spara!</button>
                   <button ng-click="deleteArea(area)">Ta bort område + kartor!</button>
