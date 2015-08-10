@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" ng-app="myApp">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0">
@@ -14,8 +14,11 @@
     <link rel="stylesheet" href="../bower_components/bootstrap-css/css/bootstrap.min.css" />
     <link rel="stylesheet" href="../bower_components/vegas/dist/vegas.min.css" />
     <link rel="stylesheet" href="../bower_components/nya-bootstrap-select/dist/css/nya-bs-select.css" />
-    <link rel="stylesheet" href="../bower_components/dropzone/dist/min/dropzone.min.css" />
+    <link rel="stylesheet" href="../bower_components/dropzone/downloads/css/dropzone.css" />
     <!-- endbower -->
+
+    <!-- css -->
+    <link rel="stylesheet" type="text/css" href="css/base.css">
 
     <!-- bower:js -->
     <script src="../bower_components/jquery/dist/jquery.js"></script>
@@ -28,89 +31,25 @@
     <script src="../bower_components/nya-bootstrap-select/dist/js/nya-bs-select.js"></script>
     <script src="../bower_components/lodash/lodash.js"></script>
     <script src="../bower_components/angular-google-maps/dist/angular-google-maps.js"></script>
-    <script src="../bower_components/dropzone/dist/min/dropzone.min.js"></script>
+    <script src="../bower_components/dropzone/downloads/dropzone.min.js"></script>
     <script src="../bower_components/angularjs-geolocation/src/geolocation.js"></script>
     <script src="../bower_components/angular-bootstrap/ui-bootstrap-tpls.js"></script>
     <!-- endbower -->
 
-    <!-- css -->
-    <link rel="stylesheet" type="text/css" href="css/base.css">
+    <!-- Javascript -->
+    <script src="../dev/js/app.js"></script>
+    <script src="../dev/js/controllers/uploadMapController.js"></script>
+    <script src="../dev/js/base.js"></script>
 
-    <!-- Init vegas -->
-    <script type="text/javascript">
-
-      $(function() {
-          $('body').vegas({
-              slides: [
-                  { src: '/dev/images/skylines_blur.jpg' }
-              ]
-          });
-      });
-    </script>
+   
 
 </head>
 <body>
-	<div class="pagewrap">
-		<nav class="navbar navbar-default navbar-fixed-top" id="header" role="navigation">
-        
-          <div class="container-fluid">
-            <!-- Brand and toggle get grouped for better mobile display -->
-            <div class="navbar-header" >
-              <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
-                <span class="sr-only">Toggle navigation</span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-              </button>
-              <div>
-              	<a class="navbar-brand" href="/">Kartwebben</a>
-              </div>
-            </div>
+    <div class="pagewrap">
+        <nav ng-include="'/dev/components/navbar.html'" ng-controller="navCtrl" class="navbar navbar-default navbar-fixed-top" id="header" role="navigation"></nav>
 
-            <!-- Collect the nav links, forms, and other content for toggling -->
-            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-            
-              <ul class="nav navbar-nav">
-                <li class="customers-nav"><a href="/dev/orientera.html">Orientera</a></li>
-                <li class="blog-nav"><a href="/dev/#">Kartor</a></li>
-              </ul>
-              <ul class="nav navbar-nav navbar-right">
-                  <li><a href="#" data-toggle="modal" data-target="#logoutModal" id="logout">Logga ut</a></li>
-                  <li><a href="/dev/inloggning.html">Logga in</a></li>
-              </ul>
-            </div><!-- /.navbar-collapse -->
-          </div><!-- /.container-fluid -->
-          
-        </nav>
-	    <div class="col-md-12 topSpace">
-            <!-- Kanske ska vara någon bild/logga här -->
-	    </div>
-        <div class="row">
-            <div class="col-md-12 textSpace">
-                <div class="col-md-3 col-md-offset-3">
-                    <h4>Rubrik</h4>
-                    <p>Här kan det stå lite text</p>
-                </div>
-                <div class="col-md-3 col-md-offset-3">
-                    <!-- Här kan det vara en liten bild -->
-                </div>
-            </div>
-        </div>
-        <div class="divider">
-        </div>
-        <div class="row">
-            <div class="col-md-12 textSpace">
-                <div class="col-md-3 col-md-offset-3">
-                    <h4>Hur funkar sidan</h4>
-                    <p>Här kan man beskriva hur sidan fungerar</p>
-                </div>
-                <div class="col-md-3 col-md-offset-3">
-                    <!-- Här kan det vara en liten bild -->
-                </div>
-            </div>
-        </div>
-        <div class="divider">
-        </div>
+        <div class="divider"></div>
+	    
         <div id="footer">
             <nav class="navbar navbar-default " id="nav-footer">
                 <div class="container footer">
