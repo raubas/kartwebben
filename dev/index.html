@@ -34,11 +34,15 @@
     <script src="../bower_components/dropzone/dist/min/dropzone.min.js"></script>
     <script src="../bower_components/angularjs-geolocation/src/geolocation.js"></script>
     <script src="../bower_components/angular-bootstrap/ui-bootstrap-tpls.js"></script>
+    <script src="../bower_components/angular-ui-router/release/angular-ui-router.js"></script>
     <!-- endbower -->
 
     <!-- Javascript -->
     <script src="../dev/js/app.js"></script>
+    <script src="../dev/js/controllers/findMapsController.js"></script>
     <script src="../dev/js/controllers/uploadMapController.js"></script>
+    <script src="../dev/js/controllers/schoolControllerNy.js"></script>
+    <script src="../dev/js/controllers/navController.js"></script>
     <script src="../dev/js/base.js"></script>
 
    
@@ -46,35 +50,12 @@
 </head>
 <body>
     <div class="pagewrap">
+        <!-- Navbar from angular -->
         <nav ng-include="'/dev/components/navbar.html'" ng-controller="navCtrl" class="navbar navbar-default navbar-fixed-top" id="header" role="navigation"></nav>
 
-        <div class="divider"></div>
-	    
-        <div id="footer">
-            <nav class="navbar navbar-default " id="nav-footer">
-                <div class="container footer">
-                    <div class="row">
-                        <div class="col-xs-6 col-sm-8">
-                            <p class="navbar-text">
-                            <strong>Luleå&nbspKartförening</strong><br>
-                            Gata<br>
-                            Linje 2<br>
-                            Ort<br>
-                            <a href="mailto:info@kartforeningen.se">info@kartforeningen.se</a>
-                            </p>
-                        </div>
-                        <div class="col-xs-6 col-sm-4"  id="social">
-                            <div class="col-xs-6">
-                                <p>Text</p>
-                            </div>
-                            <div class="col-xs-6">
-                                <p>Text</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </nav>
-        </div>
+        <!-- Page content goes here -->
+        <div ui-view></div>
+
 	</div>
 </body>
 
