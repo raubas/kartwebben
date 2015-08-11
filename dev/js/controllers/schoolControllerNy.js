@@ -19,6 +19,7 @@ app.controller('schoolCtrl', function ($scope, uiGmapGoogleMapApi, geolocation, 
 	$scope.clickedLocation = {};
 	$scope.addSchool = {};
 	$scope.contactPerson = {};
+	$scope.showEdit = false;
 	// $scope.error = "";
 
 	//Config marker after click on map, updates coords for clickedlocation
@@ -153,10 +154,10 @@ app.controller('schoolCtrl', function ($scope, uiGmapGoogleMapApi, geolocation, 
 		school.attributes.contactPerson.set("email", school.attributes.contactPerson.attributes.email);
 		school.save(school, {
 			success: function(school) {
-				console.log('Uppdaterat!');
+				console.log('Uppdaterat skolan!');
 				$scope.queryForSchools();
 				$scope.clickedLocation = {};
-				console.log(school);
+
 			},
 			error: function(school, error) {
 				//alert('Failed to create new object, with error code: ' + error.message);

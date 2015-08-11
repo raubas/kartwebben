@@ -95,16 +95,16 @@
                     <button ng-click="updateSchool(school)">Spara!</button>
                     <button ng-click="deleteSchool(school)">Delete!</button>
                     <button ng-click="changeLocationOfSchool(school)">Ändra plats</button>
-                    <button ng-click="updateSchool(school)">edit</button>
+                    <button ng-click="showEdit = !showEdit" class="btn btn-default">edit</button>
                     <h4>Kontakt person</h4>
-                    <div class="test1">
+                    <div class="test1" ng-show="!showEdit">
                       <p ng-bind="'Namn: ' + school.attributes.contactPerson.attributes.name"></p>
                       <p ng-bind="'Telefon: ' + school.attributes.contactPerson.attributes.phoneNumber"></p>
                       <p ng-bind="'E-post: ' + school.attributes.contactPerson.attributes.email"></p>
                       <p ng-bind="'Lat: ' + school.attributes.position._latitude">Lat</p>
                       <p ng-bind="'Long: ' + school.attributes.position._longitude">Lat</p>
                     </div>
-                    <div class="test2">
+                    <div class="test2" ng-show="showEdit">
                       <div class="form-group">
                             <input type="text" class="form-control" name="name" ng-model="school.attributes.contactPerson.attributes.name" placeholder="Namn på kontaktperson" >
                       </div>
