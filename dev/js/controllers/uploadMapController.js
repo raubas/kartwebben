@@ -80,19 +80,24 @@ app.controller('uploadMapCtrl', function ($scope, $filter, uiGmapGoogleMapApi, s
 					//Check if marker already exists, if not - add to markers
 					if ($filter('filter')($scope.areaMarkers, { id: value.id }, true)[0] == null ) {
 						//Set marker attributes from db
-						var marker = {
-							latitude: value.attributes.position._latitude,
-							longitude: value.attributes.position._longitude,
-							options: { 	labelContent: value.attributes.name,
-													labelAnchor: "100 0" }
-						};
-						marker['id'] = value.id;
-						//Push to array of markers
-						$scope.areaMarkers.push(marker);
+						$scope.addMarkerToArray(value);
 					}
 				};
 			});
 		});
+
+	}
+
+	$scope.addMarkerToArray = function(area) {
+		var marker = {
+			latitude: area.attributes.position._latitude,
+			longitude: area.attributes.position._longitude,
+			options: { 	labelContent: area.attributes.name,
+									labelAnchor: "100 0" }
+		};
+		marker['id'] = area.id;
+		//Push to array of markers
+		$scope.areaMarkers.push(marker);		
 
 	}
 
@@ -134,13 +139,13 @@ app.controller('uploadMapCtrl', function ($scope, $filter, uiGmapGoogleMapApi, s
 			success: function(area) {
 				console.log('sparad area');
 				// Close panel 
-				  $scope.newAreaPanel = {
-			    		open: false
-			    	};
+			  	$scope.newAreaPanel = {
+		    		open: false
+		    	};
+
+		    	$scope.addMarkerToArray(area);
 			    $scope.clickedLocation = {};
-			    if ($scope.queryForAreas()){
-			    	scrollTo.classId('rightbar', area.id);
-			    };
+			    $scope.areas.push(area);
 			    // Reset form when its saved.
 			},
 			error: function(area, error) {
@@ -175,7 +180,11 @@ app.controller('uploadMapCtrl', function ($scope, $filter, uiGmapGoogleMapApi, s
 				console.log('sparad karta');
 				area.attributes.maps.push(map);
 				$scope.updateAreaMaps(area, map);
-				$scope.uploadedMap = null;
+				$scope.newMap.uploadedMap = null;
+				$scope.newMap.mapName = "";
+				$scope.newMap.mapLevel = "";
+				$scope.newMap.mapLevel = "";
+
 			},
 			error: function(map, error) {
 				//alert('Failed to create new object, with error code: ' + error.message);
@@ -196,7 +205,7 @@ app.controller('uploadMapCtrl', function ($scope, $filter, uiGmapGoogleMapApi, s
 			    		open: false
 			    	};
 			    $scope.clickedLocation = {};
-			    $scope.queryForAreas();
+			    // $scope.queryForAreas();
 			    //Set data object for markerClick-function
 			    var dataObj = {key: area.id};
 			    //Internal function to call markerclick after query + DOM-update
@@ -229,8 +238,9 @@ app.controller('uploadMapCtrl', function ($scope, $filter, uiGmapGoogleMapApi, s
 		area.save(area, {
 			success: function(area) {
 				console.log('Uppdaterat!');
-				$scope.queryForAreas();
+				// $scope.queryForAreas();
 				$scope.clickedLocation = {};
+				$scope.addMarkerToArray(area);
 			},
 			error: function(area, error) {
 				//alert('Failed to create new object, with error code: ' + error.message);
@@ -257,13 +267,16 @@ app.controller('uploadMapCtrl', function ($scope, $filter, uiGmapGoogleMapApi, s
 		Parse.Object.destroyAll(area.attributes.maps, {
 			success: function(){
 				area.destroy({
-					  success: function(myObject) {
+					  success: function(area) {
 					    // The object was deleted from the Parse Cloud.
 					    console.log('area och kartor deleted');
-					    $scope.queryForAreas();
-					    removeAreaMarker(myObject);
+					    // $scope.queryForAreas();
+					    removeAreaMarker(area);
+					    var areaToDelete = $filter('filter')($scope.areas, { id: area.id }, true)[0];
+					    $scope.areas.splice($scope.areas.indexOf(areaToDelete), 1);
+
 					  },
-					  error: function(myObject, error) {
+					  error: function(area, error) {
 					    // The delete failed.
 					    // error is a Parse.Error with an error code and message.
 					    console.log('fel');
