@@ -1,12 +1,14 @@
 Parse.initialize("6xK5z0dd13fPSziUDvcLiZTEqjkRc5qQais6zUSo", "dgHEctNMXBRjHFAYSSBZ7nnLfbuI46NSQEronPP8");
-var app = angular.module('myApp', ['ngAnimate', 'parse-angular','nya.bootstrap.select', 'uiGmapgoogle-maps', 'geolocation', 'ui.bootstrap']);
+var app = angular.module('myApp', ['ngAnimate', 'parse-angular','nya.bootstrap.select', 'uiGmapgoogle-maps', 'geolocation', 'ui.bootstrap', 'ui.router']);
 
-app.run(function($rootScope) {
- 
-    Parse.User.logOut();
+app.run(function($rootScope, $location) {
  	
+ 	//Log out user for dev purposes
+    //Parse.User.logOut();
+ 	
+ 	//Save user to rootscope
     $rootScope.sessionUser = Parse.User.current();
- 
+
 });
 
 app.config(function(uiGmapGoogleMapApiProvider) {
@@ -15,7 +17,30 @@ app.config(function(uiGmapGoogleMapApiProvider) {
         v: '3.17',
         libraries: ''
     });
-})
+});
+
+app.config(function($stateProvider, $urlRouterProvider) {
+    
+    $urlRouterProvider.otherwise('/');
+ 
+    $stateProvider
+        .state('start', {
+            url:'/',
+            templateUrl: 'pages/start.html',
+            controller: 'findMapsCtrl'
+        })
+        .state('kartor', {
+            url:'/kartor',
+            templateUrl: 'pages/kartor.html',
+            controller: 'uploadMapCtrl'
+        })
+        .state('skolor', {
+            url:'/skolor',
+            templateUrl: 'pages/skolor.html',
+            controller: 'schoolCtrl'
+        });
+ 
+});
 
 app.service('userManagement', function($rootScope){
 	this.logIn = function(username, password){
@@ -91,6 +116,8 @@ app.factory('scrollTo', function (){
 		}
 	};
 });
+
+
 
 var ModalInstanceCtrl = function($scope, $modalInstance, $modal, item) {
     
