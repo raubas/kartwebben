@@ -22,9 +22,13 @@
           <div class="col-md-12">
             <form name="addSchoolForm" class="form-group">
                 <div class="col-md-12">
-                  <input ng-required="!addSchool.schoolName" ng-model="addSchool.schoolName" placeholder="Namn på skolan" >
-                  <input ng-required="!addSchool.position" ng-model="addSchool.position" type="hidden"></input>
-                  <button ng-click="addPositionToSchool()">Välj position</button>
+                  <div class="form-group">
+                    <input type="text" class="form-control" ng-required="!addSchool.schoolName" ng-model="addSchool.schoolName" placeholder="Namn på skolan" >
+                  </div>
+                  <div class="form-group">
+                    <input ng-required="!addSchool.position" ng-model="addSchool.position" type="hidden"></input>
+                    <button ng-click="addPositionToSchool()" class="btn btn-default">Välj position</button>
+                  </div>
                   <div class="form-group">
                         <h4>Kontaktperson</h4>
                         <input type="text" class="form-control" name="name" ng-model="contactPerson.name" placeholder="Namn på kontaktperson" >
@@ -43,19 +47,19 @@
         </accordion-group>
         <accordion-group heading="{{school.attributes.name}}" ng-repeat="school in schools" is-open="clickedMarker[area.id]" class="barpanel">
           <div class="col-md-12">
-            <button ng-click="updateSchool(school)">Spara!</button>
-            <button ng-click="deleteSchool(school)">Delete!</button>
-            <button ng-click="changeLocationOfSchool(school)">Ändra plats</button>
-            <button ng-click="updateSchool(school)">edit</button>
+            <button class="btn btn-default" ng-click="updateSchool(school)">Spara!</button>
+            <button class="btn btn-default" ng-click="deleteSchool(school)">Delete!</button>
+            <button class="btn btn-default" ng-click="changeLocationOfSchool(school)">Ändra plats</button>
+            <button class="btn btn-default" ng-click="showEdit = !showEdit">Edit</button>
             <h4>Kontakt person</h4>
-            <div class="test1">
+            <div class="test1" ng-show="!showEdit">
               <p ng-bind="'Namn: ' + school.attributes.contactPerson.attributes.name"></p>
               <p ng-bind="'Telefon: ' + school.attributes.contactPerson.attributes.phoneNumber"></p>
               <p ng-bind="'E-post: ' + school.attributes.contactPerson.attributes.email"></p>
               <p ng-bind="'Lat: ' + school.attributes.position._latitude">Lat</p>
               <p ng-bind="'Long: ' + school.attributes.position._longitude">Lat</p>
             </div>
-            <div class="test2">
+            <div class="test2" ng-show="showEdit">
               <div class="form-group">
                     <input type="text" class="form-control" name="name" ng-model="school.attributes.contactPerson.attributes.name" placeholder="Namn på kontaktperson" >
               </div>
