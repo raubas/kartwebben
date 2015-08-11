@@ -67,27 +67,33 @@ app.controller('schoolCtrl', function ($scope, uiGmapGoogleMapApi, geolocation, 
  		var query = new Parse.Query("Schools");
 		query.include("contactPerson","areas", "areas.maps");
 		query.find().then(function(result){
+			$scope.schools = result;
 	        angular.forEach(result, function(value, key){
 		        	//Nullcheck for position attribute due to fucked up db
 		        	if (value.attributes.position != null) {
 		        		//Check if marker already exists, if not - add to markers
 		        		if ($filter('filter')($scope.schoolMarkers, { id: value.id }, true)[0] == null ) {
 		        			//Set marker attributes from db
-		        			var marker = {
-		        				latitude: value.attributes.position._latitude,
-		        				longitude: value.attributes.position._longitude,
-		        				title: value.attributes.name
-		        			};
-		        			marker['id'] = value.id;
-		        			//Push to array of markers
-		        			$scope.schoolMarkers.push(marker);
+		        			$scope.addMarkerToArray(value);
 		        		}
 		        	};
 		        });
-	        $scope.schools = result;
 	    });
  	}
  		
+ 	$scope.addMarkerToArray = function(area) {
+ 		var marker = {
+ 			latitude: area.attributes.position._latitude,
+ 			longitude: area.attributes.position._longitude,
+ 			options: { 	labelContent: area.attributes.name,
+ 									labelAnchor: "100 0" }
+ 		};
+ 		marker['id'] = area.id;
+ 		//Push to array of markers
+ 		$scope.schoolMarkers.push(marker);		
+
+ 	}
+
  	//Return url-string from parse-url
 	$scope.displayMap = function($url){
 		return $url;
@@ -99,6 +105,13 @@ app.controller('schoolCtrl', function ($scope, uiGmapGoogleMapApi, geolocation, 
 		var markerOfSchool = $filter('filter')($scope.schoolMarkers, { id: school.id }, true)[0];
 		$scope.schoolMarkers.splice($scope.schoolMarkers.indexOf(markerOfSchool), 1);
 		$scope.addMarker(school.attributes.position);
+	}
+
+	//Function to remove marker from map
+	function removeSchoolMarker (school){
+		//Find current marker, delete from school markers
+		var markerOfSchool = $filter('filter')($scope.schoolMarkers, { id: school.id }, true)[0];
+		$scope.schoolMarkers.splice($scope.schoolMarkers.indexOf(markerOfSchool), 1);
 	}
 
 	// Set var to collapse add new school.
@@ -124,13 +137,13 @@ app.controller('schoolCtrl', function ($scope, uiGmapGoogleMapApi, geolocation, 
 			success: function(school) {
 				console.log('sparad school');
 				// Close panel 
-				  $scope.newSchoolPanel = {
-			    		open: false
-			    	};
+			  	$scope.newSchoolPanel = {
+		    		open: false
+		    	};
+			    
+			    $scope.addMarkerToArray(school);
 			    $scope.clickedLocation = {};
-			    if ($scope.queryForSchools()){
-			    	scrollTo.classId('rightbar', school.id);
-			    };
+			    $scope.schools.push(school);
 			    // Reset form when its saved.
 			},
 			error: function(school, error) {
