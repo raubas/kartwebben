@@ -17,7 +17,9 @@
     <!-- endbower -->
 
     <!-- css -->
+    <!-- build:css css/myApp.min.css -->
     <link rel="stylesheet" type="text/css" href="css/base.css">
+    <!-- endbuild -->
 
     <!-- bower:js -->
     <script src="../bower_components/jquery/dist/jquery.js"></script>
@@ -36,15 +38,25 @@
     <!-- endbower -->
 
     <!-- Javascript -->
+    <!-- build:js js/myApp.min.js -->
     <script src="../dev/js/app.js"></script>
     <script src="../dev/js/controllers/findMapsController.js"></script>
     <script src="../dev/js/controllers/uploadMapController.js"></script>
     <script src="../dev/js/controllers/schoolControllerNy.js"></script>
     <script src="../dev/js/controllers/navController.js"></script>
     <script src="../dev/js/controllers/mapController.js"></script>
-    <script src="../dev/js/base.js"></script>
+    <!-- endbuild -->
 
-   
+
+    <script type="text/javascript">
+        $(function() {
+            $('body').vegas({
+                slides: [
+                    { src: '/dev/images/skylines_blur.jpg' }
+                ]
+            });
+        });
+    </script>
 
 </head>
 <body>
