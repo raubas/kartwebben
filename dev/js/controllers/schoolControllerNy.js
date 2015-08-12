@@ -55,7 +55,7 @@ app.controller('schoolCtrl', function ($scope, uiGmapGoogleMapApi, geolocation, 
 		obj[data.key] = true;
 		$scope.clickedMarker = obj;
 		console.log('marker click');
-		//Scroll to area
+		//Scroll to school
 		scrollTo.classId('rightbar', data.key);
 
 	};
@@ -81,14 +81,14 @@ app.controller('schoolCtrl', function ($scope, uiGmapGoogleMapApi, geolocation, 
 	    });
  	}
  		
- 	$scope.addMarkerToArray = function(area) {
+ 	$scope.addMarkerToArray = function(school) {
  		var marker = {
- 			latitude: area.attributes.position._latitude,
- 			longitude: area.attributes.position._longitude,
- 			options: { 	labelContent: area.attributes.name,
+ 			latitude: school.attributes.position._latitude,
+ 			longitude: school.attributes.position._longitude,
+ 			options: { 	labelContent: school.attributes.name,
  									labelAnchor: "100 0" }
  		};
- 		marker['id'] = area.id;
+ 		marker['id'] = school.id;
  		//Push to array of markers
  		$scope.schoolMarkers.push(marker);		
 
@@ -142,6 +142,10 @@ app.controller('schoolCtrl', function ($scope, uiGmapGoogleMapApi, geolocation, 
 		    	};
 			    
 			    $scope.addMarkerToArray(school);
+			    $scope.addSchool.schoolName = "";
+			    $scope.contactPerson.name = "";
+			    $scope.contactPerson.phoneNumber = "";
+			    $scope.contactPerson.email = "";
 			    $scope.clickedLocation = {};
 			    $scope.schools.push(school);
 			    // Reset form when its saved.
@@ -153,7 +157,7 @@ app.controller('schoolCtrl', function ($scope, uiGmapGoogleMapApi, geolocation, 
 		});
 	};
 
-	// Updates area postion, called from interface button.
+	// Updates school postion, called from interface button.
 	$scope.updateSchool = function(school){
 		var position = new Parse.GeoPoint($scope.clickedLocation.coords);
 		console.log(position);
@@ -168,9 +172,8 @@ app.controller('schoolCtrl', function ($scope, uiGmapGoogleMapApi, geolocation, 
 		school.save(school, {
 			success: function(school) {
 				console.log('Uppdaterat skolan!');
-				$scope.queryForSchools();
 				$scope.clickedLocation = {};
-
+				$scope.addMarkerToArray(school);
 			},
 			error: function(school, error) {
 				//alert('Failed to create new object, with error code: ' + error.message);
@@ -184,12 +187,14 @@ app.controller('schoolCtrl', function ($scope, uiGmapGoogleMapApi, geolocation, 
 		Parse.Object.destroyAll([school.attributes.contactPerson], {
 			success: function(){
 				school.destroy({
-					  success: function(myObject) {
+					  success: function(school) {
 					    // The object was deleted from the Parse Cloud.
 					    console.log('school och contactPerson deleted');
-					    $scope.queryForSchools();
+					    removeSchoolMarker(school);
+					    var schoolToDelete = $filter('filter')($scope.schools, { id: school.id }, true)[0];
+					    $scope.schools.splice($scope.schools.indexOf(schoolToDelete), 1);
 					  },
-					  error: function(myObject, error) {
+					  error: function(school, error) {
 					    // The delete failed.
 					    // error is a Parse.Error with an error code and message.
 					    console.log('fel');
