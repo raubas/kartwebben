@@ -1,0 +1,13 @@
+<!-- **** Map **** -->
+<div class="row">
+  <div id="map-canvas">
+    <ui-gmap-google-map center='map.center' zoom='map.zoom' events="map.options.events" control="map.control">
+      <ui-gmap-markers models="areaMarkers" coords="'self'" icon="markerprops.area" click="markerClick">
+      </ui-gmap-markers>
+      <ui-gmap-markers models="schoolMarkers" coords="'self'" icon="markerprops.school" click="markerClick">
+      </ui-gmap-markers>
+      <ui-gmap-marker coords="clickedLocation.coords" idkey="'aaaaaasdkljasdljkads'" options="clickedLocation.options">
+      </ui-gmap-marker>
+    </ui-gmap-google-map>
+  </div>
+</div>

@@ -26,19 +26,27 @@ app.config(function($stateProvider, $urlRouterProvider) {
     $stateProvider
         .state('start', {
             url:'/',
-            templateUrl: 'pages/start.html',
-            controller: 'findMapsCtrl'
-        })
-        .state('kartor', {
-            url:'/kartor',
-            templateUrl: 'pages/kartor.html',
-            controller: 'uploadMapCtrl'
-        })
-        .state('skolor', {
-            url:'/skolor',
-            templateUrl: 'pages/skolor.html',
-            controller: 'schoolCtrl'
+            views: {
+            	map:{
+            		templateUrl: 'components/map.html',
+	            	controller: 'mapCtrl'
+            	},
+            	content:{
+	            	templateUrl: 'pages/start.html',
+	            	controller: 'findMapsCtrl'
+	            }
+	        }
         });
+        // .state('kartor', {
+        //     url:'/kartor',
+        //     templateUrl: 'pages/kartor.html',
+        //     controller: 'uploadMapCtrl'
+        // })
+        // .state('skolor', {
+        //     url:'/skolor',
+        //     templateUrl: 'pages/skolor.html',
+        //     controller: 'schoolCtrl'
+        // });
  
 });
 
@@ -73,33 +81,80 @@ app.service('userManagement', function($rootScope){
 	
 });
 
-app.service('mapService', function() {
-  var productList = [];
+app.service('mapService', function(){
+	var map = 	{ 	center: { latitude: 65.588946, longitude: 22.157324 },
+					zoom: 12,
+					pan: {val: true}
+				};
+	var getMap = function(){
+		return map;
+	};
 
-  var addDraggablePin = function(newObj) {
-      productList.push(newObj);
-  };
+	var focusOnLocation = function(object){
+		
 
-  var removeDraggablePin = function(){
-      return productList;
-  };
+	}
 
-  var addToMarkerArray = function(){
-      return productList;
-  };
+	return {
+	    getMap: getMap
+	};
 
-  var removeFromMarkerArray = function(){
-      return productList;
-  };
+});
 
-  var addDraggablePin = function() {
-      productList.push(newObj);
-  };
+app.service('markerService', function ($filter){
+	var areaMarkers = [];
+	var schoolMarkers = [];
 
+	var addDraggablePin = function(newObj) {
+	  
+	  productList.push(newObj);
+	};
+
+	var removeDraggablePin = function(){
+	  return productList;
+	};
+
+	var addToAreaMarkerArray = function(object){
+		if ($filter('filter')(areaMarkers, { id: object.id }, true)[0] == null ) {
+			var marker = {
+					latitude: object.attributes.position._latitude,
+					longitude: object.attributes.position._longitude,
+					title: object.attributes.name
+				};
+			marker['id'] = object.id;
+			areaMarkers.push(marker);
+		}
+	};
+
+	var removeFromAreaMarkerArray = function(){
+
+	};
+
+	var getAreaMarkerArray = function(){
+	  return areaMarkers;
+	};
+
+	var addToSchoolMarkerArray = function(object){
+		if ($filter('filter')(schoolMarkers, { id: object.id }, true)[0] == null ) {
+			var marker = {
+					latitude: object.attributes.position._latitude,
+					longitude: object.attributes.position._longitude,
+					title: object.attributes.name
+				};
+			marker['id'] = object.id;
+			schoolMarkers.push(marker);
+		}
+  	};
+
+  	var getSchoolMarkerArray = function(){
+  		return schoolMarkers;
+  	}
   
   return {
-    addProduct: addProduct,
-    getProducts: getProducts
+    addToAreaMarkerArray: addToAreaMarkerArray,
+    getAreaMarkerArray: getAreaMarkerArray,
+    addToSchoolMarkerArray: addToSchoolMarkerArray,
+    getSchoolMarkerArray: getSchoolMarkerArray
   };
 
 });
