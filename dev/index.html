@@ -43,6 +43,7 @@
     <script src="../dev/js/controllers/uploadMapController.js"></script>
     <script src="../dev/js/controllers/schoolControllerNy.js"></script>
     <script src="../dev/js/controllers/navController.js"></script>
+    <script src="../dev/js/controllers/mapController.js"></script>
     <script src="../dev/js/base.js"></script>
 
    
@@ -54,8 +55,15 @@
         <nav ng-include="'/dev/components/navbar.html'" ng-controller="navCtrl" class="navbar navbar-default navbar-fixed-top" id="header" role="navigation"></nav>
 
         <!-- Page content goes here -->
-        <div ui-view></div>
-
+        <div class="content">
+            <div class="col-md-8">
+                <div ui-view="map"></div>
+            </div>
+            <div class="col-md-4">
+                <div ui-view="content"></div>
+            </div>
+        </div>
+        
 	</div>
 </body>
 

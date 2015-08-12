@@ -1,20 +1,6 @@
-app.controller('findMapsCtrl', function ($scope, uiGmapGoogleMapApi, geolocation, $modal, $filter, scrollTo){
+app.controller('findMapsCtrl', function ($scope, $modal, $filter, mapService, markerService, scrollTo){
 
-	//Initiate google map on Luleå
-	uiGmapGoogleMapApi.then(function (maps) {
-		$scope.map = { 	center: { latitude: 65.588946, longitude: 22.157324 },
-						zoom: 12,
-						pan: {val: true}
-						};
-		
-		//Focus on user location if enabled
-		geolocation.getLocation().then(function(data){
-			//Comment to get user location
-			//$scope.map = { center: { latitude: data.coords.latitude, longitude: data.coords.longitude }, zoom: 12};
-    	});
-	});
-
-	$scope.areaMarkers = [];
+	
 	//Get areas from db
 	var query = new Parse.Query("Areas");
 	query.include("maps");
@@ -22,52 +8,36 @@ app.controller('findMapsCtrl', function ($scope, uiGmapGoogleMapApi, geolocation
 		angular.forEach(result, function(value, key){
 			//Nullcheck for position attribute due to fucked up db
 			if (value.attributes.position != null) {
-				var marker = {
-					latitude: value.attributes.position._latitude,
-					longitude: value.attributes.position._longitude,
-					title: value.attributes.name
-				};
-				marker['id'] = value.id;
-				$scope.areaMarkers.push(marker);
+				//Push to map using service
+				markerService.addToAreaMarkerArray(value);
 			};
 		});
-
 		//Save areas to scope
 		$scope.areas = result;
 	});
 
 	//Define array of markers
 	$scope.schoolMarkers = [];
-	$scope.markerprops = { 	school: { url: '/dev/images/icons/fish.png'},
-							area: 	{ url: '/dev/images/icons/pin.png'}};
+	
 	//Get schools from db
 	var query = new Parse.Query("Schools");
 	query.find().then(function (result){
 		angular.forEach(result, function(value, key){
 			//Nullcheck for position attribute due to fucked up db
 			if (value.attributes.position != null) {
-				//Check if marker already exists, if not - add to markers
-				if ($filter('filter')($scope.schoolMarkers, { id: value.id }, true)[0] == null ) {
-					//Set marker attributes from db
-					var marker = {
-						latitude: value.attributes.position._latitude,
-						longitude: value.attributes.position._longitude,
-						title: value.attributes.name
-					};
-					marker['id'] = value.id;
-					//Push to array of markers
-					$scope.schoolMarkers.push(marker);
-				}
+				//Push to map using service
+				markerService.addToSchoolMarkerArray(value);
 			};
 		});
 		$scope.schools = result;
 	});
 
+	//Needs some work, broadcast perhaps?
 	$scope.markerClick = function(data){
 		var obj = { id: data.key };
 		obj[data.key] = true;
 		$scope.clickedMarker = obj;
-
+		console.log(data);
 		//Scroll to area
 		scrollTo.classId('rightbar', data.key);
 
