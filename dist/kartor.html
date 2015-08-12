@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="myApp">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0">
+    <meta name="keywords" content="">
+    <meta name="description" content="">
+    <title>Wahoo Development | Utvecklingsbyrå i Uppsala</title>
+    <meta property="og:title" content="">
+    <meta name="og:image" content="">
+    <meta property="og:description" content="">
+
+    <!-- bower:css -->
+    <link rel="stylesheet" href="../bower_components/bootstrap-css/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="../bower_components/vegas/dist/vegas.min.css" />
+    <link rel="stylesheet" href="../bower_components/nya-bootstrap-select/dist/css/nya-bs-select.css" />
+    <!-- endbower -->
+
+    <!-- bower:js -->
+    <script src="../bower_components/jquery/dist/jquery.js"></script>
+    <script src="../bower_components/angular/angular.js"></script>
+    <script src="../bower_components/parse-angular-patch/dist/parse-angular.js"></script>
+    <script src="../bower_components/bootstrap-css/js/bootstrap.min.js"></script>
+    <script src="../bower_components/vegas/dist/vegas.min.js"></script>
+    <script src="../bower_components/parse/parse.min.js"></script>
+    <script src="../bower_components/angular-animate/angular-animate.js"></script>
+    <script src="../bower_components/nya-bootstrap-select/dist/js/nya-bs-select.js"></script>
+    <script src="../bower_components/lodash/lodash.js"></script>
+    <script src="../bower_components/angular-google-maps/dist/angular-google-maps.js"></script>
+    <script src="../bower_components/angularjs-geolocation/src/geolocation.js"></script>
+    <script src="../bower_components/angular-bootstrap/ui-bootstrap-tpls.js"></script>
+    <script src="../bower_components/angular-ui-router/release/angular-ui-router.js"></script>
+    <!-- endbower -->
+
+    <!-- css -->
+    <link rel="stylesheet" type="text/css" href="css/base.css">
+
+    <!-- Javascript -->
+    <script src="../dev/js/app.js"></script>
+    <script src="../dev/js/controllers/areasController.js"></script>
+
+    <!-- Init vegas -->
+    <script type="text/javascript">
+
+      $(function() {
+          $('body').vegas({
+              slides: [
+                  { src: '/dev/images/skylines_blur.jpg' }
+              ]
+          });
+      });
+    </script>
+
+</head>
+<body ng-controller="areasCtrl">
+	<div class="pagewrap">
+		<nav class="navbar navbar-default navbar-fixed-top" id="header" role="navigation">
+          <div class="container-fluid">
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <div class="navbar-header" >
+              <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              <div>
+              	<a class="navbar-brand" href="/">Kartwebben</a>
+              </div>
+            </div>
+
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+            
+              <ul class="nav navbar-nav">
+                <li class="customers-nav"><a href="/dev/orientera.html">Orientera</a></li>
+                <li class="blog-nav"><a href="/dev/#">Kartor</a></li>
+              </ul>
+              <ul class="nav navbar-nav navbar-right">
+                  <li><a href="#" data-toggle="modal" data-target="#logoutModal" id="logout">Logga ut</a></li>
+                  <li><a href="/dev/#">Logga in</a></li>
+              </ul>
+            </div><!-- /.navbar-collapse -->
+          </div><!-- /.container-fluid -->
+          
+        </nav>
+	    <div class="divider">
+	    </div>
+        <div class="row">
+            <div class="col-md-12 textSpace">
+                <pre>{{ choosenSchool | json }}</pre>
+                <div class="row">
+                <div class="col-lg-4 col-lg-offset-2">
+                <h2>Hitta kartor!</h2>
+                </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-4 col-lg-offset-2">
+                        <div class="btn-group">
+                          <button class="btn btn-default btn-md dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            Välj skola: <span class="caret"></span>
+                          </button>
+                          <ul class="dropdown-menu">
+                            <li ng-repeat="school in schools"><a ng-bind="school.attributes.name" ng-click="setSchool(school)">Skola</a></li>
+                          </ul>
+
+                        </div>
+                        <div class="btn-group">
+                          <button class="btn btn-default btn-md dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            Välj svårighetsgrad: <span class="caret"></span>
+                          </button>
+                          <ul class="dropdown-menu">
+                            <li ng-repeat="difficulty in difficulties"><a ng-bind="difficulty.name" ng-click="findAreas(difficulty)">Svårighetsgrad 1</a></li>
+                          </ul>
+                        </div>
+                    </div>
+                    <div class="col-lg-4">
+                        <p><strong>Vald skola:</strong> {{ activeSchool.attributes.name }}</p>
+                        <p><strong>Svårighet:</strong> {{ activeDifficulty.name }}</p>
+                        <p><strong>Test:</strong> {{ choosenSchool.attributes.name }} </p>
+                        <!-- Här kan det vara en liten bild -->
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-8 col-lg-offset-2">
+                        <h4>Områden</h4>
+                        <div ng-repeat="area in choosenSchool.attributes.areas">
+                            <h5 ng-bind="area.attributes.name">Närmaste området</h5>
+                            
+                            <div class="row mapSection">
+                                <div class="col-md-3" ng-repeat="map in area.attributes.maps">
+                                    <p ng-bind="map.attributes.name">Karta 1</p>
+                                    <img ng-src="{{displayMap(map.attributes.file._url)}}" class="img-responsive" />
+                                    <p ng-bind="'Svårighetsgrad: ' + map.attributes.difficulty"></p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="divider">
+        </div>
+        <div id="footer">
+            <nav class="navbar navbar-default " id="nav-footer">
+                <div class="container footer">
+                    <div class="row">
+                        <div class="col-xs-6 col-sm-8">
+                            <p class="navbar-text">
+                            <strong>Luleå&nbspKartförening</strong><br>
+                            Gata<br>
+                            Linje 2<br>
+                            Ort<br>
+                            <a href="mailto:info@kartforeningen.se">info@kartforeningen.se</a>
+                            </p>
+                        </div>
+                        <div class="col-xs-6 col-sm-4"  id="social">
+                            <div class="col-xs-6">
+                                <p>Text</p>
+                            </div>
+                            <div class="col-xs-6">
+                                <p>Text</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </nav>
+        </div>
+	</div>
+</body>
+
+
+
+
+
+
+
+
+

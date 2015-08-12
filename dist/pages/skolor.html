@@ -1,0 +1,60 @@
+<!-- **** Content **** -->
+<div class="rightbar">
+  <accordion close-others="true">
+    <accordion-group heading="Lägg till ny skola" is-open="newSchoolPanel.open" class="barpanel">
+      <div class="col-md-12">
+        <form name="addSchoolForm" class="form-group">
+            <div class="col-md-12">
+              <div class="form-group">
+                <input type="text" class="form-control" ng-required="!addSchool.schoolName" ng-model="addSchool.schoolName" placeholder="Namn på skolan" >
+              </div>
+              <div class="form-group">
+                <input ng-required="!addSchool.position" ng-model="addSchool.position" type="hidden"></input>
+                <button ng-click="addPositionToSchool()" class="btn btn-default">Välj position</button>
+              </div>
+              <div class="form-group">
+                    <h4>Kontaktperson</h4>
+                    <input type="text" class="form-control" name="name" ng-model="contactPerson.name" placeholder="Namn på kontaktperson" >
+              </div>
+              <div class="form-group">
+                    <input type="text" class="form-control" name="phone" integer ng-pattern="/^(?:[0-9] ?){5,9}[0-9]$/" ng-model="contactPerson.phoneNumber" placeholder="Telefonnummer" >
+                    <span class="error-message" ng-show="newSchoolForm.phone.$error.pattern">Telefonnummret måste vara mellan 6 och 10 siffor!</span>
+              </div>
+              <div class="form-group">
+                    <input type="email" class="form-control" name="name" ng-model="contactPerson.email" placeholder="E-post">
+              </div>
+            </div>
+          <button ng-disabled="addSchoolForm.$invalid" ng-click="saveNewSchool()" class="btn btn-primary">Lägg till</button>
+        </form>
+      </div>
+    </accordion-group>
+    <accordion-group heading="{{school.attributes.name}}" ng-repeat="school in schools" is-open="openAccordion[school.id]" class="barpanel" id="{{ school.id }}" emit-when="{event: 'newRendered', condition: $last}">
+      <div class="col-md-12">
+        <button class="btn btn-default" ng-click="updateSchool(school)">Spara!</button>
+        <button class="btn btn-default" ng-click="deleteSchool(school)">Delete!</button>
+        <button class="btn btn-default" ng-click="changeLocationOfSchool(school)">Ändra plats</button>
+        <button class="btn btn-default" ng-click="showEdit = !showEdit">Edit</button>
+        <h4>Kontakt person</h4>
+        <div class="test1" ng-show="!showEdit">
+          <p ng-bind="'Namn: ' + school.attributes.contactPerson.attributes.name"></p>
+          <p ng-bind="'Telefon: ' + school.attributes.contactPerson.attributes.phoneNumber"></p>
+          <p ng-bind="'E-post: ' + school.attributes.contactPerson.attributes.email"></p>
+          <p ng-bind="'Lat: ' + school.attributes.position._latitude">Lat</p>
+          <p ng-bind="'Long: ' + school.attributes.position._longitude">Lat</p>
+        </div>
+        <div class="test2" ng-show="showEdit">
+          <div class="form-group">
+                <input type="text" class="form-control" name="name" ng-model="school.attributes.contactPerson.attributes.name" placeholder="Namn på kontaktperson" >
+          </div>
+          <div class="form-group">
+                <input type="text" class="form-control" name="phone" integer ng-pattern="/^(?:[0-9] ?){5,9}[0-9]$/" ng-model="school.attributes.contactPerson.attributes.phoneNumber" placeholder="Telefonnummer" >
+                <span class="error-message" ng-show="newSchoolForm.phone.$error.pattern">Telefonnummret måste vara mellan 6 och 10 siffor!</span>
+          </div>
+          <div class="form-group">
+                <input type="email" class="form-control" name="name" ng-model="school.attributes.contactPerson.attributes.email" placeholder="E-post">
+          </div>
+        </div>
+      </div>
+    </accordion-group>
+  </accordion>
+</div>

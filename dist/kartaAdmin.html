@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="myApp">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0">
+    <meta name="keywords" content="">
+    <meta name="description" content="">
+    <title>Wahoo Development | Utvecklingsbyrå i Uppsala</title>
+    <meta property="og:title" content="">
+    <meta name="og:image" content="">
+    <meta property="og:description" content="">
+
+    <!-- bower:css -->
+    <link rel="stylesheet" href="../bower_components/bootstrap-css/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="../bower_components/vegas/dist/vegas.min.css" />
+    <link rel="stylesheet" href="../bower_components/nya-bootstrap-select/dist/css/nya-bs-select.css" />
+    <!-- endbower -->
+
+    <!-- css -->
+    <link rel="stylesheet" type="text/css" href="css/base.css">
+
+    <!-- bower:js -->
+    <script src="../bower_components/jquery/dist/jquery.js"></script>
+    <script src="../bower_components/angular/angular.js"></script>
+    <script src="../bower_components/parse-angular-patch/dist/parse-angular.js"></script>
+    <script src="../bower_components/bootstrap-css/js/bootstrap.min.js"></script>
+    <script src="../bower_components/vegas/dist/vegas.min.js"></script>
+    <script src="../bower_components/parse/parse.min.js"></script>
+    <script src="../bower_components/angular-animate/angular-animate.js"></script>
+    <script src="../bower_components/nya-bootstrap-select/dist/js/nya-bs-select.js"></script>
+    <script src="../bower_components/lodash/lodash.js"></script>
+    <script src="../bower_components/angular-google-maps/dist/angular-google-maps.js"></script>
+    <script src="../bower_components/angularjs-geolocation/src/geolocation.js"></script>
+    <script src="../bower_components/angular-bootstrap/ui-bootstrap-tpls.js"></script>
+    <script src="../bower_components/angular-ui-router/release/angular-ui-router.js"></script>
+    <!-- endbower -->
+
+    <!-- Javascript -->
+    <script src="../dev/js/app.js"></script>
+    <script src="../dev/js/controllers/uploadMapController.js"></script>
+    <script src="../dev/js/controllers/navController.js"></script>
+    <script src="../dev/js/base.js"></script>
+
+   
+
+</head>
+<body>
+  <div class="pagewrap">
+    <!-- Navbar from angular -->
+    <nav ng-include="'/dev/components/navbar.html'" ng-controller="navCtrl" class="navbar navbar-default navbar-fixed-top" id="header" role="navigation"></nav>
+
+    <!-- **** Content **** -->
+    <div class="content" ng-controller="uploadMapCtrl">
+        <div class="col-md-8">
+          <!-- <div id="changeWidthOfContainer" ng-click="toggleRightBar()">
+            <span class="glyphicon glyphicon-star" aria-hidden="true"></span>
+          </div> -->
+          <div class="row">
+            <div id="map-canvas">
+              <ui-gmap-google-map center='map.center' zoom='map.zoom' events="map.options.events" control="map.control">
+                <ui-gmap-markers models="areaMarkers" coords="'self'" icon="'icon'" click="markerClick">
+                </ui-gmap-markers>
+                <ui-gmap-marker coords="clickedLocation.coords" idkey="'aaaaaasdkljasdljkads'" options="clickedLocation.options">
+                </ui-gmap-marker>
+              </ui-gmap-google-map>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="rightbar">
+            <accordion close-others="true">
+              <accordion-group heading="Lägg till nytt område" is-open="newAreaPanel.open" class="barpanel">
+                <div class="col-md-12">
+                  <form name="addAreaForm" class="form-group">
+                      <div class="col-md-12">
+                      	<div class="form-group">
+                        	<input type="text" class="form-control" ng-required="!addArea.areaName" ng-model="addArea.areaName" placeholder="Namn på området" >
+                      	</div>
+                      	<div class="form-group">
+													<button  ng-click="addPositionToArea()" class="btn btn-default">Välj position</button>
+                      	</div>
+                      	<div class="form-group">
+                        	<input ng-required="!addArea.position" ng-model="addArea.position" type="hidden"></input>
+													<button ng-disabled="addAreaForm.$invalid" ng-click="saveNewArea()" class="btn btn-primary">Lägg till</button>
+                      	</div>
+                      </div>
+                  </form>
+                </div>
+              </accordion-group>
+              <accordion-group heading="{{area.attributes.name}}" ng-repeat="area in areas" is-open="clickedMarker[area.id]" class="barpanel" id="{{ area.id }}" emit-when="{event: 'newRendered', condition: $last}">
+                <div class="col-md-12">
+                  <button class="btn btn-default" ng-click="updateAreaPosition(area)">Spara!</button>
+                  <button class="btn btn-default" ng-click="deleteArea(area)">Ta bort område + kartor!</button>
+                  <button class="btn btn-default" ng-click="changeLocationOfArea(area)">Ändra plats</button>
+                  <h4>Kartor</h4>
+                   <div class="newMap row"> 
+                   	<form name="newMapForm">
+	                    <div class="col-md-6">
+	                     <div class="form-group">
+	                         <input type="text" class="form-control" ng-required="!newMap.mapName" ng-model="newMap.mapName" placeholder="Namn på kartan" >
+	                     </div>
+	                    </div>
+	                    <div class="col-md-6">
+	                     <p>Välj Svårighetsgrad</p>
+	                     <label class="radio-inline">
+	                       <input type="radio" ng-required="!newMap.mapLevel" ng-model="newMap.mapLevel" ng-value="1"> 1
+	                     </label>
+	                     <label class="radio-inline">
+	                       <input type="radio" ng-required="!newMap.mapLevel" ng-model="newMap.mapLevel" ng-value="2"> 2
+	                     </label>
+	                     <label class="radio-inline">
+	                       <input type="radio" ng-required="!newMap.mapLevel" ng-model="newMap.mapLevel" ng-value="3"> 3
+	                     </label>
+	                    </div>
+	                    <div class="col-md-12 form-group">
+	                      <input ng-required="!newMap.uploadedMap" ng-model="newMap.uploadedMap"  type="file" onchange="angular.element(this).scope().uploadFile(this.files)"/>
+	                    </div>
+	                    <div class="col-md-12 form-group">
+                  			<button class="btn btn-primary" ng-disabled="newMapForm.$invalid" ng-click="saveMap(area)" >spara karta</button>
+	                    </div>
+	                  </form>
+                  </div>
+                	<strong><p>Nivå 1</p></strong>
+                	<div class="row">
+                    <div ng-repeat="map in area.attributes.maps | filter: { attributes: { difficulty: '1' } } ">
+                      <div class="col-md-4">
+                          <p ng-bind="map.attributes.name"></p>
+                          <img ng-src="{{displayMap(map.attributes.file._url)}}" class="img-responsive" />
+                          <button class="btn btn-default" ng-click="deleteMap(area, map)">Delete</button>
+                      </div>
+                    </div>
+                   </div>
+                	<strong><p>Nivå 2</p></strong>
+                	<div class="row">
+                    <div ng-repeat="map in area.attributes.maps | filter: { attributes: { difficulty: '2' } } ">
+                      <div class="col-md-4">
+                          <p ng-bind="map.attributes.name"></p>
+                          <img ng-src="{{displayMap(map.attributes.file._url)}}" class="img-responsive" />
+                          <button class="btn btn-default" ng-click="deleteMap(area, map)">Delete</button>
+                      </div>
+                    </div>
+                   </div>
+                	<strong><p>Nivå 3</p></strong>
+                	<div class="row">
+                    <div ng-repeat="map in area.attributes.maps | filter: { attributes: { difficulty: '3' } } ">
+                      <div class="col-md-4">
+                          <p ng-bind="map.attributes.name"></p>
+                          <img ng-src="{{displayMap(map.attributes.file._url)}}" class="img-responsive" />
+                          <button class="btn btn-default" ng-click="deleteMap(area, map)">Delete</button>
+                      </div>
+                    </div>
+                   </div>
+                </div>
+              </accordion-group>
+            </accordion>
+          </div>
+        </div>
+    </div>
+  </div>
+</body>

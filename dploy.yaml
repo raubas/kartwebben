@@ -1,0 +1,11 @@
+dev:
+    scheme: ftp
+    host: ftp.wahoo.se
+    port: 21
+    user: wahoo.se
+    pass: 4yW-Hx4-uP7-qUQ
+    check: true
+    slots: 2
+    path:
+        local: dist/
+        remote: dev/

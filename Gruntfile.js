@@ -15,26 +15,26 @@ module.exports = function(grunt) {
               }
         },
 
-        clean: ["prod", '.tmp'],
+        clean: ["dist", '.tmp'],
  
         copy: {
             main: {
                 expand: true,
                 cwd: 'dev/',
                 src: ['**', '!js/**', '!lib/**', '!**/*.css'],
-                dest: 'prod/'
+                dest: 'dist/'
             },
             shims: {
                 expand: true,
                 cwd: 'dev/js',
                 src: ['**'],
-                dest: 'prod/js/shims'
+                dest: 'dist/js/shims'
             }
         },
  
         rev: {
             files: {
-                src: ['prod/**/*.{js,css}', '!prod/js/shims/**']
+                src: ['dist/**/*.{js,css}', '!dist/js/**']
             }
         },
  
@@ -43,7 +43,7 @@ module.exports = function(grunt) {
         },
  
         usemin: {
-            html: ['prod/index.html']
+            html: ['dist/index.html']
         },
  
         uglify: {

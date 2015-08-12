@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="myApp">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0">
+    <meta name="keywords" content="">
+    <meta name="description" content="">
+    <title>Wahoo Development | Utvecklingsbyrå i Uppsala</title>
+    <meta property="og:title" content="">
+    <meta name="og:image" content="">
+    <meta property="og:description" content="">
+
+    <!-- bower:css -->
+    <link rel="stylesheet" href="../bower_components/bootstrap-css/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="../bower_components/vegas/dist/vegas.min.css" />
+    <link rel="stylesheet" href="../bower_components/nya-bootstrap-select/dist/css/nya-bs-select.css" />
+    <!-- endbower -->
+
+    <!-- css -->
+    <link rel="stylesheet" type="text/css" href="css/base.css">
+
+    <!-- bower:js -->
+    <script src="../bower_components/jquery/dist/jquery.js"></script>
+    <script src="../bower_components/angular/angular.js"></script>
+    <script src="../bower_components/parse-angular-patch/dist/parse-angular.js"></script>
+    <script src="../bower_components/bootstrap-css/js/bootstrap.min.js"></script>
+    <script src="../bower_components/vegas/dist/vegas.min.js"></script>
+    <script src="../bower_components/parse/parse.min.js"></script>
+    <script src="../bower_components/angular-animate/angular-animate.js"></script>
+    <script src="../bower_components/nya-bootstrap-select/dist/js/nya-bs-select.js"></script>
+    <script src="../bower_components/lodash/lodash.js"></script>
+    <script src="../bower_components/angular-google-maps/dist/angular-google-maps.js"></script>
+    <script src="../bower_components/angularjs-geolocation/src/geolocation.js"></script>
+    <script src="../bower_components/angular-bootstrap/ui-bootstrap-tpls.js"></script>
+    <script src="../bower_components/angular-ui-router/release/angular-ui-router.js"></script>
+    <!-- endbower -->
+
+    <!-- Javascript -->
+    <script src="../dev/js/app.js"></script>
+    <script src="../dev/js/controllers/uploadMapController.js"></script>
+
+    <!-- Init vegas -->
+    <script type="text/javascript">
+
+      $(function() {
+          $('body').vegas({
+              slides: [
+                  { src: '/dev/images/skylines_blur.jpg' }
+              ]
+          });
+      });
+    </script>
+
+</head>
+<body>
+	<div class="pagewrap">
+		<nav class="navbar navbar-default navbar-fixed-top" id="header" role="navigation">
+        
+          <div class="container-fluid">
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <div class="navbar-header" >
+              <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              <div>
+              	<a class="navbar-brand" href="/">Kartwebben</a>
+              </div>
+            </div>
+
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+            
+              <ul class="nav navbar-nav">
+                <li class="customers-nav"><a href="/dev/orientera.html">Orientera</a></li>
+                <li class="blog-nav"><a href="/dev/#">Kartor</a></li>
+              </ul>
+              <ul class="nav navbar-nav navbar-right">
+                  <li><a href="#" data-toggle="modal" data-target="#logoutModal" id="logout">Logga ut</a></li>
+                  <li><a href="/dev/inloggning.html">Logga in</a></li>
+              </ul>
+            </div><!-- /.navbar-collapse -->
+          </div><!-- /.container-fluid -->
+          
+        </nav>
+        <!-- **** Content **** -->
+        <div class="col-md-12 content">
+            <div class="top-divider">
+            </div>
+            <div class="col-md-8 col-md-offset-2" ng-controller="uploadMapCtrl">
+                <!-- Button trigger modal -->
+                <button type="button" id="addAreaButton"  class="btn btn-default" data-toggle="modal" data-target="#addAreaModal">Lägg till Område</button>
+                <!-- Modal -->
+                <div class="modal fade" id="addAreaModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+                  <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <h4 class="modal-title" id="myModalLabel">Lägg till Område</h4>
+                      </div>
+                      <div class="modal-body">
+                        <form>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label for="Areaname">Områdets namn</label>
+                                    <input type="text" class="form-control" required ng-model="area.name" placeholder="Namn" >
+                                </div>
+                                <div ng-bind="area.name">areanamn</div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label for="Mapname">Kartans namn</label>
+                                    <input type="text" class="form-control" required ng-model="map.name" placeholder="Namn" >
+                                </div>
+                                <div ng-bind="map.name">kartnamn</div>
+                            </div>
+                            <div class="col-md-4">
+                                <p>Välj Svårighetsgrad</p>
+                                <label class="radio-inline">
+                                  <input type="radio" name="levelRadio" ng-model="levelRadio" id="levelRadio1" value="1"> 1
+                                </label>
+                                <label class="radio-inline">
+                                  <input type="radio" name="levelRadio" ng-model="levelRadio" id="levelRadio2" value="2"> 2
+                                </label>
+                                <label class="radio-inline">
+                                  <input type="radio" name="levelRadio" ng-model="levelRadio" id="levelRadio3" value="3"> 3
+                                </label>
+                                <div ng-bind="levelRadio">Level</div>
+                            </div>
+                            <div class="col-md-4">
+                                <p>Ladda upp fil</p>
+                                <form class="dropzone" method="post" enctype="multipart/form-data" ng-dropzone dropzone="dropzone" dropzone-config="dropzoneConfig">
+                                    <input name="file" type="file"/>
+                                </form>
+                            </div>
+                            <div class="col-md-12">
+                              <p ng-model="error">{{error}}</p>
+                            </div>
+                        </div>
+                        </form>
+                      </div>
+                      <div class="modal-footer">
+                        <button class="btn btn-default" ng-disabled="expression" data-dismiss="modal">Stäng</button>
+                        <button ng-click="saveArea(area.name, map.name, levelRadio, file)" class="btn btn-primary" data-dismiss="modal">Lägg till</button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div ng-repeat="area in areas">
+                    <div class="panel-group" id="area-{{$index}}-parent" role="tablist" aria-multiselectable="true">
+                      <div class="panel panel-default">
+                        <div class="panel-heading" role="tab" id="area-{{$index}}-heading">
+                          <h4 class="panel-title">
+                            <a role="button" data-toggle="collapse" data-parent="#area-{{$index}}-parent" href="#area-{{$index}}" aria-expanded="true" aria-controls="area-{{$index}}">
+                              <p ng-bind="area.attributes.name">Område</p>
+                            </a>
+                          </h4>
+                        </div>
+                                                                        <!-- Remove in to collapse all -->
+                        <div id="area-{{$index}}" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="area-{{$index}}-heading">
+                          <div class="panel-body">
+                            <div class="col-md-12">
+                                <h4>Kartor</h4>
+                                <div ng-repeat="map in area.attributes.maps">
+                                    <div class="col-md-4">
+                                        <p ng-bind="map.attributes.name"></p>
+                                        <img ng-src="{{displayMap(map.attributes.file._url)}}" class="img-responsive" />
+                                    </div>
+                                </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="divider">
+        </div>
+       <!--  <div id="footer">
+            <nav class="navbar navbar-default " id="nav-footer">
+                <div class="container footer">
+                    <div class="row">
+                        <div class="col-xs-6 col-sm-8">
+                            <p class="navbar-text">
+                            <strong>Luleå&nbspKartförening</strong><br>
+                            Gata<br>
+                            Linje 2<br>
+                            Ort<br>
+                            <a href="mailto:info@kartforeningen.se">info@kartforeningen.se</a>
+                            </p>
+                        </div>
+                        <div class="col-xs-6 col-sm-4"  id="social">
+                            <div class="col-xs-6">
+                                <p>Text</p>
+                            </div>
+                            <div class="col-xs-6">
+                                <p>Text</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </nav>
+        </div> -->
+	</div>
+</body>
+
+
+
+
+
+
+
+
+
