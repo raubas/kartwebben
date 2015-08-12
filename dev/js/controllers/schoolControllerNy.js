@@ -1,67 +1,75 @@
-app.controller('schoolCtrl', function ($scope, uiGmapGoogleMapApi, geolocation, $filter){
-
-
-	//Initiate google map on Luleå
-	uiGmapGoogleMapApi.then(function (maps) {
-		$scope.map = { 	center: { latitude: 65.588946, longitude: 22.157324 },
-						zoom: 12,
-						control: {}
-						};
-		
-		//Focus on user location if enabled
-		geolocation.getLocation().then(function(data){
-			//Comment to get user location
-			//$scope.map = { center: { latitude: data.coords.latitude, longitude: data.coords.longitude }, zoom: 12};
-    	});
-	});
-
-	//Set varible to scope for a marker on the map
-	$scope.clickedLocation = {};
-	$scope.addSchool = {};
-	$scope.contactPerson = {};
-	$scope.showEdit = false;
-	// $scope.error = "";
+app.controller('schoolCtrl', function ($scope, uiGmapGoogleMapApi, mapService, markerService, scrollTo, $filter, $timeout){
 
 	//Config marker after click on map, updates coords for clickedlocation
 	$scope.addMarker = function (obj) {
 		//Set marker at clicked location
-		$scope.clickedLocation = { 	coords: { 	latitude: obj.latitude,
-																						longitude: obj.longitude },
-																options: { 	draggable: true,
-																						labelContent: 'Dra mig till rätt position!',
-							            									labelAnchor: "100 0",
-							            									labelClass: "marker-labels",
-							            									icon: '/dev/images/icons/fish.png' }
-															};
-		//Refresh map to see marker
-		$scope.map.control.refresh({ 	latitude: obj.latitude,
-																	longitude: obj.longitude 
-															});
+		var object = { 	lat: obj._latitude,
+						long: obj._longitude };
+		markerService.addDraggableMarker(object);
+		mapService.focusOnObjectLocation(object);
+
 		//Watch for new location
-		$scope.$watchCollection("clickedLocation.coords", function (newVal, oldVal) {
+		$scope.$watchCollection("draggableMarker.coords", function (newVal, oldVal) {
 		  if (_.isEqual(newVal, oldVal))
+		    console.log('lika');
 		    return;
 		});
-		$scope.addSchool.position = $scope.clickedLocation.coords;
 	};
 
 	$scope.addPositionToSchool = function () {
-		var obj = $scope.map.center;
-		$scope.addMarker(obj);
+		var map = mapService.getMap();
+		var obj = { lat: map.center.latitude,
+					long: map.center.longitude };
+		markerService.addDraggableMarker(obj);
 	}
 
-	$scope.markerClick = function(data){
-		var obj = { id: data.key };
-		obj[data.key] = true;
-		$scope.clickedMarker = obj;
-		console.log('marker click');
-		//Scroll to school
-		scrollTo.classId('rightbar', data.key);
+	//Listen for map click-events
+	var watchClick = function(){
+		$scope.$watch(function () {
+        	return mapService.listenForClick();
+    	}, function (oldValue, newValue) {
+			var object = mapService.listenForClick();
+			console.log(object);
+			if (object.key != null) {
+				var obj = { id: object.key };
+				obj[object.key] = true;
+				//Set open accordion
+				$scope.openAccordion = obj;
+				console.log($scope.openAccordion);
+				//Scroll to area
+				scrollTo.classId('rightbar', object.key);
+			};
+    	});
+	}
 
-	};
+	//Listen for when draggable marker moves
+	var watchDraggableMarker = function(){
+		$scope.$watch(function () {
+        	return markerService.getDraggableMarker();
+    	}, function (oldValue, newValue) {
+        	$scope.draggableMarker = markerService.getDraggableMarker();
+        	$scope.addSchool.position = $scope.draggableMarker.coords;
+        	console.log('marker moved');
+    	});
+	}
 
-	//Define array of markers
-	$scope.schoolMarkers = [];
+	var scrollToSchool = function(school){
+		//Set data object for markerClick-function
+		var dataObj = {key: school.id};
+		//Internal function to call markerclick after query + DOM-update
+		var runClickFunc = function (data){
+			if(data){
+				//Timeout to wait for DOM-update
+				$timeout(function(){
+					mapService.clickOnMarker(dataObj);
+					//Unregister scope.on-event
+					listenForRender();
+				}, 100);
+			}
+		};
+		//Register listener for when all elements are added to rightbar
+		var listenForRender = $scope.$on('newRendered', function(event, data) { runClickFunc(data); });
+	}
 
  	$scope.queryForSchools = function() {
  		var query = new Parse.Query("Schools");
@@ -69,55 +77,24 @@ app.controller('schoolCtrl', function ($scope, uiGmapGoogleMapApi, geolocation, 
 		query.find().then(function(result){
 			$scope.schools = result;
 	        angular.forEach(result, function(value, key){
-		        	//Nullcheck for position attribute due to fucked up db
-		        	if (value.attributes.position != null) {
-		        		//Check if marker already exists, if not - add to markers
-		        		if ($filter('filter')($scope.schoolMarkers, { id: value.id }, true)[0] == null ) {
-		        			//Set marker attributes from db
-		        			$scope.addMarkerToArray(value);
-		        		}
-		        	};
-		        });
+				//Nullcheck for position attribute due to fucked up db
+				if (value.attributes.position != null) {
+					//Push to map using service
+					markerService.addToSchoolMarkerArray(value);
+				};
+		    });
 	    });
  	}
  		
- 	$scope.addMarkerToArray = function(school) {
- 		var marker = {
- 			latitude: school.attributes.position._latitude,
- 			longitude: school.attributes.position._longitude,
- 			options: { 	labelContent: school.attributes.name,
- 									labelAnchor: "100 0" }
- 		};
- 		marker['id'] = school.id;
- 		//Push to array of markers
- 		$scope.schoolMarkers.push(marker);		
-
- 	}
-
- 	//Return url-string from parse-url
-	$scope.displayMap = function($url){
-		return $url;
-	}
 
 	//Function to place draggable marker for changing of school location
 	$scope.changeLocationOfSchool = function (school){
 		//Find current marker, delete from school markers and add draggable marker to map
-		var markerOfSchool = $filter('filter')($scope.schoolMarkers, { id: school.id }, true)[0];
-		$scope.schoolMarkers.splice($scope.schoolMarkers.indexOf(markerOfSchool), 1);
+		markerService.removeFromSchoolMarkerArray(school);
 		$scope.addMarker(school.attributes.position);
 	}
 
-	//Function to remove marker from map
-	function removeSchoolMarker (school){
-		//Find current marker, delete from school markers
-		var markerOfSchool = $filter('filter')($scope.schoolMarkers, { id: school.id }, true)[0];
-		$scope.schoolMarkers.splice($scope.schoolMarkers.indexOf(markerOfSchool), 1);
-	}
-
-	// Set var to collapse add new school.
-	$scope.newSchoolPanel = {
-				open: false
-			};
+	
 
 	$scope.saveNewSchool = function(school, contactPerson, newSchoolForm){
 		var School = Parse.Object.extend("Schools");
@@ -129,7 +106,7 @@ app.controller('schoolCtrl', function ($scope, uiGmapGoogleMapApi, geolocation, 
 		newContactPerson.set("email", $scope.contactPerson.email);
 
 		var school = new School();
-		var position = new Parse.GeoPoint($scope.addSchool.position);
+		var position = new Parse.GeoPoint($scope.draggableMarker.coords);
 		school.set("name", $scope.addSchool.schoolName);
 		school.set("position", position);
 		school.set("contactPerson", newContactPerson);
@@ -141,14 +118,17 @@ app.controller('schoolCtrl', function ($scope, uiGmapGoogleMapApi, geolocation, 
 		    		open: false
 		    	};
 			    
-			    $scope.addMarkerToArray(school);
+			    markerService.removeDraggableMarker();
+		    	markerService.addToSchoolMarkerArray(school);
+
 			    $scope.addSchool.schoolName = "";
 			    $scope.contactPerson.name = "";
 			    $scope.contactPerson.phoneNumber = "";
 			    $scope.contactPerson.email = "";
-			    $scope.clickedLocation = {};
+			    
 			    $scope.schools.push(school);
-			    // Reset form when its saved.
+			    
+			    scrollToSchool(school);
 			},
 			error: function(school, error) {
 				//alert('Failed to create new object, with error code: ' + error.message);
@@ -159,7 +139,7 @@ app.controller('schoolCtrl', function ($scope, uiGmapGoogleMapApi, geolocation, 
 
 	// Updates school postion, called from interface button.
 	$scope.updateSchool = function(school){
-		var position = new Parse.GeoPoint($scope.clickedLocation.coords);
+		var position = new Parse.GeoPoint($scope.draggableMarker.coords);
 		console.log(position);
 		if (position.latitude == 0) {
 
@@ -172,8 +152,9 @@ app.controller('schoolCtrl', function ($scope, uiGmapGoogleMapApi, geolocation, 
 		school.save(school, {
 			success: function(school) {
 				console.log('Uppdaterat skolan!');
-				$scope.clickedLocation = {};
-				$scope.addMarkerToArray(school);
+				markerService.removeDraggableMarker();
+		    	markerService.addToSchoolMarkerArray(school);
+				
 			},
 			error: function(school, error) {
 				//alert('Failed to create new object, with error code: ' + error.message);
@@ -190,7 +171,7 @@ app.controller('schoolCtrl', function ($scope, uiGmapGoogleMapApi, geolocation, 
 					  success: function(school) {
 					    // The object was deleted from the Parse Cloud.
 					    console.log('school och contactPerson deleted');
-					    removeSchoolMarker(school);
+					    markerService.removeFromSchoolMarkerArray(school);
 					    var schoolToDelete = $filter('filter')($scope.schools, { id: school.id }, true)[0];
 					    $scope.schools.splice($scope.schools.indexOf(schoolToDelete), 1);
 					  },
@@ -210,8 +191,19 @@ app.controller('schoolCtrl', function ($scope, uiGmapGoogleMapApi, geolocation, 
  		//Make queries
 	var init = function () {
 	   $scope.queryForSchools();
-	   // check if there is query in url
-	   // and fire search in case its value is not empty
+	   // Set var to collapse add new school.
+		$scope.newSchoolPanel = { open: false };
+		//Set which accordion is open
+		$scope.openAccordion = {};
+		//Set varible to scope for a marker on the map
+		$scope.addSchool = {};
+		$scope.contactPerson = {};
+		$scope.showEdit = false;
+		// $scope.error = "";
+
+	   	//Watch variables from map
+	   	watchClick();
+		watchDraggableMarker();
 	};
 
 	//Init function

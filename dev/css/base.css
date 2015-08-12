@@ -40,6 +40,46 @@ body, html{
 	background-color: rgba(255,255,255,1);
 }*/
 
+
+/* Angular change view animation */
+/* Have to set height explicity on ui-view 
+to prevent collapsing during animation*/
+.ui-view-container {
+  position: relative;
+  height: calc(100vh - 50px);
+  margin: 0;
+  padding: 0;
+}
+
+[ui-view].ng-enter {
+  position: absolute;
+  left: 0;
+  right: 0;
+  -webkit-transition:all 1s ease-in;
+    -moz-transition:all 1s ease-in;
+    -o-transition:all 1s ease-in;
+    transition:all 1s ease-in;
+}
+
+[ui-view].ng-leave {
+  position: absolute;
+  left: 0;
+  right: 0;
+  -webkit-transition:all 1s ease-out;
+    -moz-transition:all 1s ease-out;
+    -o-transition:all 1s ease-out;
+    transition:all 1s ease-out;
+}
+
+[ui-view].ng-enter-active {
+  opacity: 1;
+}
+
+[ui-view].ng-leave-active {
+  opacity: 0;
+}
+/* Angular change view animation stop */
+
 .rightbar{
 	height: calc(100vh - 50px);
     margin: 0;

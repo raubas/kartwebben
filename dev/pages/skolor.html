@@ -28,7 +28,7 @@
         </form>
       </div>
     </accordion-group>
-    <accordion-group heading="{{school.attributes.name}}" ng-repeat="school in schools" is-open="clickedMarker[area.id]" class="barpanel">
+    <accordion-group heading="{{school.attributes.name}}" ng-repeat="school in schools" is-open="openAccordion[school.id]" class="barpanel" id="{{ school.id }}" emit-when="{event: 'newRendered', condition: $last}">
       <div class="col-md-12">
         <button class="btn btn-default" ng-click="updateSchool(school)">Spara!</button>
         <button class="btn btn-default" ng-click="deleteSchool(school)">Delete!</button>

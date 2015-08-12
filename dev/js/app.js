@@ -1,7 +1,7 @@
 Parse.initialize("6xK5z0dd13fPSziUDvcLiZTEqjkRc5qQais6zUSo", "dgHEctNMXBRjHFAYSSBZ7nnLfbuI46NSQEronPP8");
 var app = angular.module('myApp', ['ngAnimate', 'parse-angular','nya.bootstrap.select', 'uiGmapgoogle-maps', 'geolocation', 'ui.bootstrap', 'ui.router']);
 
-app.run(function($rootScope, $location) {
+app.run(function($rootScope, $location, $state) {
  	
  	//Log out user for dev purposes
     //Parse.User.logOut();
@@ -9,6 +9,17 @@ app.run(function($rootScope, $location) {
  	//Save user to rootscope
     $rootScope.sessionUser = Parse.User.current();
 
+   //  $rootScope.$on('$stateChangeStart', function(e, to) {
+   //  if (!angular.isFunction(to.data.rule)) return;
+   //  var result = to.data.rule(Parse.User.current());
+
+   //  if (result && result.to) {
+   //    e.preventDefault();
+   //    // Optionally set option.notify to false if you don't want 
+   //    // to retrigger another $stateChangeStart event
+   //    $state.go(result.to, result.params, {notify: false});
+   //  }
+  	// });
 });
 
 app.config(function(uiGmapGoogleMapApiProvider) {
@@ -18,6 +29,18 @@ app.config(function(uiGmapGoogleMapApiProvider) {
         libraries: ''
     });
 });
+
+app.config(function($stateProvider) {
+  	$stateProvider.state('privatePage', {
+		data: {
+			rule: function(user) {
+					console.log(user);
+					return;
+				}
+		}
+	});
+ });
+
 
 app.config(function($stateProvider, $urlRouterProvider) {
     
@@ -159,8 +182,12 @@ app.service('mapService', function(){
 	var clickOnMarker = function(object){
 		if (object != null) {
 			clickedMarker = object;
-			return clickedMarker;
+			console.log('click');
 		};
+	}
+
+	//Register listener for click-events
+	var listenForClick = function(){
 		if (clickedMarker != null) {
 			return clickedMarker;
 		};
@@ -172,7 +199,8 @@ app.service('mapService', function(){
 	    focusOnParseLocation: focusOnParseLocation,
 	    focusOnObjectLocation: focusOnObjectLocation,
 	    focusOnLocation: focusOnLocation,
-	    clickOnMarker: clickOnMarker
+	    clickOnMarker: clickOnMarker,
+	    listenForClick: listenForClick
 
 	};
 
@@ -244,6 +272,14 @@ app.service('markerService', function ($filter){
 		}
   	};
 
+  	var removeFromSchoolMarkerArray = function(object){
+		//Find current marker, delete from school markers
+		var schoolInMarkerArray = $filter('filter')(schoolMarkers, { id: object.id }, true)[0];
+		if (schoolInMarkerArray) {
+			schoolMarkers.splice(schoolMarkers.indexOf(schoolInMarkerArray), 1);
+		};
+	};
+
   	var getSchoolMarkerArray = function(){
   		return schoolMarkers;
   	}
@@ -256,7 +292,8 @@ app.service('markerService', function ($filter){
 		getAreaMarkerArray: getAreaMarkerArray,
 		removeFromAreaMarkerArray: removeFromAreaMarkerArray,
 		addToSchoolMarkerArray: addToSchoolMarkerArray,
-		getSchoolMarkerArray: getSchoolMarkerArray
+		getSchoolMarkerArray: getSchoolMarkerArray,
+		removeFromSchoolMarkerArray: removeFromSchoolMarkerArray
 	};
 
 });

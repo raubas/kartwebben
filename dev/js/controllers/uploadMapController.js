@@ -1,10 +1,5 @@
 app.controller('uploadMapCtrl', function ($scope, $filter, uiGmapGoogleMapApi, mapService, markerService, scrollTo, $timeout){
 
-	//Set varible to scope for a marker on the map
-	$scope.addArea = {};
-	$scope.newMap = {};
-
-	console.log('laddad');
 
 	//Config marker after click on map, updates coords for clickedlocation
 	$scope.addMarker = function (obj) {
@@ -23,6 +18,7 @@ app.controller('uploadMapCtrl', function ($scope, $filter, uiGmapGoogleMapApi, m
 		
 	};
 
+	//Place draggable marker on map
 	$scope.addPositionToArea = function () {
 		var map = mapService.getMap();
 		var obj = { lat: map.center.latitude,
@@ -30,32 +26,24 @@ app.controller('uploadMapCtrl', function ($scope, $filter, uiGmapGoogleMapApi, m
 		markerService.addDraggableMarker(obj);
 	}
 
-	// $scope.markerClick = function(data){
-	// 	var obj = { id: data.key };
-	// 	obj[data.key] = true;
-	// 	$scope.clickedMarker = obj;
-	// 	console.log('marker click');
-	// 	//Scroll to area
-	// 	scrollTo.classId('rightbar', data.key);
-
-	// };
-
-	//Listen for map events
+	//Listen for map click-events
 	var watchClick = function(){
 		$scope.$watch(function () {
-        	return mapService.clickOnMarker();
+        	return mapService.listenForClick();
     	}, function (oldValue, newValue) {
-			if (newValue.key != null) {
-				var obj = { id: newValue.key };
-				obj[newValue.key] = true;
+			var object = mapService.listenForClick();
+			if (object.key != null) {
+				var obj = { id: object.key };
+				obj[object.key] = true;
 				//Set open accordion
 				$scope.openAccordion = obj;
 				//Scroll to area
-				scrollTo.classId('rightbar', newValue.key);
+				scrollTo.classId('rightbar', object.key);
 			};
     	});
 	}
 
+	//Listen for when draggable marker moves
 	var watchDraggableMarker = function(){
 		$scope.$watch(function () {
         	return markerService.getDraggableMarker();
@@ -64,6 +52,24 @@ app.controller('uploadMapCtrl', function ($scope, $filter, uiGmapGoogleMapApi, m
         	$scope.addArea.position = $scope.draggableMarker.coords;
         	console.log('marker moved');
     	});
+	}
+
+	var scrollToArea = function(area){
+		//Set data object for markerClick-function
+		var dataObj = {key: area.id};
+		//Internal function to call markerclick after query + DOM-update
+		var runClickFunc = function (data){
+			if(data){
+				//Timeout to wait for DOM-update
+				$timeout(function(){
+					mapService.clickOnMarker(dataObj);
+					//Unregister scope.on-event
+					listenForRender();
+				}, 100);
+			}
+		};
+		//Register listener for when all elements are added to rightbar
+		var listenForRender = $scope.$on('newRendered', function(event, data) { runClickFunc(data); });
 	}
 
 
@@ -94,16 +100,9 @@ app.controller('uploadMapCtrl', function ($scope, $filter, uiGmapGoogleMapApi, m
 	//Function to place draggable marker for changing of areas location
 	$scope.changeLocationOfArea = function (area){
 		//Find current marker, delete from area markers and add draggable marker to map
-		console.log(area);
 		markerService.removeFromAreaMarkerArray(area);
 		$scope.addMarker(area.attributes.position);
 	}
-
-
-	// Set var to collapse add new area.
-	$scope.newAreaPanel = {
-				open: false
-			};
 
 	// Saves the new area without any maps.
 	$scope.saveNewArea = function(){
@@ -124,10 +123,10 @@ app.controller('uploadMapCtrl', function ($scope, $filter, uiGmapGoogleMapApi, m
 		    	markerService.removeDraggableMarker();
 		    	markerService.addToAreaMarkerArray(area);
 
-			    $scope.clickedLocation = {};
 			    $scope.areas.push(area);
 			    $scope.addArea.areaName = "";
-			    // Reset form when its saved.
+			    
+			    scrollToArea(area);
 			},
 			error: function(area, error) {
 				//alert('Failed to create new object, with error code: ' + error.message);
@@ -180,32 +179,11 @@ app.controller('uploadMapCtrl', function ($scope, $filter, uiGmapGoogleMapApi, m
 		// Kankse inte ska vara null här utan area? men det verkar updatera rätt så kanske inte...
 		area.save(null, {
 			success: function(area) {
-				console.log('sparad area');
-				// Close panel 
-				  $scope.newAreaPanel = {
-			    		open: false
-			    	};
-			    //Set data object for markerClick-function
-			    var dataObj = {key: area.id};
-			    //Internal function to call markerclick after query + DOM-update
-			    var runClickFunc = function (data){
-			    	if(data){
-			    		//Timeout to wait for DOM-update
-			    		$timeout(function(){
-			    			$scope.markerClick(dataObj);
-			    			//Unregister scope.on-event
-			    			listenForRender();
-			    		}, 1000);
-			    	}
-			    };
-			    //Register listener for when all elements are added to rightbar
-			    var listenForRender = $scope.$on('newRendered', function(event, data) { runClickFunc(data); });
-			    
-			    // Reset form when its saved.
+				console.log('sparad karta');
 			},
 			error: function(area, error) {
 				//alert('Failed to create new object, with error code: ' + error.message);
-				console.log('error area');
+				console.log('error karta');
 			}
 		});
 	} 
@@ -270,10 +248,19 @@ app.controller('uploadMapCtrl', function ($scope, $filter, uiGmapGoogleMapApi, m
 
 	//Init controller
 	var init = function () {
+		//Add area form object
+		$scope.addArea = {};
+		//New map upload
+		$scope.newMap = {};
+		// Set var to collapse add new area.
+		$scope.newAreaPanel = { open: false };
+		//Set which accordion is open
 		$scope.openAccordion = {};
-		watchClick();
-		watchDraggableMarker();
+		//Query for areas
 	   	$scope.queryForAreas();
+	   	//Watch variables from map
+	   	watchClick();
+		watchDraggableMarker();
 	};
 
 	//Init function

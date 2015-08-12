@@ -53,9 +53,10 @@
         <nav ng-include="'/dev/components/navbar.html'" ng-controller="navCtrl" class="navbar navbar-default navbar-fixed-top" id="header" role="navigation"></nav>
 
         <!-- Page content goes here -->
-        <div class="content" ui-view=>
-           
-        </div>        
+        <div class="ui-view-container">
+            <div class="content" ui-view=>
+            </div>
+        </div>
 	</div>
 </body>
 

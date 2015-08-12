@@ -33,15 +33,16 @@ app.controller('findMapsCtrl', function ($scope, $modal, $filter, mapService, ma
 	//Listen for map events
 	var watchClick = function(){
 		$scope.$watch(function () {
-        	return mapService.clickOnMarker();
+        	return mapService.listenForClick();
     	}, function (oldValue, newValue) {
-			if (newValue.key != null) {
-				var obj = { id: newValue.key };
-				obj[newValue.key] = true;
+			var object = mapService.listenForClick();
+			if (object.key != null) {
+				var obj = { id: object.key };
+				obj[object.key] = true;
 				//Set open accordion
 				$scope.openAccordion = obj;
 				//Scroll to area
-				scrollTo.classId('rightbar', newValue.key);
+				scrollTo.classId('rightbar', object.key);
 			};
     	});
 	}
