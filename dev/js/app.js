@@ -1,25 +1,30 @@
 Parse.initialize("6xK5z0dd13fPSziUDvcLiZTEqjkRc5qQais6zUSo", "dgHEctNMXBRjHFAYSSBZ7nnLfbuI46NSQEronPP8");
 var app = angular.module('myApp', ['ngAnimate', 'parse-angular','nya.bootstrap.select', 'uiGmapgoogle-maps', 'geolocation', 'ui.bootstrap', 'ui.router']);
 
-app.run(function($rootScope, $location, $state) {
+app.run(function ($rootScope, $location, $state, userManagement) {
  	
  	//Log out user for dev purposes
     //Parse.User.logOut();
- 	
+ 	userManagement.userState();
+
  	//Save user to rootscope
     $rootScope.sessionUser = Parse.User.current();
 
-   //  $rootScope.$on('$stateChangeStart', function(e, to) {
-   //  if (!angular.isFunction(to.data.rule)) return;
-   //  var result = to.data.rule(Parse.User.current());
-
-   //  if (result && result.to) {
-   //    e.preventDefault();
-   //    // Optionally set option.notify to false if you don't want 
-   //    // to retrigger another $stateChangeStart event
-   //    $state.go(result.to, result.params, {notify: false});
-   //  }
-  	// });
+    $rootScope.$on('$stateChangeStart', function(event, toState) {
+	    // don't check auth on login routes
+        console.log(toState);
+        if (toState.name == "divided.orientera" || toState.name == "span.ovningar") {
+        	console.log('tillåten sida');
+        } else {
+        	console.log('förbjuden sida');
+            if (!userManagement.userState()) {
+                console.log('inne');
+                event.preventDefault();
+                //$state.go('divided.orientera');
+                return;
+            }
+        }
+  	});
 });
 
 app.config(function(uiGmapGoogleMapApiProvider) {
@@ -29,17 +34,6 @@ app.config(function(uiGmapGoogleMapApiProvider) {
         libraries: ''
     });
 });
-
-app.config(function($stateProvider) {
-  	$stateProvider.state('privatePage', {
-		data: {
-			rule: function(user) {
-					console.log(user);
-					return;
-				}
-		}
-	});
- });
 
 
 app.config(function($stateProvider, $urlRouterProvider) {
@@ -104,28 +98,25 @@ app.config(function($stateProvider, $urlRouterProvider) {
         	templateUrl: 'pages/ovningar.html',
         })
 
-
-
-    $urlRouterProvider.otherwise('/divided/orientera');
+	$urlRouterProvider.otherwise('/divided/orientera');
  
 });
 
-app.service('userManagement', function($rootScope){
+app.service('userManagement', function($rootScope, $state){
 	this.logIn = function(username, password){
 		console.log(username + ' : ' + password);
 		Parse.User.logIn(username, password, {
 		  success: function(user) {
 		    // Do stuff after successful login.
 		    console.log('login!');
-		    $rootScope.sessionUser = Parse.User.current();
-		    $rootScope.$broadcast('userState', { user: Parse.User.current() } );
+		    broadCastState();
+		    $state.go('divided.orientera');
 		    return;
 		  },
 		  error: function(user, error) {
 		    // The login failed. Check error to see why.
 		    console.log('ojoj!');
-		    $rootScope.sessionUser = Parse.User.current();
-		    $rootScope.$broadcast('userState', { user: Parse.User.current() } );
+		    broadCastState();
 		    return;
 		  }
 		});
@@ -134,9 +125,28 @@ app.service('userManagement', function($rootScope){
 	this.logOut = function(){
 		console.log('logut!');
 		Parse.User.logOut();
+		$state.go('divided.orientera');
+		broadCastState();
+		return;
+	}
+
+	this.userState = function(){
+		var currentUser = Parse.User.current();
+		console.log(currentUser);
+		if (currentUser) {
+			console.log('sann');
+			broadCastState();
+    		return true;
+		} else {
+			console.log('falsk');
+			broadCastState();
+    		return false;
+		}
+	}
+
+	var broadCastState = function(){
 		$rootScope.sessionUser = Parse.User.current();
 		$rootScope.$broadcast('userState', { user: Parse.User.current() } );
-		return;
 	}
 	
 });
