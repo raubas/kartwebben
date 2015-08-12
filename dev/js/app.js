@@ -73,7 +73,36 @@ app.service('userManagement', function($rootScope){
 	
 });
 
+app.service('mapService', function() {
+  var productList = [];
 
+  var addDraggablePin = function(newObj) {
+      productList.push(newObj);
+  };
+
+  var removeDraggablePin = function(){
+      return productList;
+  };
+
+  var addToMarkerArray = function(){
+      return productList;
+  };
+
+  var removeFromMarkerArray = function(){
+      return productList;
+  };
+
+  var addDraggablePin = function() {
+      productList.push(newObj);
+  };
+
+  
+  return {
+    addProduct: addProduct,
+    getProducts: getProducts
+  };
+
+});
 
 app.directive('emitWhen', function () {
     return {
