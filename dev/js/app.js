@@ -24,29 +24,66 @@ app.config(function($stateProvider, $urlRouterProvider) {
     $urlRouterProvider.otherwise('/');
  
     $stateProvider
-        .state('start', {
-            url:'/',
-            views: {
-            	map:{
+        .state('divided', {
+        	url: '/divided',
+        	templateUrl: 'components/divided.html'
+        })
+
+        .state('divided.orientera', {
+        	url: '/orientera',
+    		views: { 
+        		'map' : {
             		templateUrl: 'components/map.html',
 	            	controller: 'mapCtrl'
             	},
-            	content:{
-	            	templateUrl: 'pages/start.html',
+	            'list' : {
+	            	templateUrl: 'pages/orientera.html',
 	            	controller: 'findMapsCtrl'
 	            }
-	        }
-        });
-        // .state('kartor', {
-        //     url:'/kartor',
-        //     templateUrl: 'pages/kartor.html',
-        //     controller: 'uploadMapCtrl'
-        // })
-        // .state('skolor', {
-        //     url:'/skolor',
-        //     templateUrl: 'pages/skolor.html',
-        //     controller: 'schoolCtrl'
-        // });
+	        } 
+        })
+
+        .state('divided.skolor', {
+        	url: '/skolor',
+    		views: { 
+        		'map' : {
+            		templateUrl: 'components/map.html',
+	            	controller: 'mapCtrl'
+            	},
+	            'list' : {
+	            	templateUrl: 'pages/skolor.html',
+	            	controller: 'schoolCtrl'
+	            }
+	        } 
+        })
+
+        .state('divided.kartor', {
+        	url: '/kartor',
+    		views: { 
+        		'map' : {
+            		templateUrl: 'components/map.html',
+	            	controller: 'mapCtrl'
+            	},
+	            'list' : {
+	            	templateUrl: 'pages/kartor.html',
+	            	controller: 'uploadMapCtrl'
+	            }
+	        } 
+        })
+
+        .state('span', {
+        	url:'/span',
+        	templateUrl: 'components/span.html',
+        })
+
+        .state('span.traning', {
+        	url:'/traning',
+        	templateUrl: 'components/ovning.html',
+        })
+
+
+
+    $urlRouterProvider.otherwise('/divided/orientera');
  
 });
 

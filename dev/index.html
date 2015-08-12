@@ -14,7 +14,6 @@
     <link rel="stylesheet" href="../bower_components/bootstrap-css/css/bootstrap.min.css" />
     <link rel="stylesheet" href="../bower_components/vegas/dist/vegas.min.css" />
     <link rel="stylesheet" href="../bower_components/nya-bootstrap-select/dist/css/nya-bs-select.css" />
-    <link rel="stylesheet" href="../bower_components/dropzone/downloads/css/dropzone.css" />
     <!-- endbower -->
 
     <!-- css -->
@@ -31,7 +30,6 @@
     <script src="../bower_components/nya-bootstrap-select/dist/js/nya-bs-select.js"></script>
     <script src="../bower_components/lodash/lodash.js"></script>
     <script src="../bower_components/angular-google-maps/dist/angular-google-maps.js"></script>
-    <script src="../bower_components/dropzone/downloads/dropzone.min.js"></script>
     <script src="../bower_components/angularjs-geolocation/src/geolocation.js"></script>
     <script src="../bower_components/angular-bootstrap/ui-bootstrap-tpls.js"></script>
     <script src="../bower_components/angular-ui-router/release/angular-ui-router.js"></script>
@@ -55,15 +53,9 @@
         <nav ng-include="'/dev/components/navbar.html'" ng-controller="navCtrl" class="navbar navbar-default navbar-fixed-top" id="header" role="navigation"></nav>
 
         <!-- Page content goes here -->
-        <div class="content">
-            <div class="col-md-8">
-                <div ui-view="map"></div>
-            </div>
-            <div class="col-md-4">
-                <div ui-view="content"></div>
-            </div>
-        </div>
-        
+        <div class="content" ui-view=>
+           
+        </div>        
 	</div>
 </body>
 
