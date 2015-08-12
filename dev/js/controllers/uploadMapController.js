@@ -146,6 +146,7 @@ app.controller('uploadMapCtrl', function ($scope, $filter, uiGmapGoogleMapApi, s
 		    	$scope.addMarkerToArray(area);
 			    $scope.clickedLocation = {};
 			    $scope.areas.push(area);
+			    $scope.addArea.areaName = "";
 			    // Reset form when its saved.
 			},
 			error: function(area, error) {
