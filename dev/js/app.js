@@ -119,21 +119,61 @@ app.service('userManagement', function($rootScope){
 });
 
 app.service('mapService', function(){
+	//Config map
 	var map = 	{ 	center: { latitude: 65.588946, longitude: 22.157324 },
 					zoom: 12,
 					pan: {val: true}
 				};
+	var clickedMarker = {};
+
+	//Get map
 	var getMap = function(){
 		return map;
 	};
 
-	var focusOnLocation = function(object){
-		
-
+	//Takes Parse object with location
+	var focusOnParseLocation = function(object){
+		map = { center: { 	latitude: object.attributes.position._latitude,
+							longitude: object.attributes.position._longitude },
+				zoom: 12 };
+		focusOnLocation(map);
 	}
 
+	//Takes object with { lat, long }
+	var focusOnObjectLocation = function(object){
+		map = { center: { 	latitude: object.lat,
+							longitude: object.long },
+				zoom: 12 };
+		focusOnLocation(map);
+	}
+
+	//Listener for map focus events
+	var focusOnLocation = function(mapObject){
+		if (mapObject != null) {
+			map = mapObject;
+		};
+		return map;
+	}
+
+	//Register click-events on markers
+	var clickOnMarker = function(object){
+		if (object != null) {
+			clickedMarker = object;
+			return clickedMarker;
+		};
+		if (clickedMarker != null) {
+			return clickedMarker;
+		};
+	}
+
+	//Expose functions to controllers
 	return {
-	    getMap: getMap
+	    getMap: getMap,
+	    focusOnParseLocation: focusOnParseLocation,
+	    focusOnObjectLocation: focusOnObjectLocation,
+	    focusOnLocation: focusOnLocation,
+	    clickOnMarker: clickOnMarker
+
 	};
 
 });
@@ -141,15 +181,32 @@ app.service('mapService', function(){
 app.service('markerService', function ($filter){
 	var areaMarkers = [];
 	var schoolMarkers = [];
+	var draggableMarker = {};
 
-	var addDraggablePin = function(newObj) {
-	  
-	  productList.push(newObj);
+	var addDraggableMarker = function(object) {
+		draggableMarker = 	{	coords: { 	latitude: object.lat,
+											longitude: object.long },
+								options: { 	draggable: true,
+											labelContent: 'Dra mig till rätt position!',
+							    			labelAnchor: "100 0",
+											labelClass: "marker-labels",
+											icon: '/dev/images/icons/fish.png' }
+							};
 	};
 
-	var removeDraggablePin = function(){
-	  return productList;
+	var removeDraggableMarker = function(){
+	  return draggableMarker = {};
 	};
+
+	var getDraggableMarker = function(object){
+		if (object != null) {
+			draggableMarker = object;
+			return draggableMarker;
+		};
+		if (draggableMarker != null) {
+			return draggableMarker;
+		};
+	}
 
 	var addToAreaMarkerArray = function(object){
 		if ($filter('filter')(areaMarkers, { id: object.id }, true)[0] == null ) {
@@ -163,8 +220,12 @@ app.service('markerService', function ($filter){
 		}
 	};
 
-	var removeFromAreaMarkerArray = function(){
-
+	var removeFromAreaMarkerArray = function(object){
+		//Find current marker, delete from area markers
+		var areaInMarkerArray = $filter('filter')(areaMarkers, { id: object.id }, true)[0];
+		if (areaInMarkerArray) {
+			areaMarkers.splice(areaMarkers.indexOf(areaInMarkerArray), 1);
+		};
 	};
 
 	var getAreaMarkerArray = function(){
@@ -187,12 +248,16 @@ app.service('markerService', function ($filter){
   		return schoolMarkers;
   	}
   
-  return {
-    addToAreaMarkerArray: addToAreaMarkerArray,
-    getAreaMarkerArray: getAreaMarkerArray,
-    addToSchoolMarkerArray: addToSchoolMarkerArray,
-    getSchoolMarkerArray: getSchoolMarkerArray
-  };
+	return {
+		addDraggableMarker: addDraggableMarker,
+		removeDraggableMarker: removeDraggableMarker,
+		getDraggableMarker: getDraggableMarker,
+		addToAreaMarkerArray: addToAreaMarkerArray,
+		getAreaMarkerArray: getAreaMarkerArray,
+		removeFromAreaMarkerArray: removeFromAreaMarkerArray,
+		addToSchoolMarkerArray: addToSchoolMarkerArray,
+		getSchoolMarkerArray: getSchoolMarkerArray
+	};
 
 });
 
@@ -214,11 +279,15 @@ app.factory('scrollTo', function (){
 	return {
 		classId: function(container, anchor){
 		    var element = angular.element('#'+anchor);
-		    angular.element('.'+container).animate({scrollTop: element.offset().top}, "slow");
+		    if (element[0]) {
+		    	angular.element('.'+container).animate({scrollTop: element.offset().top}, "slow");
+		    };
 		},
 		idClass: function(container, anchor){
 			var element = angular.element('.'+anchor);
-		    angular.element('#'+container).animate({scrollTop: element.offset().top}, "slow");
+			if (element[0]) {
+				angular.element('#'+container).animate({scrollTop: element.offset().top}, "slow");
+			};
 		}
 	};
 });

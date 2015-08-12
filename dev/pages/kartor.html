@@ -19,7 +19,7 @@
         </form>
       </div>
     </accordion-group>
-    <accordion-group heading="{{area.attributes.name}}" ng-repeat="area in areas" is-open="clickedMarker[area.id]" class="barpanel" id="{{ area.id }}" emit-when="{event: 'newRendered', condition: $last}">
+    <accordion-group heading="{{area.attributes.name}}" ng-repeat="area in areas" is-open="openAccordion[area.id]" class="barpanel" id="{{ area.id }}" emit-when="{event: 'newRendered', condition: $last}">
       <div class="col-md-12">
         <button class="btn btn-default" ng-click="updateAreaPosition(area)">Spara!</button>
         <button class="btn btn-default" ng-click="deleteArea(area)">Ta bort område + kartor!</button>
