@@ -99,9 +99,9 @@ app.config(function($stateProvider, $urlRouterProvider) {
         	templateUrl: 'components/span.html',
         })
 
-        .state('span.traning', {
-        	url:'/traning',
-        	templateUrl: 'components/ovning.html',
+        .state('span.ovningar', {
+        	url:'/ovningar',
+        	templateUrl: 'pages/ovningar.html',
         })
 
 
