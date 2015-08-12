@@ -15,9 +15,6 @@ app.controller('findMapsCtrl', function ($scope, $modal, $filter, mapService, ma
 		//Save areas to scope
 		$scope.areas = result;
 	});
-
-	//Define array of markers
-	$scope.schoolMarkers = [];
 	
 	//Get schools from db
 	var query = new Parse.Query("Schools");
@@ -32,35 +29,29 @@ app.controller('findMapsCtrl', function ($scope, $modal, $filter, mapService, ma
 		$scope.schools = result;
 	});
 
-	//Needs some work, broadcast perhaps?
-	$scope.markerClick = function(data){
-		var obj = { id: data.key };
-		obj[data.key] = true;
-		$scope.clickedMarker = obj;
-		console.log(data);
-		//Scroll to area
-		scrollTo.classId('rightbar', data.key);
-
-	};
+	
+	//Listen for map events
+	var watchClick = function(){
+		$scope.$watch(function () {
+        	return mapService.clickOnMarker();
+    	}, function (oldValue, newValue) {
+			if (newValue.key != null) {
+				var obj = { id: newValue.key };
+				obj[newValue.key] = true;
+				//Set open accordion
+				$scope.openAccordion = obj;
+				//Scroll to area
+				scrollTo.classId('rightbar', newValue.key);
+			};
+    	});
+	}
 
 	$scope.displayMap = function($url){
 		return $url;
 	}
 
 	$scope.focusOnSchool = function(school){
-		$scope.map = { 	center: { 	latitude: school.attributes.position._latitude,
-									longitude: school.attributes.position._longitude },
-						zoom: 12 };
-		$scope.choosenSchool = { 	coords: { 	latitude: school.attributes.position._latitude,
-												longitude: school.attributes.position._longitude },
-									key: school.id,
-									options: {	labelContent: school.attributes.name,
-            									labelAnchor: "100 0",
-            									labelClass: "marker-labels",
-            									icon: '/dev/images/icons/fish.png'
-											}
-								};
-		console.log(school.id);
+		mapService.focusOnParseLocation(school);
 	}
 
 	//Open modal for preview
@@ -96,54 +87,19 @@ app.controller('findMapsCtrl', function ($scope, $modal, $filter, mapService, ma
 	    });
 	}; 
 
-	// $scope.difficulties = { 'one' : {name:'Åk 1', number:'1'},
-	// 						'two' : {name:'Åk 2', number:'2'},
-	// 						'three' : {name:'Åk 3', number:'3'}};
-	
-	// $scope.setSchool = function ($school) {
-	// 	$scope.activeSchool = $school;
-	// }
+		//Init controller
+	var init = function () {
+		$scope.openAccordion = {};
+		watchClick();
+	};
 
-	// $scope.findAreas = function ($difficulty){
-	// 	$scope.activeDifficulty = $difficulty;
-	// 	// var Area = Parse.Object.extend("Areas");
-	// 	// var query = new Parse.Query(Area);
-	// 	// query.containedIn("schools", ["57ibFeJ5PN"]);
-	// 	// query.include("Maps");
-	// 	// query.find().then(function(result){
-	// 	// 	$scope.areas = result;
-	// 	// 	$scope.findMaps(result);
-	// 	// 	console.log(result);
-	// 	// });
+	//Init function
+	init();
 
-	// 	//var School = Parse.Object.extend("ContactPerson");
-	// 	var schoolQuery = new Parse.Query("Schools");
-	// 	schoolQuery.equalTo("name", $scope.activeSchool.attributes.name);
-	// 	schoolQuery.include("areas", "areas.maps");
-	// 	schoolQuery.first().then(function(result){
-	// 		$scope.choosenSchool = result;
-	// 		console.log(result);
-	// 	});
-	// }
+	//Remove watchers when view is unloaded
+	$scope.$on("$destroy", function(){
+        watchClick();
+    });
 
-	// $scope.findMaps = function($areas){
-	// 	//console.log($areas);
-	// 	$scope.mapsForSearch = [];
-	// 	angular.forEach($areas, function(value, key){
-	// 		angular.forEach(value.attributes.maps, function(value, key){
-	// 			$scope.mapsForSearch.push(value);
-	// 		})
-	// 	});
-	// 	var query = new Parse.Query("Maps");
-	// 	query.containedIn("objectId", $scope.mapsForSearch);
-	// 	query.find().then(function(result){
-	// 		$scope.maps = result;
-	// 		$scope.displayMaps();
-	// 	});
-	// }
-
-	// $scope.displayMap = function($url){
-	// 	return $url;
-	// }
 
 });

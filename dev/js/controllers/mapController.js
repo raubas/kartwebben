@@ -10,13 +10,16 @@ app.controller('mapCtrl', function ($scope, uiGmapGoogleMapApi, geolocation, map
 			//$scope.map = { center: { latitude: data.coords.latitude, longitude: data.coords.longitude }, zoom: 12};
     	});
 	});
+	
 
 	$scope.markerprops = { 	school: { url: '/dev/images/icons/fish.png'},
 							area: 	{ url: '/dev/images/icons/pin.png'}};
 
 	$scope.areaMarkers = markerService.getAreaMarkerArray();
 	$scope.schoolMarkers = markerService.getSchoolMarkerArray();
+	$scope.draggableMarker = markerService.getDraggableMarker();
 
+	//Listen for map events
 	var watchMap = function(){
 		$scope.$watch(function () {
         	return mapService.focusOnLocation();
@@ -25,14 +28,27 @@ app.controller('mapCtrl', function ($scope, uiGmapGoogleMapApi, geolocation, map
     	});
 	}
 
-	$scope.markerClick = function(data){
-		var obj = { id: data.key };
-		obj[data.key] = true;
-		$scope.clickedMarker = obj;
-		console.log(data);
-		//Scroll to area
-		//scrollTo.classId('rightbar', data.key);
+	var watchDraggableMarker = function(){
+		$scope.$watch(function () {
+        	return markerService.getDraggableMarker();
+    	}, function (oldValue, newValue) {
+        	$scope.draggableMarker = markerService.getDraggableMarker();
+    	});
+	}
 
+	$scope.markerClick = function(data){
+		mapService.clickOnMarker(data);
 	};
+
+	//Init controller
+	var init = function () {
+	   watchMap();
+	   watchDraggableMarker();
+	   // check if there is query in url
+	   // and fire search in case its value is not empty
+	};
+
+	//Init function
+	init();
 
 });

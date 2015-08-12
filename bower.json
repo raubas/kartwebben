@@ -10,7 +10,6 @@
     "angular-animate": "~1.4.2",
     "nya-bootstrap-select": "~2.0.10",
     "angular-google-maps": "~2.1.5",
-    "dropzone": "~4.0.1",
     "angularjs-geolocation": "~0.1.1",
     "angular-bootstrap": "~0.13.2",
     "angular-ui-router": "~0.2.15"
