@@ -1,4 +1,4 @@
-app.controller('findMapsCtrl', function ($scope, $modal, $filter, mapService, markerService, scrollTo){
+app.controller('orienteraCtrl', function ($scope, $modal, $filter, mapService, markerService, scrollTo){
 
 	
 	//Get areas from db
@@ -65,7 +65,7 @@ app.controller('findMapsCtrl', function ($scope, $modal, $filter, mapService, ma
 		  backdropClick: true,
 		  dialogFade: false,
 		  keyboard: true,
-		  templateUrl : 'mapPreviewModal.html',
+		  templateUrl : 'components/mapPreviewModal.html',
 		  controller : ModalInstanceCtrl,
 		  resolve: {} // empty storage
 	    };

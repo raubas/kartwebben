@@ -7,7 +7,9 @@ app.controller('mapCtrl', function ($scope, uiGmapGoogleMapApi, geolocation, map
 		//Focus on user location if enabled
 		geolocation.getLocation().then(function(data){
 			//Comment to get user location
-			//$scope.map = { center: { latitude: data.coords.latitude, longitude: data.coords.longitude }, zoom: 12};
+			if (data.coords) {
+				mapService.focusOnObjectLocation(data.coords);
+			}
     	});
 	});
 	

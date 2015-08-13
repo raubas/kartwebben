@@ -55,7 +55,7 @@ app.config(function($stateProvider, $urlRouterProvider) {
             	},
 	            'list' : {
 	            	templateUrl: 'pages/orientera.html',
-	            	controller: 'findMapsCtrl'
+	            	controller: 'orienteraCtrl'
 	            }
 	        } 
         })
@@ -69,7 +69,7 @@ app.config(function($stateProvider, $urlRouterProvider) {
             	},
 	            'list' : {
 	            	templateUrl: 'pages/skolor.html',
-	            	controller: 'schoolCtrl'
+	            	controller: 'skolorCtrl'
 	            }
 	        } 
         })
@@ -174,8 +174,8 @@ app.service('mapService', function(){
 
 	//Takes object with { lat, long }
 	var focusOnObjectLocation = function(object){
-		map = { center: { 	latitude: object.lat,
-							longitude: object.long },
+		map = { center: { 	latitude: object.latitude,
+							longitude: object.longitude },
 				zoom: 12 };
 		focusOnLocation(map);
 	}
@@ -222,8 +222,8 @@ app.service('markerService', function ($filter){
 	var draggableMarker = {};
 
 	var addDraggableMarker = function(object) {
-		draggableMarker = 	{	coords: { 	latitude: object.lat,
-											longitude: object.long },
+		draggableMarker = 	{	coords: { 	latitude: object.latitude,
+											longitude: object.longitude },
 								options: { 	draggable: true,
 											labelContent: 'Dra mig till rätt position!',
 							    			labelAnchor: "100 0",

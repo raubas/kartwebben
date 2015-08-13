@@ -1,10 +1,10 @@
-app.controller('schoolCtrl', function ($scope, uiGmapGoogleMapApi, mapService, markerService, scrollTo, $filter, $timeout){
+app.controller('skolorCtrl', function ($scope, uiGmapGoogleMapApi, mapService, markerService, scrollTo, $filter, $timeout){
 
 	//Config marker after click on map, updates coords for clickedlocation
 	$scope.addMarker = function (obj) {
 		//Set marker at clicked location
-		var object = { 	lat: obj._latitude,
-						long: obj._longitude };
+		var object = { 	latitude: obj._latitude,
+						longitude: obj._longitude };
 		markerService.addDraggableMarker(object);
 		mapService.focusOnObjectLocation(object);
 

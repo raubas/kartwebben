@@ -1,11 +1,11 @@
-app.controller('uploadMapCtrl', function ($scope, $filter, uiGmapGoogleMapApi, mapService, markerService, scrollTo, $timeout){
+app.controller('uploadMapCtrl', function ($scope, $filter, uiGmapGoogleMapApi, mapService, markerService, scrollTo, $timeout, $http){
 
 
 	//Config marker after click on map, updates coords for clickedlocation
 	$scope.addMarker = function (obj) {
 		//Set marker at clicked location
-		var object = { 	lat: obj._latitude,
-						long: obj._longitude };
+		var object = { 	latitude: obj._latitude,
+						longitude: obj._longitude };
 		markerService.addDraggableMarker(object);
 		mapService.focusOnObjectLocation(object);
 
@@ -137,16 +137,28 @@ app.controller('uploadMapCtrl', function ($scope, $filter, uiGmapGoogleMapApi, m
 
 	// Saves the new mapfile when the file is uploaded
 	$scope.uploadFile = function(files) {
-		var mapfile = new Parse.File("map.png", files[0]);
+		var mapfile = new Parse.File("map.pdf", files[0]);
 		
-		mapfile.save().then(function(){
-			console.log("file saved");
-			$scope.newMap.uploadedMap = mapfile;
-			$scope.$apply();
-		}, function(error){
-			console.log(error);
-		});
+		$scope.convertPDF(files[0]);
+		// mapfile.save().then(function(){
+		// 	console.log("file saved");
+		// 	$scope.newMap.uploadedMap = mapfile;
+			
+		// 	$scope.$apply();
+		// }, function(error){
+		// 	console.log(error);
+		// });
 	};
+
+
+	$scope.convertPDF = function(pdf) {
+		$http.post('php/convertPDF.php', {file: pdf}).then(function(response){
+			console.log(response);
+			//$scope.newMap.previewMap = response;
+
+		})
+
+	}
 
 	// Save uploaded map to area, and call updateAreaMaps
 	$scope.saveMap = function(area) {
