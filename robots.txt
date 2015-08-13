@@ -1,0 +1,9 @@
+# robots.txt for http://www.wahoo.se/
+
+User-agent: *
+Disallow: /dev/
+Disallow: /login.php
+Disallow: /beacon.php
+Disallow: /editor.php
+Disallow: /stats.php
+Disallow: /wordpress
