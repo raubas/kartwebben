@@ -1,4 +1,4 @@
-app.controller('skolorCtrl', function ($scope, uiGmapGoogleMapApi, mapService, markerService, scrollTo, $filter, $timeout){
+app.controller('skolorCtrl', function ($scope,$modal, uiGmapGoogleMapApi, mapService, markerService, scrollTo, $filter, $timeout){
 
 	//Config marker after click on map, updates coords for clickedlocation
 	$scope.addMarker = function (obj) {
@@ -18,8 +18,8 @@ app.controller('skolorCtrl', function ($scope, uiGmapGoogleMapApi, mapService, m
 
 	$scope.addPositionToSchool = function () {
 		var map = mapService.getMap();
-		var obj = { lat: map.center.latitude,
-					long: map.center.longitude };
+		var obj = { latitude: map.center.latitude,
+					longitude: map.center.longitude };
 		markerService.addDraggableMarker(obj);
 	}
 
@@ -45,6 +45,7 @@ app.controller('skolorCtrl', function ($scope, uiGmapGoogleMapApi, mapService, m
 	//Listen for when draggable marker moves
 	var watchDraggableMarker = function(){
 		$scope.$watch(function () {
+			console.log("HEHEHE");
         	return markerService.getDraggableMarker();
     	}, function (oldValue, newValue) {
         	$scope.draggableMarker = markerService.getDraggableMarker();
@@ -141,11 +142,14 @@ app.controller('skolorCtrl', function ($scope, uiGmapGoogleMapApi, mapService, m
 	$scope.updateSchool = function(school){
 		var position = new Parse.GeoPoint($scope.draggableMarker.coords);
 		console.log(position);
+		
 		if (position.latitude == 0) {
 
 		} else {
 			school.set("position", position);
 		}
+		console.log(school.attributes.name);
+		school.set("name", school.attributes.name);
 		school.attributes.contactPerson.set("name", school.attributes.contactPerson.attributes.name);
 		school.attributes.contactPerson.set("phoneNumber", school.attributes.contactPerson.attributes.phoneNumber);
 		school.attributes.contactPerson.set("email", school.attributes.contactPerson.attributes.email);
@@ -187,6 +191,34 @@ app.controller('skolorCtrl', function ($scope, uiGmapGoogleMapApi, mapService, m
       }
 		});
 	}
+
+	$scope.showModal = function(school) {
+	  
+	  $scope.opts = {
+		  backdrop: true,
+		  backdropClick: true,
+		  dialogFade: false,
+		  keyboard: true,
+		  templateUrl : 'components/deleteModal.html',
+		  controller : ModalInstanceCtrl,
+		  resolve: {} // empty storage
+	    };
+	    
+	  
+	  $scope.opts.resolve.item = function() {
+	      return angular.copy({	school: school}); // pass name to Dialog
+	  }
+	  
+	    var modalInstance = $modal.open($scope.opts);
+	    
+	    modalInstance.result.then(function(scope){
+	      //on ok button press
+
+	      $scope.deleteSchool(scope.item.school);
+	    },function(){
+	      //on cancel button press
+	    });
+	}; 
 
  		//Make queries
 	var init = function () {

@@ -21,9 +21,7 @@
     </accordion-group>
     <accordion-group heading="{{area.attributes.name}}" ng-repeat="area in areas" is-open="openAccordion[area.id]" class="barpanel" id="{{ area.id }}" emit-when="{event: 'newRendered', condition: $last}">
       <div class="col-md-12">
-        <button class="btn btn-default" ng-click="updateAreaPosition(area)">Spara!</button>
-        <button class="btn btn-default" ng-click="deleteArea(area)">Ta bort område + kartor!</button>
-        <button class="btn btn-default" ng-click="changeLocationOfArea(area)">Ändra plats</button>
+
         <h4>Kartor</h4>
          <div class="newMap row"> 
           <form name="newMapForm">
@@ -82,7 +80,13 @@
             </div>
           </div>
          </div>
+         <hr>
+      
+      <button class="btn btn-danger" ng-click="showModal(area)">Ta bort område + kartor</button>
+      <button class="btn btn-default" ng-click="changeLocationOfArea(area)">Ändra plats</button>
+      <button class="btn btn-primary" ng-click="updateAreaPosition(area)">Spara</button>
       </div>
+
     </accordion-group>
   </accordion>
 </div>

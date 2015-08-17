@@ -1,4 +1,4 @@
-app.controller('uploadMapCtrl', function ($scope, $filter, uiGmapGoogleMapApi, mapService, markerService, scrollTo, $timeout, $http){
+app.controller('uploadMapCtrl', function ($scope, $filter,$modal, uiGmapGoogleMapApi, mapService, markerService, scrollTo, $timeout, $http){
 
 
 	//Config marker after click on map, updates coords for clickedlocation
@@ -21,8 +21,8 @@ app.controller('uploadMapCtrl', function ($scope, $filter, uiGmapGoogleMapApi, m
 	//Place draggable marker on map
 	$scope.addPositionToArea = function () {
 		var map = mapService.getMap();
-		var obj = { lat: map.center.latitude,
-					long: map.center.longitude };
+		var obj = { latitude: map.center.latitude,
+					longitude: map.center.longitude };
 		markerService.addDraggableMarker(obj);
 	}
 
@@ -257,6 +257,33 @@ app.controller('uploadMapCtrl', function ($scope, $filter, uiGmapGoogleMapApi, m
 		});
 	}
 
+	$scope.showModal = function(area) {
+	  
+	  $scope.opts = {
+		  backdrop: true,
+		  backdropClick: true,
+		  dialogFade: false,
+		  keyboard: true,
+		  templateUrl : 'components/deleteModal.html',
+		  controller : ModalInstanceCtrl,
+		  resolve: {} // empty storage
+	    };
+	    
+	  
+	  $scope.opts.resolve.item = function() {
+	      return angular.copy({	area: area}); // pass name to Dialog
+	  }
+	  
+	    var modalInstance = $modal.open($scope.opts);
+	    
+	    modalInstance.result.then(function(scope){
+	      //on ok button press
+
+	      $scope.deleteArea(scope.item.area);
+	    },function(){
+	      //on cancel button press
+	    });
+	}; 
 
 	//Init controller
 	var init = function () {
