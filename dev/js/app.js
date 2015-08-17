@@ -228,7 +228,7 @@ app.service('markerService', function ($filter){
 											labelContent: 'Dra mig till rätt position!',
 							    			labelAnchor: "100 0",
 											labelClass: "marker-labels",
-											icon: '/dev/images/icons/fish.png' }
+											icon: '/dev/images/icons/drag.png' }
 							};
 	};
 

@@ -14,8 +14,8 @@ app.controller('mapCtrl', function ($scope, uiGmapGoogleMapApi, geolocation, map
 	});
 	
 
-	$scope.markerprops = { 	school: { url: '/dev/images/icons/fish.png'},
-							area: 	{ url: '/dev/images/icons/pin.png'}};
+	$scope.markerprops = { 	school: { url: '/dev/images/icons/skola.png'},
+							area: 	{ url: '/dev/images/icons/karta.png'}};
 
 	$scope.areaMarkers = markerService.getAreaMarkerArray();
 	$scope.schoolMarkers = markerService.getSchoolMarkerArray();
