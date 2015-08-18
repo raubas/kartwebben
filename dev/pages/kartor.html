@@ -82,9 +82,10 @@
          </div>
          <hr>
       
-      <button class="btn btn-danger" ng-click="showModal(area)">Ta bort område + kartor</button>
-      <button class="btn btn-default" ng-click="changeLocationOfArea(area)">Ändra plats</button>
-      <button class="btn btn-primary" ng-click="updateAreaPosition(area)">Spara</button>
+      
+      <button class="btn btn-primary" ng-click="changeLocationOfArea(area); area.isDragging = true" ng-hide="area.isDragging">Ändra plats <span class="glyphicon glyphicon-pushpin"> </span></button>
+      <button class="btn btn-primary" ng-click="updateAreaPosition(area); area.isDragging = false" ng-show="area.isDragging">Spara</button>
+      <button class="btn btn-danger" ng-click="showModal(area)" style="float:right">Ta bort område + kartor <span class="glyphicon glyphicon-trash"> </span></button>
       </div>
 
     </accordion-group>

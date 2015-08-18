@@ -67,8 +67,10 @@
           </p>
         </div>
         <hr>
-        <button class="btn btn-danger" data-toggle="modal" ng-click="showModal(school)">Ta bort <span class="glyphicon glyphicon-trash"> </span></button>
-        <button class="btn btn-default" ng-click="changeLocationOfSchool(school)">Ändra plats</button>
+        
+        <button class="btn btn-primary" ng-click="changeLocationOfSchool(school); school.isDragging = true;" ng-hide="school.isDragging">Ändra plats</button>
+        <button class="btn btn-primary" ng-click="updateSchool(school); school.isDragging = false;" ng-show="school.isDragging">Spara</button>
+        <button class="btn btn-danger" data-toggle="modal" ng-click="showModal(school)" style="float:right" >Ta bort <span class="glyphicon glyphicon-trash"> </span></button>
 
       </div>
 
