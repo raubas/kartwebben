@@ -14,15 +14,15 @@ app.run(function ($rootScope, $location, $state, userManagement, editableOptions
 
     $rootScope.$on('$stateChangeStart', function(event, toState) {
 	    // don't check auth on login routes
-        console.log(toState);
+        $rootScope.$broadcast('stateChange');
         if (toState.name == "divided.orientera" || toState.name == "span.ovningar") {
         	console.log('tillåten sida');
         } else {
         	console.log('förbjuden sida');
             if (!userManagement.userState()) {
-                console.log('inne');
+                console.log('redirect');
                 event.preventDefault();
-                //$state.go('divided.orientera');
+                $state.go('divided.orientera');
                 return;
             }
         }
@@ -112,7 +112,6 @@ app.service('userManagement', function($rootScope, $state){
 		    // Do stuff after successful login.
 		    console.log('login!');
 		    broadCastState();
-		    $state.go('divided.orientera');
 		    return;
 		  },
 		  error: function(user, error) {
@@ -134,21 +133,11 @@ app.service('userManagement', function($rootScope, $state){
 
 	this.userState = function(){
 		var currentUser = Parse.User.current();
-		console.log(currentUser);
-		if (currentUser) {
-			console.log('sann');
-			broadCastState();
-    		return true;
-		} else {
-			console.log('falsk');
-			broadCastState();
-    		return false;
-		}
+		return currentUser;
 	}
 
 	var broadCastState = function(){
-		$rootScope.sessionUser = Parse.User.current();
-		$rootScope.$broadcast('userState', { user: Parse.User.current() } );
+		$rootScope.$broadcast('stateChange');
 	}
 	
 });
@@ -228,8 +217,8 @@ app.service('markerService', function ($filter){
 											longitude: object.longitude },
 								options: { 	draggable: true,
 											labelContent: 'Dra mig till rätt position!',
-							    			labelAnchor: "100 0",
-											labelClass: "marker-labels",
+							    			labelAnchor: "75 100",
+											labelClass: "draggable-marker-label",
 											icon: '/dev/images/icons/drag.png' }
 							};
 	};

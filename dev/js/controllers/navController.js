@@ -1,25 +1,34 @@
 app.controller('navCtrl', function($scope, $location, $modal, userManagement){
 	
 	$scope.user = false;
-	$scope.$on('userState', function (data) {
-		if (data.targetScope.sessionUser == null){
-			$scope.user = false;
-		}else{
+	$scope.$on('stateChange', function () {
+		var currentUser = userManagement.userState();
+		if (currentUser) {
 			$scope.user = true;
-			//Check for digest/apply
-			if(!$scope.$$phase) {
-  			//$digest or $apply
-  			$scope.$apply();
-			}
+		}else{
+			$scope.user = false;
 		}
 	});
+	// 	if (data.targetScope.sessionUser == null){
+	// 		$scope.user = false;
+	// 	}else{
+	// 		$scope.user = true;
+	// 		//Check for digest/apply
+	// 		if(!$scope.$$phase) {
+ //  			//$digest or $apply
+ //  			$scope.$apply();
+	// 		}
+	// 	}
+	// });
+
+	
 
 	$scope.isActive = function(viewLocation) { 
-  	var location = $location.path();
-		location = location.substring(1);
-		location = location.replace("/",".");
-  	return viewLocation === location;
-  };
+	  	var location = $location.path();
+			location = location.substring(1);
+			location = location.replace("/",".");
+	  	return viewLocation === location;
+  	};
 	
 
 	$scope.logOut = function(){
