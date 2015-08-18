@@ -3,6 +3,9 @@ app.controller('mapCtrl', function ($scope, uiGmapGoogleMapApi, geolocation, map
 	//Initiate google map on Luleå
 	uiGmapGoogleMapApi.then(function (maps) {
 		$scope.map = mapService.getMap();
+		$scope.markerprops = { 	school: { 	url: '/dev/images/icons/skola.png'},
+								area: 	{ 	url: '/dev/images/icons/karta.png'},
+								opts: 	{ animation: maps.Animation.DROP}};
 		
 		//Focus on user location if enabled
 		geolocation.getLocation().then(function(data){
@@ -12,14 +15,11 @@ app.controller('mapCtrl', function ($scope, uiGmapGoogleMapApi, geolocation, map
 			}
     	});
 	});
-	
-
-	$scope.markerprops = { 	school: { url: '/dev/images/icons/skola.png'},
-							area: 	{ url: '/dev/images/icons/karta.png'}};
 
 	$scope.areaMarkers = markerService.getAreaMarkerArray();
 	$scope.schoolMarkers = markerService.getSchoolMarkerArray();
 	$scope.draggableMarker = markerService.getDraggableMarker();
+	
 
 	//Listen for map events
 	var watchMap = function(){
@@ -44,13 +44,19 @@ app.controller('mapCtrl', function ($scope, uiGmapGoogleMapApi, geolocation, map
 
 	//Init controller
 	var init = function () {
-	   watchMap();
-	   watchDraggableMarker();
-	   // check if there is query in url
-	   // and fire search in case its value is not empty
+		watchMap();
+		watchDraggableMarker();
+		// check if there is query in url
+		// and fire search in case its value is not empty
 	};
 
 	//Init function
 	init();
+
+	//Remove watchers when view is unloaded
+	$scope.$on("$destroy", function(){
+        watchMap();
+		watchDraggableMarker();
+    });
 
 });

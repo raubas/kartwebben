@@ -146,7 +146,8 @@ app.service('mapService', function(){
 	//Config map
 	var map = 	{ 	center: { latitude: 65.588946, longitude: 22.157324 },
 					zoom: 12,
-					pan: {val: true}
+					options: { 	pan: {val: true},
+								scrollwheel: false}
 				};
 	var clickedMarker = {};
 
@@ -157,17 +158,17 @@ app.service('mapService', function(){
 
 	//Takes Parse object with location
 	var focusOnParseLocation = function(object){
-		map = { center: { 	latitude: object.attributes.position._latitude,
-							longitude: object.attributes.position._longitude },
-				zoom: 12 };
+		map.center = { 	latitude: object.attributes.position._latitude,
+						longitude: object.attributes.position._longitude };
+		map.zoom = 12;
 		focusOnLocation(map);
 	}
 
 	//Takes object with { lat, long }
 	var focusOnObjectLocation = function(object){
-		map = { center: { 	latitude: object.latitude,
-							longitude: object.longitude },
-				zoom: 12 };
+		map.center = { 	latitude: object.latitude,
+						longitude: object.longitude };
+		map.zoom = 12;
 		focusOnLocation(map);
 	}
 
@@ -219,7 +220,8 @@ app.service('markerService', function ($filter){
 											labelContent: 'Dra mig till rätt position!',
 							    			labelAnchor: "75 100",
 											labelClass: "draggable-marker-label",
-											icon: '/dev/images/icons/drag.png' }
+											icon: '/dev/images/icons/drag.png',
+											animation: google.maps.Animation.DROP }
 							};
 	};
 

@@ -144,7 +144,7 @@ app.controller('uploadMapCtrl', function ($scope, $filter,$modal, uiGmapGoogleMa
 			console.log("file saved");
 			$scope.newMap.uploadedMap = mapfile;
 			
-			$scope.$apply();
+			$scope.$digest();
 		}, function(error){
 			console.log(error);
 		});
@@ -296,5 +296,11 @@ app.controller('uploadMapCtrl', function ($scope, $filter,$modal, uiGmapGoogleMa
 
 	//Init function
 	init();
+
+	//Remove watchers when view is unloaded
+	$scope.$on("$destroy", function(){
+        watchClick();
+        //markerService.removeDraggableMarker();
+    });
 
 });

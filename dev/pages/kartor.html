@@ -19,7 +19,7 @@
         </form>
       </div>
     </accordion-group>
-    <accordion-group heading="{{area.attributes.name}}" ng-repeat="area in areas" is-open="openAccordion[area.id]" class="barpanel" id="{{ area.id }}" emit-when="{event: 'newRendered', condition: $last}">
+    <accordion-group heading="{{::area.attributes.name}}" ng-repeat="area in areas" is-open="openAccordion[area.id]" class="barpanel" id="{{ ::area.id }}" emit-when="{event: 'newRendered', condition: $last}">
       <div class="col-md-12">
 
         <h4>Kartor</h4>
@@ -55,7 +55,7 @@
           <div ng-repeat="map in area.attributes.maps | filter: { attributes: { difficulty: '1' } } ">
             <div class="col-md-4">
                 <p ng-bind="map.attributes.name"></p>
-                <img ng-src="{{displayMap(map.attributes.file._url)}}" class="img-responsive" />
+                <img ng-src="{{::displayMap(map.attributes.file._url)}}" class="img-responsive" />
                 <button class="btn btn-default" ng-click="deleteMap(area, map)">Delete</button>
             </div>
           </div>
@@ -65,7 +65,7 @@
           <div ng-repeat="map in area.attributes.maps | filter: { attributes: { difficulty: '2' } } ">
             <div class="col-md-4">
                 <p ng-bind="map.attributes.name"></p>
-                <img ng-src="{{displayMap(map.attributes.file._url)}}" class="img-responsive" />
+                <img ng-src="{{::displayMap(map.attributes.file._url)}}" class="img-responsive" />
                 <button class="btn btn-default" ng-click="deleteMap(area, map)">Delete</button>
             </div>
           </div>
@@ -75,7 +75,7 @@
           <div ng-repeat="map in area.attributes.maps | filter: { attributes: { difficulty: '3' } } ">
             <div class="col-md-4">
                 <p ng-bind="map.attributes.name"></p>
-                <img ng-src="{{displayMap(map.attributes.file._url)}}" class="img-responsive" />
+                <img ng-src="{{::displayMap(map.attributes.file._url)}}" class="img-responsive" />
                 <button class="btn btn-default" ng-click="deleteMap(area, map)">Delete</button>
             </div>
           </div>

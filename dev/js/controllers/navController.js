@@ -9,19 +9,6 @@ app.controller('navCtrl', function($scope, $location, $modal, userManagement){
 			$scope.user = false;
 		}
 	});
-	// 	if (data.targetScope.sessionUser == null){
-	// 		$scope.user = false;
-	// 	}else{
-	// 		$scope.user = true;
-	// 		//Check for digest/apply
-	// 		if(!$scope.$$phase) {
- //  			//$digest or $apply
- //  			$scope.$apply();
-	// 		}
-	// 	}
-	// });
-
-	
 
 	$scope.isActive = function(viewLocation) { 
 	  	var location = $location.path();
