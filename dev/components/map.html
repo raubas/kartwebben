@@ -1,7 +1,7 @@
 <!-- **** Map **** -->
 <div class="row">
   <div id="map-canvas">
-    <ui-gmap-google-map center='map.center' zoom='map.zoom' events="map.options.events" control="map.control" options="map.options">
+    <ui-gmap-google-map center='map.center' zoom='map.zoom' events="map.options.events" control="map.control" options="map.options" pan="true">
       <ui-gmap-markers models="areaMarkers" options="markerprops.opts" coords="'self'" icon="markerprops.area" click="markerClick">
       </ui-gmap-markers>
       <ui-gmap-markers models="schoolMarkers" options="markerprops.opts" coords="'self'" icon="markerprops.school" click="markerClick">

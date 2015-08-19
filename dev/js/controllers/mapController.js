@@ -5,7 +5,7 @@ app.controller('mapCtrl', function ($scope, uiGmapGoogleMapApi, geolocation, map
 		$scope.map = mapService.getMap();
 		$scope.markerprops = { 	school: { 	url: '/dev/images/icons/skola.png'},
 								area: 	{ 	url: '/dev/images/icons/karta.png'},
-								opts: 	{ animation: maps.Animation.DROP}};
+								opts: 	{ 	animation: maps.Animation.DROP }};
 		
 		//Focus on user location if enabled
 		geolocation.getLocation().then(function(data){

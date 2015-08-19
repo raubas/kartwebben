@@ -146,8 +146,7 @@ app.service('mapService', function(){
 	//Config map
 	var map = 	{ 	center: { latitude: 65.588946, longitude: 22.157324 },
 					zoom: 12,
-					options: { 	pan: {val: true},
-								scrollwheel: false}
+					options: { scrollwheel: false }
 				};
 	var clickedMarker = {};
 
