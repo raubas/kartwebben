@@ -135,10 +135,28 @@ app.controller('uploadMapCtrl', function ($scope, $filter,$modal, uiGmapGoogleMa
 		});
 	};
 
+<<<<<<< HEAD
 	// FILE UPLOAD //
+=======
+	// Saves the new mapfile when the file is uploaded
+	$scope.uploadFile = function(files) {
+		var mapfile = new Parse.File("map.pdf", files[0]);
+		
+
+		mapfile.save().then(function(){
+			console.log("file saved");
+			$scope.newMap.uploadedMap = mapfile;
+			
+			$scope.$digest();
+		}, function(error){
+			console.log(error);
+		});
+	};
+>>>>>>> fd8abfe4937e18559a430b325a20c20d171b7111
 
 	
 
+<<<<<<< HEAD
     $scope.onFileSelect = function($file) {  
         if ($file != null) {
         	console.log($file);
@@ -165,6 +183,8 @@ app.controller('uploadMapCtrl', function ($scope, $filter,$modal, uiGmapGoogleMa
 	// $scope.uploadFile = function(files) {
 	
 	// };
+=======
+>>>>>>> fd8abfe4937e18559a430b325a20c20d171b7111
 
 	// Save uploaded map to area, and call updateAreaMaps
 	$scope.saveMap = function(area) {
@@ -312,5 +332,13 @@ app.controller('uploadMapCtrl', function ($scope, $filter,$modal, uiGmapGoogleMa
 	//Init function
 	init();
 
+<<<<<<< HEAD
+=======
+	//Remove watchers when view is unloaded
+	$scope.$on("$destroy", function(){
+        watchClick();
+        //markerService.removeDraggableMarker();
+    });
+>>>>>>> fd8abfe4937e18559a430b325a20c20d171b7111
 
 });

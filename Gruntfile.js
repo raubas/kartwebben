@@ -51,18 +51,7 @@ module.exports = function(grunt) {
                 report: 'min',
                 mangle: false
             }
-        },
-
-        express: {
-            options: {
-              // Override defaults here
-            },
-            dist: {
-              options: {
-                script: 'path/to/dev/server.js'
-              }
-            }
-          }
+        }
         
     });
 
@@ -77,7 +66,6 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks('grunt-contrib-uglify');
     grunt.loadNpmTasks('grunt-rev');
     grunt.loadNpmTasks('grunt-usemin');
-    grunt.loadNpmTasks('grunt-express-server');
 
     // 4. Where we tell Grunt what to do when we type "grunt" into the terminal.
     grunt.registerTask('default', [ 'wiredep' ]);

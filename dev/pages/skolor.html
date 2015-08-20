@@ -31,7 +31,7 @@
           
         </form>
     </accordion-group>
-    <accordion-group heading="{{school.attributes.name}}" ng-repeat="school in schools" is-open="openAccordion[school.id]" class="barpanel" id="{{ school.id }}" emit-when="{event: 'newRendered', condition: $last}">
+    <accordion-group heading="{{::school.attributes.name}}" ng-repeat="school in schools" is-open="openAccordion[school.id]" class="barpanel" id="{{ ::school.id }}" emit-when="{event: 'newRendered', condition: $last}">
       <div class="col-md-12">
         <h4>Skola</h4>
         <p>Namn: 
