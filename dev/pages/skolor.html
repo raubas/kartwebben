@@ -4,7 +4,9 @@
     <accordion-group heading="Lägg till ny skola" is-open="newSchoolPanel.open" class="barpanel">
 
         <form name="addSchoolForm" class="form-group">
+
             <div class="col-md-12">
+            <h4>Skola</h4>
               <div class="form-group">
                 <input type="text" class="form-control" ng-required="!addSchool.schoolName" ng-model="addSchool.schoolName" placeholder="Namn på skolan" >
               </div>
@@ -31,8 +33,6 @@
     </accordion-group>
     <accordion-group heading="{{school.attributes.name}}" ng-repeat="school in schools" is-open="openAccordion[school.id]" class="barpanel" id="{{ school.id }}" emit-when="{event: 'newRendered', condition: $last}">
       <div class="col-md-12">
-        <div >
-        </div>
         <h4>Skola</h4>
         <p>Namn: 
             <span editable-text="school.attributes.name" onaftersave="updateSchool(school)" e-form="schoolName">{{ school.attributes.name || "Tom" }}

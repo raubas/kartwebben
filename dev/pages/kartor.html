@@ -22,7 +22,7 @@
     <accordion-group heading="{{area.attributes.name}}" ng-repeat="area in areas" is-open="openAccordion[area.id]" class="barpanel" id="{{ area.id }}" emit-when="{event: 'newRendered', condition: $last}">
       <div class="col-md-12">
 
-        <h4>Kartor</h4>
+        <h4>Lägg till karta</h4>
          <div class="newMap row"> 
           <form name="newMapForm">
             <div class="col-md-6">
@@ -42,14 +42,29 @@
                <input type="radio" ng-required="!newMap.mapLevel" ng-model="newMap.mapLevel" ng-value="3"> 3
              </label>
             </div>
+
+            <div>Username
+            <div id="page">
+              <canvas id="canvas"></canvas>
+            </div>
+                <input type="file" ngf-select="onFileSelect($file)" ngf-multiple="false" accept="application/pdf">Select File
+                Files:
+                <ul>
+                    <li ng-repeat="f in files" style="font:smaller">{{f.name}}</li>
+                </ul>
+                Upload Log:
+                <pre>{{log}}</pre>
+            </div>
+
             <div class="col-md-12 form-group">
               <input ng-required="!newMap.uploadedMap" ng-model="newMap.uploadedMap"  type="file" onchange="angular.element(this).scope().uploadFile(this.files)"/>
             </div>
             <div class="col-md-12 form-group">
-              <button class="btn btn-primary" ng-disabled="newMapForm.$invalid" ng-click="saveMap(area)" >spara karta</button>
+              <button class="btn btn-primary" ng-disabled="newMapForm.$invalid" ng-click="saveMap(area)" >Spara karta</button>
             </div>
           </form>
         </div>
+        <h4>Kartor</h4>
         <strong><p>Nivå 1</p></strong>
         <div class="row">
           <div ng-repeat="map in area.attributes.maps | filter: { attributes: { difficulty: '1' } } ">
@@ -91,3 +106,51 @@
     </accordion-group>
   </accordion>
 </div>
+<script type="text/javascript">
+  
+  var pdfFile;
+  var fitScale = 1;
+  var canvas = document.getElementById('canvas');
+  var context = canvas.getContext('2d');
+
+  if (!window.requestAnimationFrame) {
+    window.requestAnimationFrame = (function() {
+      return window.webkitRequestAnimationFrame ||
+        window.mozRequestAnimationFrame ||
+        window.oRequestAnimationFrame ||
+        window.msRequestAnimationFrame ||
+        function(callback, element) {
+          window.setTimeout(callback, 1000 / 60);
+        };
+    })();
+  }
+
+  var openPage = function(pdfFile) {
+
+
+      pdfFile.getPage(1).then(function(page) {
+        var scale = 1;
+        viewport = page.getViewport(scale);
+
+        canvas.height = viewport.height;
+        canvas.width = viewport.width;
+
+        var renderContext = {
+          canvasContext: context,
+          viewport: viewport
+        };
+
+        page.render(renderContext);
+      });
+    };
+
+    var makePNG = function(pdf){
+      PDFJS.disableStream = true;
+      PDFJS.getDocument(pdf).then(function(pdf) {
+        pdfFile = pdf;
+
+        openPage(pdf);
+      });
+    };
+
+</script>

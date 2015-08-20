@@ -1,0 +1,14 @@
+{
+  "global": {
+    "parseVersion": "1.5.0"
+  },
+  "applications": {
+    "Kartwebben": {
+      "applicationId": "6xK5z0dd13fPSziUDvcLiZTEqjkRc5qQais6zUSo",
+      "masterKey": "rkHEPiMP6m8dMjRsr470BjeOdCmSYGsAB5gbskNy"
+    },
+    "_default": {
+      "link": "Kartwebben"
+    }
+  }
+}

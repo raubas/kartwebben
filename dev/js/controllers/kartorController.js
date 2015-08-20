@@ -1,4 +1,4 @@
-app.controller('uploadMapCtrl', function ($scope, $filter,$modal, uiGmapGoogleMapApi, mapService, markerService, scrollTo, $timeout, $http){
+app.controller('uploadMapCtrl', function ($scope, $filter,$modal, uiGmapGoogleMapApi, mapService, markerService, scrollTo, $timeout, $http, Upload){
 
 
 	//Config marker after click on map, updates coords for clickedlocation
@@ -135,30 +135,36 @@ app.controller('uploadMapCtrl', function ($scope, $filter,$modal, uiGmapGoogleMa
 		});
 	};
 
+	// FILE UPLOAD //
+
+	
+
+    $scope.onFileSelect = function($file) {  
+        if ($file != null) {
+        	console.log($file);
+    		var mapfile = new Parse.File("map.pdf", $file);
+    		
+    		mapfile.save().then(function(result){
+    			console.log(result);
+    			console.log("huhu");
+    			$scope.newMap.uploadedMap = mapfile;
+    			$scope.$digest();
+    			makePNG($scope.displayMap(mapfile._url));
+    		}, function(error){
+    			console.log(error);
+    		});
+        }
+    };
+
+    
+
+
+
+    $scope.log = '';
 	// Saves the new mapfile when the file is uploaded
-	$scope.uploadFile = function(files) {
-		var mapfile = new Parse.File("map.pdf", files[0]);
-		
-		$scope.convertPDF(files[0]);
-		// mapfile.save().then(function(){
-		// 	console.log("file saved");
-		// 	$scope.newMap.uploadedMap = mapfile;
-			
-		// 	$scope.$apply();
-		// }, function(error){
-		// 	console.log(error);
-		// });
-	};
-
-
-	$scope.convertPDF = function(pdf) {
-		$http.post('php/convertPDF.php', {file: pdf}).then(function(response){
-			console.log(response);
-			//$scope.newMap.previewMap = response;
-
-		})
-
-	}
+	// $scope.uploadFile = function(files) {
+	
+	// };
 
 	// Save uploaded map to area, and call updateAreaMaps
 	$scope.saveMap = function(area) {
@@ -297,6 +303,7 @@ app.controller('uploadMapCtrl', function ($scope, $filter,$modal, uiGmapGoogleMa
 		$scope.openAccordion = {};
 		//Query for areas
 	   	$scope.queryForAreas();
+
 	   	//Watch variables from map
 	   	watchClick();
 		watchDraggableMarker();
@@ -304,5 +311,6 @@ app.controller('uploadMapCtrl', function ($scope, $filter,$modal, uiGmapGoogleMa
 
 	//Init function
 	init();
+
 
 });
