@@ -4,6 +4,7 @@ app.controller('orienteraCtrl', function ($scope, $modal, $filter, mapService, m
 	//Get areas from db
 	var query = new Parse.Query("Areas");
 	query.include("maps");
+	query.ascending("name");
 	query.find().then(function(result){
 		angular.forEach(result, function(value, key){
 			//Nullcheck for position attribute due to fucked up db
@@ -51,9 +52,9 @@ app.controller('orienteraCtrl', function ($scope, $modal, $filter, mapService, m
 		return $url;
 	}
 
-	$scope.focusOnSchool = function(school){
-		mapService.focusOnParseLocation(school);
-	}
+	// $scope.focusOnSchool = function(school){
+	// 	mapService.focusOnParseLocation(school);
+	// }
 
 	//Open modal for preview
 	$scope.name = 'theNameHasBeenPassed';
