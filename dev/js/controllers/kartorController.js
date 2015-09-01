@@ -135,7 +135,6 @@ app.controller('uploadMapCtrl', function ($scope, $filter,$modal, uiGmapGoogleMa
 		});
 	};
 
-
 	// FILE UPLOAD //
 
 	// Saves the new mapfile when the file is uploaded
@@ -152,10 +151,6 @@ app.controller('uploadMapCtrl', function ($scope, $filter,$modal, uiGmapGoogleMa
 			console.log(error);
 		});
 	};
-
-
-	
-
 
     $scope.onFileSelect = function($file) {  
         if ($file != null) {
@@ -183,7 +178,6 @@ app.controller('uploadMapCtrl', function ($scope, $filter,$modal, uiGmapGoogleMa
 	// $scope.uploadFile = function(files) {
 	
 	// };
-
 
 	// Save uploaded map to area, and call updateAreaMaps
 	$scope.saveMap = function(area) {

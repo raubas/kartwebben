@@ -156,12 +156,12 @@ app.service('mapService', function(){
 	};
 
 	//Takes Parse object with location
-	var focusOnParseLocation = function(object){
-		map.center = { 	latitude: object.attributes.position._latitude,
-						longitude: object.attributes.position._longitude };
-		map.zoom = 12;
-		focusOnLocation(map);
-	}
+	// var focusOnParseLocation = function(object){
+	// 	map.center = { 	latitude: object.attributes.position._latitude,
+	// 					longitude: object.attributes.position._longitude };
+	// 	map.zoom = 12;
+	// 	focusOnLocation(map);
+	// }
 
 	//Takes object with { lat, long }
 	var focusOnObjectLocation = function(object){
@@ -183,7 +183,6 @@ app.service('mapService', function(){
 	var clickOnMarker = function(object){
 		if (object != null) {
 			clickedMarker = object;
-			console.log('click');
 		};
 	}
 
@@ -197,7 +196,7 @@ app.service('mapService', function(){
 	//Expose functions to controllers
 	return {
 	    getMap: getMap,
-	    focusOnParseLocation: focusOnParseLocation,
+	    // focusOnParseLocation: focusOnParseLocation,
 	    focusOnObjectLocation: focusOnObjectLocation,
 	    focusOnLocation: focusOnLocation,
 	    clickOnMarker: clickOnMarker,
@@ -243,7 +242,8 @@ app.service('markerService', function ($filter){
 			var marker = {
 					latitude: object.attributes.position._latitude,
 					longitude: object.attributes.position._longitude,
-					title: object.attributes.name
+					title: object.attributes.name,
+					options: { animation: google.maps.Animation.DROP, labelContent: object.attributes.name, labelAnchor:'50 75', labelClass:'marker-label' }
 				};
 			marker['id'] = object.id;
 			areaMarkers.push(marker);
@@ -267,7 +267,8 @@ app.service('markerService', function ($filter){
 			var marker = {
 					latitude: object.attributes.position._latitude,
 					longitude: object.attributes.position._longitude,
-					title: object.attributes.name
+					title: object.attributes.name,
+					options: { animation: google.maps.Animation.DROP, labelContent: object.attributes.name, labelAnchor:'50 75', labelClass:'marker-label' }
 				};
 			marker['id'] = object.id;
 			schoolMarkers.push(marker);
