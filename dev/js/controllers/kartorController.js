@@ -325,7 +325,6 @@ app.controller('uploadMapCtrl', function ($scope, $filter,$modal, uiGmapGoogleMa
 	//Init function
 	init();
 
-
 	//Remove watchers when view is unloaded
 	$scope.$on("$destroy", function(){
         watchClick();
