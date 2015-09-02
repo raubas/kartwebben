@@ -57,6 +57,12 @@
             </div>
 
             <div class="col-md-12 form-group">
+              <div>Ladda upp fil</div>
+              <div ngf-drop ngf-select ng-model="files" class="drop-box" 
+                      ngf-drag-over-class="dragover" ngf-multiple="true" ngf-allow-dir="true"
+                      accept="image/*,application/pdf" 
+                      ngf-pattern="'image/*,application/pdf'"><span class="glyphicon glyphicon-plus" style="font-size: 48px;" aria-hidden="true"></span></div>
+              <div ngf-no-file-drop>Klicka här för att för att ladda upp en karta</div>
               <input ng-required="!newMap.uploadedMap" ng-model="newMap.uploadedMap"  type="file" onchange="angular.element(this).scope().uploadFile(this.files)"/>
             </div>
             <div class="col-md-12 form-group">

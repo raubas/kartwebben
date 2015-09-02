@@ -183,3 +183,19 @@ to prevent collapsing during animation*/
 input.ng-dirty.ng-invalid {
       border-color: red;
 }
+
+.drop-box {
+    background: #F8F8F8;
+    border: 2px dashed #DDD;
+    border-radius: 10px;
+    width: 70px;
+    height: 70px;
+
+    text-align: center;
+    color: grey;
+    padding-top: 7px;
+    padding-left: 7px;
+}
+.dragover {
+    border: 2px dashed darkgrey;
+}
