@@ -1,5 +1,12 @@
 <!-- **** Content **** -->
 <div class="rightbar">
+  <div>
+  <!-- PDF TO PNG -->
+  <div id="page" >
+    <canvas id="canvas" style="display:none"></canvas>
+  </div>
+      
+  </div>
   <accordion close-others="true">
     <accordion-group heading="Lägg till nytt område" is-open="newAreaPanel.open" class="barpanel">
       <div class="col-md-12">
@@ -18,6 +25,8 @@
             </div>
         </form>
       </div>
+
+
     </accordion-group>
     <accordion-group heading="{{::area.attributes.name}}" ng-repeat="area in areas" is-open="openAccordion[area.id]" class="barpanel" id="{{ ::area.id }}" emit-when="{event: 'newRendered', condition: $last}">
       <div class="col-md-12">
@@ -43,21 +52,11 @@
              </label>
             </div>
 
-            <div>Username
-            <div id="page">
-              <canvas id="canvas"></canvas>
-            </div>
-                <input type="file" ngf-select="onFileSelect($file)" ngf-multiple="false" accept="application/pdf">Select File
-                Files:
-                <ul>
-                    <li ng-repeat="f in files" style="font:smaller">{{f.name}}</li>
-                </ul>
-                Upload Log:
-                <pre>{{log}}</pre>
-            </div>
-
+            
             <div class="col-md-12 form-group">
-              <input ng-required="!newMap.uploadedMap" ng-model="newMap.uploadedMap"  type="file" onchange="angular.element(this).scope().uploadFile(this.files)"/>
+
+              <input type="file" ngf-select="onFileSelect($file)" ngf-multiple="false" accept="application/pdf">Select File
+
             </div>
             <div class="col-md-12 form-group">
               <button class="btn btn-primary" ng-disabled="newMapForm.$invalid" ng-click="saveMap(area)" >Spara karta</button>
@@ -106,6 +105,8 @@
     </accordion-group>
   </accordion>
 </div>
+
+<!-- PDF TO PNG -->
 <script type="text/javascript">
   
   var pdfFile;
@@ -139,18 +140,26 @@
           canvasContext: context,
           viewport: viewport
         };
-
+        console.log(renderContext);
         page.render(renderContext);
+
+        
+
       });
     };
 
     var makePNG = function(pdf){
       PDFJS.disableStream = true;
-      PDFJS.getDocument(pdf).then(function(pdf) {
-        pdfFile = pdf;
+      read = new FileReader();
+      read.onload = function() {
+        PDFJS.getDocument(read.result).then(function(pdf) {
+          pdfFile = pdf;
 
-        openPage(pdf);
-      });
+          openPage(pdf);
+        });
+      }
+      read.readAsArrayBuffer(pdf);
+      
     };
 
 </script>

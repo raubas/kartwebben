@@ -331,6 +331,78 @@ app.factory('scrollTo', function (){
 	};
 });
 
+app.service('PDFToPNG', function ($q){
+
+	var pdfFile;
+	var fitScale = 1;
+	var canvas = document.getElementById('canvas');
+	var context = canvas.getContext('2d');
+
+	if (!window.requestAnimationFrame) {
+	  window.requestAnimationFrame = (function() {
+	    return window.webkitRequestAnimationFrame ||
+	      window.mozRequestAnimationFrame ||
+	      window.oRequestAnimationFrame ||
+	      window.msRequestAnimationFrame ||
+	      function(callback, element) {
+	        window.setTimeout(callback, 1000 / 60);
+	      };
+	  })();
+	}
+
+	var openPage = function(pdfFile) {
+
+		var deferred = $q.defer();
+	    pdfFile.getPage(1).then(function(page) {
+	      var scale = 1;
+	      viewport = page.getViewport(scale);
+
+	      canvas.height = viewport.height;
+	      canvas.width = viewport.width;
+
+	      var renderContext = {
+	        canvasContext: context,
+	        viewport: viewport
+	      };
+	      //Step 1: store a refer to the renderer
+	      var pageRendering = page.render(renderContext);
+	      //Step : hook into the pdf render complete event
+	      var completeCallback = pageRendering.internalRenderTask.callback;
+	      pageRendering.internalRenderTask.callback = function (error) {
+	        //Step 2: what you want to do before calling the complete method                  
+	        completeCallback.call(this, error);
+	        //Step 3: do some more stuff
+	        var dataURL = canvas.toDataURL("image/png");
+	      	deferred.resolve(dataURL.replace(/^data:image\/(png|jpg);base64,/, ""));
+	      };
+
+	    });
+	    return deferred.promise;
+	  };
+
+	  var makePNG = function(pdf){
+	  	var deferred = $q.defer();
+	    PDFJS.disableStream = true;
+	    read = new FileReader();
+	    read.onload = function() {
+	      PDFJS.getDocument(read.result).then(function(pdf) {
+	        pdfFile = pdf;
+
+	        openPage(pdf).then(function(base64Img){
+	        	deferred.resolve(base64Img);
+	        });
+	        
+	      });
+	    }
+	    read.readAsArrayBuffer(pdf);
+	    return deferred.promise;
+	  };
+
+	  return {
+		makePNG: makePNG
+	};
+
+})
 
 
 var ModalInstanceCtrl = function($scope, $modalInstance, $modal, item) {

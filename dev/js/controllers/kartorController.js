@@ -1,4 +1,4 @@
-app.controller('uploadMapCtrl', function ($scope, $filter,$modal, uiGmapGoogleMapApi, mapService, markerService, scrollTo, $timeout, $http, Upload){
+app.controller('uploadMapCtrl', function ($scope, $filter,$modal, uiGmapGoogleMapApi, mapService, markerService, scrollTo, $timeout, $http, Upload, PDFToPNG){
 
 
 	//Config marker after click on map, updates coords for clickedlocation
@@ -160,14 +160,20 @@ app.controller('uploadMapCtrl', function ($scope, $filter,$modal, uiGmapGoogleMa
     $scope.onFileSelect = function($file) {  
         if ($file != null) {
         	console.log($file);
-    		var mapfile = new Parse.File("map.pdf", $file);
-    		
-    		mapfile.save().then(function(result){
+    		var mapfile = new Parse.File("map.pdf",$file);
+    		PDFToPNG.makePNG($file).then(function(result) {
     			console.log(result);
-    			console.log("huhu");
+    			var mapPreview = new Parse.File("map.png",{base64 : result});
+    			mapPreview.save().then(function(){
+    				console.log(mapPreview);
+    				$scope.newMap.uploadedMapPreview = mapPreview;
+    			}, function(error){
+    				console.log(error);
+    			})
+    		});
+    		mapfile.save().then(function(){
     			$scope.newMap.uploadedMap = mapfile;
     			$scope.$digest();
-    			makePNG($scope.displayMap(mapfile._url));
     		}, function(error){
     			console.log(error);
     		});
@@ -192,6 +198,7 @@ app.controller('uploadMapCtrl', function ($scope, $filter,$modal, uiGmapGoogleMa
 		map.set("name", $scope.newMap.mapName);
 		map.set("difficulty", parseInt($scope.newMap.mapLevel));
 		map.set("file", $scope.newMap.uploadedMap);
+		map.set("mapPreview", $scope.newMap.uploadedMapPreview);
 		map.save(null, {
 			success: function(map) {
 				console.log('sparad karta');
