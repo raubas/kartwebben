@@ -75,6 +75,7 @@ app.controller('skolorCtrl', function ($scope,$modal, uiGmapGoogleMapApi, mapSer
  	$scope.queryForSchools = function() {
  		var query = new Parse.Query("Schools");
 		query.include("contactPerson","areas", "areas.maps");
+ 		query.ascending("name");
 		query.find().then(function(result){
 			$scope.schools = result;
 	        angular.forEach(result, function(value, key){

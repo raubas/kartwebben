@@ -77,6 +77,7 @@ app.controller('uploadMapCtrl', function ($scope, $filter,$modal, uiGmapGoogleMa
 		//Query for areas with maps
 		var query = new Parse.Query("Areas");
 		query.include("maps");
+		query.ascending("name");
 		query.find().then(function(result){
 			//Save results to scope
 			$scope.areas = result;
@@ -135,7 +136,6 @@ app.controller('uploadMapCtrl', function ($scope, $filter,$modal, uiGmapGoogleMa
 		});
 	};
 
-
 	// FILE UPLOAD //
 
 	// Saves the new mapfile when the file is uploaded
@@ -152,10 +152,6 @@ app.controller('uploadMapCtrl', function ($scope, $filter,$modal, uiGmapGoogleMa
 			console.log(error);
 		});
 	};
-
-
-	
-
 
     $scope.onFileSelect = function($file) {  
         if ($file != null) {
@@ -189,7 +185,6 @@ app.controller('uploadMapCtrl', function ($scope, $filter,$modal, uiGmapGoogleMa
 	// $scope.uploadFile = function(files) {
 	
 	// };
-
 
 	// Save uploaded map to area, and call updateAreaMaps
 	$scope.saveMap = function(area) {

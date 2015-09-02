@@ -145,7 +145,7 @@ app.service('userManagement', function($rootScope, $state){
 app.service('mapService', function(){
 	//Config map
 	var map = 	{ 	center: { latitude: 65.588946, longitude: 22.157324 },
-					zoom: 12,
+					zoom: 14,
 					options: { scrollwheel: false }
 				};
 	var clickedMarker = {};
@@ -156,18 +156,18 @@ app.service('mapService', function(){
 	};
 
 	//Takes Parse object with location
-	var focusOnParseLocation = function(object){
-		map.center = { 	latitude: object.attributes.position._latitude,
-						longitude: object.attributes.position._longitude };
-		map.zoom = 12;
-		focusOnLocation(map);
-	}
+	// var focusOnParseLocation = function(object){
+	// 	map.center = { 	latitude: object.attributes.position._latitude,
+	// 					longitude: object.attributes.position._longitude };
+	// 	map.zoom = 12;
+	// 	focusOnLocation(map);
+	// }
 
 	//Takes object with { lat, long }
 	var focusOnObjectLocation = function(object){
 		map.center = { 	latitude: object.latitude,
 						longitude: object.longitude };
-		map.zoom = 12;
+		map.zoom = 14;
 		focusOnLocation(map);
 	}
 
@@ -183,7 +183,6 @@ app.service('mapService', function(){
 	var clickOnMarker = function(object){
 		if (object != null) {
 			clickedMarker = object;
-			console.log('click');
 		};
 	}
 
@@ -197,7 +196,7 @@ app.service('mapService', function(){
 	//Expose functions to controllers
 	return {
 	    getMap: getMap,
-	    focusOnParseLocation: focusOnParseLocation,
+	    // focusOnParseLocation: focusOnParseLocation,
 	    focusOnObjectLocation: focusOnObjectLocation,
 	    focusOnLocation: focusOnLocation,
 	    clickOnMarker: clickOnMarker,
@@ -239,15 +238,19 @@ app.service('markerService', function ($filter){
 	}
 
 	var addToAreaMarkerArray = function(object){
-		if ($filter('filter')(areaMarkers, { id: object.id }, true)[0] == null ) {
-			var marker = {
+		var areaInMarkerArray = $filter('filter')(areaMarkers, { id: object.id }, true)[0];
+		if (areaInMarkerArray) {
+			areaMarkers.splice(areaMarkers.indexOf(areaInMarkerArray), 1);
+		}
+		var marker = {
 					latitude: object.attributes.position._latitude,
 					longitude: object.attributes.position._longitude,
-					title: object.attributes.name
+					title: object.attributes.name,
+					options: { animation: google.maps.Animation.DROP, labelContent: object.attributes.name, labelAnchor:'50 75', labelClass:'marker-label' }
 				};
-			marker['id'] = object.id;
-			areaMarkers.push(marker);
-		}
+		marker['id'] = object.id;
+		areaMarkers.push(marker);
+
 	};
 
 	var removeFromAreaMarkerArray = function(object){
@@ -263,15 +266,18 @@ app.service('markerService', function ($filter){
 	};
 
 	var addToSchoolMarkerArray = function(object){
-		if ($filter('filter')(schoolMarkers, { id: object.id }, true)[0] == null ) {
-			var marker = {
-					latitude: object.attributes.position._latitude,
-					longitude: object.attributes.position._longitude,
-					title: object.attributes.name
-				};
-			marker['id'] = object.id;
-			schoolMarkers.push(marker);
+		var schoolInMarkerArray = $filter('filter')(schoolMarkers, { id: object.id }, true)[0];
+		if (schoolInMarkerArray) {
+			schoolMarkers.splice(schoolMarkers.indexOf(schoolInMarkerArray), 1);
 		}
+		var marker = {
+				latitude: object.attributes.position._latitude,
+				longitude: object.attributes.position._longitude,
+				title: object.attributes.name,
+				options: { animation: google.maps.Animation.DROP, labelContent: object.attributes.name, labelAnchor:'50 75', labelClass:'marker-label' }
+			};
+		marker['id'] = object.id;
+		schoolMarkers.push(marker);
   	};
 
   	var removeFromSchoolMarkerArray = function(object){
