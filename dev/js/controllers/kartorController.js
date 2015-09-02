@@ -77,6 +77,7 @@ app.controller('uploadMapCtrl', function ($scope, $filter,$modal, uiGmapGoogleMa
 		//Query for areas with maps
 		var query = new Parse.Query("Areas");
 		query.include("maps");
+		query.ascending("name");
 		query.find().then(function(result){
 			//Save results to scope
 			$scope.areas = result;
