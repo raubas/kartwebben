@@ -54,7 +54,7 @@
             <div class="col-md-12 form-group">
 
               <div>Ladda upp fil</div>
-              <div ngf-drop ngf-select="onFileSelect($file)" ng-model="files" class="drop-box" 
+              <div ngf-drop ng-required="!files" ngf-select="onFileSelect($file)" ng-model="files" class="drop-box" 
                       ngf-drag-over-class="dragover" ngf-multiple="false" ngf-allow-dir="false"
                       accept="application/pdf" 
                       ngf-pattern="'application/pdf'"><span class="glyphicon glyphicon-plus" style="font-size: 48px;" aria-hidden="true"></span></div>
