@@ -23,7 +23,7 @@
             <div ng-repeat="map in area.attributes.maps | filter: { attributes: { difficulty: '1' } } ">
               <div class="col-md-4">
                   <p ng-bind="map.attributes.name"></p>
-                  <img ng-src="{{::displayMap(map.attributes.file._url)}}" class="img-responsive" ng-click="showModal(map.attributes.file._url, area.attributes.name, map.attributes.name)"/>
+                  <img ng-src="{{::displayMap(map.attributes.file._url)}}" class="img-responsive" ng-click="showModal(map.attributes.mapPreview._url, map.attributes.file._url, area.attributes.name, map.attributes.name)"/>
               </div>
             </div>
            </div>
@@ -32,7 +32,7 @@
             <div ng-repeat="map in area.attributes.maps | filter: { attributes: { difficulty: '2' } } ">
               <div class="col-md-4">
                   <p ng-bind="map.attributes.name"></p>
-                  <img ng-src="{{::displayMap(map.attributes.file._url)}}" class="img-responsive" ng-click="showModal(map.attributes.file._url, area.attributes.name, map.attributes.name)"/>
+                  <img ng-src="{{::displayMap(map.attributes.file._url)}}" class="img-responsive" ng-click="showModal(map.attributes.mapPreview._url, map.attributes.file._url, area.attributes.name, map.attributes.name)"/>
               </div>
             </div>
            </div>
@@ -41,7 +41,7 @@
             <div ng-repeat="map in area.attributes.maps | filter: { attributes: { difficulty: '3' } } ">
               <div class="col-md-4">
                   <p ng-bind="map.attributes.name"></p>
-                  <img ng-src="{{::displayMap(map.attributes.file._url)}}" class="img-responsive" ng-click="showModal(map.attributes.file._url, area.attributes.name, map.attributes.name)"/>
+                  <img ng-src="{{::displayMap(map.attributes.file._url)}}" class="img-responsive" ng-click="showModal(map.attributes.mapPreview._url, map.attributes.file._url, area.attributes.name, map.attributes.name)"/>
               </div>
             </div>
            </div>
