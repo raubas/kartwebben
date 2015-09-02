@@ -158,10 +158,8 @@ app.controller('uploadMapCtrl', function ($scope, $filter,$modal, uiGmapGoogleMa
         	console.log($file);
     		var mapfile = new Parse.File("map.pdf",$file);
     		PDFToPNG.makePNG($file).then(function(result) {
-    			console.log(result);
     			var mapPreview = new Parse.File("map.png",{base64 : result});
     			mapPreview.save().then(function(){
-    				console.log(mapPreview);
     				$scope.newMap.uploadedMapPreview = mapPreview;
     			}, function(error){
     				console.log(error);

@@ -14,7 +14,8 @@
     "angular-bootstrap": "~0.13.2",
     "angular-ui-router": "~0.2.15",
     "angular-xeditable": "~0.1.9",
-    "ng-file-upload": "~6.2.1"
+    "ng-file-upload": "~6.2.1",
+    "angular-spinner": "~0.6.2"
   },
   "private": true,
   "resolutions": {
