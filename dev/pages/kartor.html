@@ -51,11 +51,16 @@
                <input type="radio" ng-required="!newMap.mapLevel" ng-model="newMap.mapLevel" ng-value="3"> 3
              </label>
             </div>
-
-            
             <div class="col-md-12 form-group">
 
-              <input type="file" ngf-select="onFileSelect($file)" ngf-multiple="false" accept="application/pdf">Select File
+              <div>Ladda upp fil</div>
+              <div ngf-drop ngf-select="onFileSelect($file)" ng-model="files" class="drop-box" 
+                      ngf-drag-over-class="dragover" ngf-multiple="false" ngf-allow-dir="false"
+                      accept="application/pdf" 
+                      ngf-pattern="'application/pdf'"><span class="glyphicon glyphicon-plus" style="font-size: 48px;" aria-hidden="true"></span></div>
+              <div ngf-no-file-drop>Klicka här för att för att ladda upp en karta</div>
+
+              <!-- <input type="file" ngf-select="onFileSelect($file)" ngf-multiple="false" accept="application/pdf">Select File -->
 
             </div>
             <div class="col-md-12 form-group">
