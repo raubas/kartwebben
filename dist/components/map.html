@@ -1,6 +1,6 @@
 <!-- **** Map **** -->
 <div class="row">
-  <div id="map-canvas">
+  <div id="map-canvas" ng-show="showMap">
     <ui-gmap-google-map center='map.center' zoom='map.zoom' events="map.options.events" control="map.control" options="map.options" pan="true">
       <ui-gmap-markers models="areaMarkers" options="'options'" coords="'self'" icon="markerprops.area" click="markerClick">
       </ui-gmap-markers>
@@ -10,4 +10,5 @@
       </ui-gmap-marker>
     </ui-gmap-google-map>
   </div>
+  <div class="hideMap visible-sm visible-xs" ng-click="hideMap()"><span class="glyphicon glyphicon-chevron-down" aria-hidden="true"></span></div>
 </div>

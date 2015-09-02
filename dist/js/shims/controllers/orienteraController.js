@@ -1,4 +1,4 @@
-app.controller('orienteraCtrl', function ($scope, $modal, $filter, mapService, markerService, scrollTo){
+app.controller('orienteraCtrl', function ($scope, $modal, $filter, mapService, markerService, scrollTo, mobileHider){
 
 	
 	//Get areas from db
@@ -89,10 +89,25 @@ app.controller('orienteraCtrl', function ($scope, $modal, $filter, mapService, m
 	    });
 	}; 
 
+	$scope.hideRightbar = function() {
+		mobileHider.setRightbarVisibility(false);
+		mobileHider.setMapVisibility(true);
+		console.log("kallas hideRightbar?")
+	}
+
+	var watchVisibility = function(){
+		$scope.$watch(function () {
+        	return mobileHider.getRightbarVisibility();
+    	}, function (oldValue, newValue) {
+        	$scope.showRightbar = mobileHider.getRightbarVisibility();
+    	});
+	}
+
 		//Init controller
 	var init = function () {
 		$scope.openAccordion = {};
 		watchClick();
+		watchVisibility();
 	};
 
 	//Init function
@@ -101,6 +116,7 @@ app.controller('orienteraCtrl', function ($scope, $modal, $filter, mapService, m
 	//Remove watchers when view is unloaded
 	$scope.$on("$destroy", function(){
         watchClick();
+        watchVisibility();
     });
 
 

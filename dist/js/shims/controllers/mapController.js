@@ -1,4 +1,4 @@
-app.controller('mapCtrl', function ($scope, uiGmapGoogleMapApi, geolocation, mapService, markerService, $filter){
+app.controller('mapCtrl', function ($scope, uiGmapGoogleMapApi, geolocation, mapService, markerService, $filter, mobileHider){
 
 	//Initiate google map on Luleå
 	uiGmapGoogleMapApi.then(function (maps) {
@@ -42,10 +42,26 @@ app.controller('mapCtrl', function ($scope, uiGmapGoogleMapApi, geolocation, map
 		mapService.clickOnMarker(data);
 	};
 
+	$scope.hideMap = function() {
+		mobileHider.setMapVisibility(false);
+		mobileHider.setRightbarVisibility(true);
+
+	}
+
+	var watchVisibility = function(){
+		$scope.$watch(function () {
+        	return mobileHider.getMapVisibility();
+    	}, function (oldValue, newValue) {
+        	$scope.showMap = mobileHider.getMapVisibility();
+    	});
+	}
+
 	//Init controller
 	var init = function () {
 		watchMap();
 		watchDraggableMarker();
+		watchVisibility();
+
 		// check if there is query in url
 		// and fire search in case its value is not empty
 	};
@@ -56,7 +72,10 @@ app.controller('mapCtrl', function ($scope, uiGmapGoogleMapApi, geolocation, map
 	//Remove watchers when view is unloaded
 	$scope.$on("$destroy", function(){
         watchMap();
+        watchVisibility();
 		watchDraggableMarker();
     });
+
+
 
 });

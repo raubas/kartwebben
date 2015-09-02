@@ -415,7 +415,37 @@ app.service('PDFToPNG', function ($q){
 
 })
 
+app.service('mobileHider', function (){
+	var showMap = true;
+	var showRightbar = true;
 
+
+	var getMapVisibility = function() {
+		return showMap;
+	}
+
+	var setMapVisibility = function(input) {
+		showMap = input;
+	}
+
+	var getRightbarVisibility = function() {
+		return showRightbar;
+	}
+
+	var setRightbarVisibility = function(input) {
+		showRightbar = input;
+	}
+
+
+	return {
+		getMapVisibility: getMapVisibility,
+		setMapVisibility: setMapVisibility,
+		getRightbarVisibility: getRightbarVisibility,
+		setRightbarVisibility: setRightbarVisibility
+
+	}
+})
+	
 var ModalInstanceCtrl = function($scope, $modalInstance, $modal, item) {
     
 	$scope.item = item;
