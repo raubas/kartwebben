@@ -17,14 +17,14 @@
   <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
   
     <ul class="nav navbar-nav" ng-show="!user">
-      <li class="customers-nav" ng-class="{ active: isActive('divided.orientera')}"><a ui-sref="divided.orientera">Orientera</a></li>
-      <li class="customers-nav" ng-class="{ active: isActive('span.ovningar')}"><a ui-sref="span.ovningar">Övningar</a></li>
+      <li class="customers-nav" ng-class="{ active: isActive('orientera')}"><a ui-sref="divided.orientera">Orientera</a></li>
+      <li class="customers-nav" ng-class="{ active: isActive('ovningar')}"><a ui-sref="span.ovningar">Övningar</a></li>
     </ul>
     <ul class="nav navbar-nav" ng-show="user">
-      <li class="customers-nav" ng-class="{ active: isActive('divided.orientera')}"><a ui-sref="divided.orientera">Orientera</a></li>
-      <li class="customers-nav" ng-class="{ active: isActive('span.ovningar')}"><a ui-sref="span.ovningar">Övningar</a></li>
-      <li class="customers-nav" ng-class="{ active: isActive('divided.skolor')}"><a ui-sref="divided.skolor">Skolor</a></li>
-      <li class="customers-nav" ng-class="{ active: isActive('divided.kartor')}"><a ui-sref="divided.kartor">Kartor</a></li>
+      <li class="customers-nav" ng-class="{ active: isActive('orientera')}"><a ui-sref="divided.orientera">Orientera</a></li>
+      <li class="customers-nav" ng-class="{ active: isActive('ovningar')}"><a ui-sref="span.ovningar">Övningar</a></li>
+      <li class="customers-nav" ng-class="{ active: isActive('skolor')}"><a ui-sref="divided.skolor">Skolor</a></li>
+      <li class="customers-nav" ng-class="{ active: isActive('kartor')}"><a ui-sref="divided.kartor">Kartor</a></li>
     </ul>
     <ul class="nav navbar-nav navbar-right" ng-show="!user">
       <li><a href="#" ng-click="logInModal()">Logga in</a></li>

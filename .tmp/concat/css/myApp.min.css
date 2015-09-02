@@ -6,6 +6,7 @@ body, html{
     height: calc(100vh - 50px);
     margin: 0;
     padding: 0;
+    border-right: 1em solid #F8F8F8;
 }
 
 .angular-google-map-container {
@@ -40,6 +41,14 @@ body, html{
 	background-color: rgba(255,255,255,1);
 }*/
 
+/* Label for draggable marker */
+.draggable-marker-label, .marker-label {
+	background:rgba(255,255,255,0.6);
+	border-radius: 10px;
+	padding: 0.2em 0.8em 0.2em 0.8em;
+	font-size: 1.1em;
+}
+
 
 /* Angular change view animation */
 /* Have to set height explicity on ui-view 
@@ -52,32 +61,85 @@ to prevent collapsing during animation*/
 }
 
 [ui-view].ng-enter {
-  position: absolute;
-  left: 0;
-  right: 0;
-  -webkit-transition:all 1s ease-in;
-    -moz-transition:all 1s ease-in;
-    -o-transition:all 1s ease-in;
-    transition:all 1s ease-in;
+	/*-webkit-animation:slideInRight 0.7s both ease-in;
+	-moz-animation:slideInRight 0.7s both ease-in;
+	animation:slideInRight 0.7s both ease-in;   */
+	-webkit-animation:fadeInAnim 0.3s both ease-in;
+	-moz-animation:fadeInAnim 0.3s both ease-in;
+	animation:fadeInAnim 0.3s both ease-in; 
+     
 }
 
 [ui-view].ng-leave {
-  position: absolute;
-  left: 0;
-  right: 0;
-  -webkit-transition:all 1s ease-out;
-    -moz-transition:all 1s ease-out;
-    -o-transition:all 1s ease-out;
-    transition:all 1s ease-out;
+	/*-webkit-animation:slideOutLeft 0.7s both ease-in;
+	-moz-animation:slideOutLeft 0.7s both ease-in;
+	animation:slideOutLeft 0.7s both ease-in;  */
+	-webkit-animation:fadeOutAnim 0.3s both ease-in;
+	-moz-animation:fadeOutAnim 0.3s both ease-in;
+	animation:fadeOutAnim 0.3s both ease-in;  
 }
 
-[ui-view].ng-enter-active {
-  opacity: 1;
+/* slide in from the right */
+@keyframes slideInRight {
+	from 	{ transform:translateX(100%); }
+	to 		{ transform: translateX(0); }
+}
+@-moz-keyframes slideInRight {
+	from 	{ -moz-transform:translateX(100%); }
+	to 		{ -moz-transform: translateX(0); }
+}
+@-webkit-keyframes slideInRight {
+	from 	{ -webkit-transform:translateX(100%); }
+	to 		{ -webkit-transform: translateX(0); }
 }
 
-[ui-view].ng-leave-active {
-  opacity: 0;
+/* slide in from the bottom */
+@keyframes slideOutLeft {
+	to 		{ transform: translateX(-100%); }
 }
+@-moz-keyframes slideOutLeft {	
+	to 		{ -moz-transform: translateX(-100%); }
+}
+@-webkit-keyframes slideOutLeft {
+	to 		{ -webkit-transform: translateX(-100%); }
+}
+
+/* Fade in */
+@-webkit-keyframes fadeInAnim {
+  0%   { opacity: 0; }
+  100% { opacity: 1; }
+}
+@-moz-keyframes fadeInAnim {
+  0%   { opacity: 0; }
+  100% { opacity: 1; }
+}
+@-o-keyframes fadeInAnim {
+  0%   { opacity: 0; }
+  100% { opacity: 1; }
+}
+@keyframes fadeInAnim {
+  0%   { opacity: 0; }
+  100% { opacity: 1; }
+}
+
+/* Fade out */
+@-webkit-keyframes fadeOutAnim {
+  0%   { opacity: 1; }
+  100% { opacity: 0; }
+}
+@-moz-keyframes fadeOutAnim {
+  0%   { opacity: 1; }
+  100% { opacity: 0; }
+}
+@-o-keyframes fadeOutAnim {
+  0%   { opacity: 1; }
+  100% { opacity: 0; }
+}
+@keyframes fadeOutAnim {
+  0%   { opacity: 1; }
+  100% { opacity: 0; }
+}
+
 /* Angular change view animation stop */
 
 .rightbar{
@@ -174,4 +236,34 @@ to prevent collapsing during animation*/
 }
 input.ng-dirty.ng-invalid {
       border-color: red;
+}
+
+.drop-box {
+    background: #F8F8F8;
+    border: 2px dashed #DDD;
+    border-radius: 10px;
+    width: 70px;
+    height: 70px;
+
+    text-align: center;
+    color: grey;
+    padding-top: 11px;
+    padding-left: 5px;
+}
+.drop-box-ok {
+    background: #F8F8F8;
+    border: 2px dashed green;
+    border-radius: 10px;
+    width: 70px;
+    height: 70px;
+
+    text-align: center;
+    color: green;
+    padding-top: 11px;
+    padding-left: 5px;
+
+}
+
+.dragover {
+    border: 2px dashed darkgrey;
 }

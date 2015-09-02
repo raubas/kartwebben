@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" ng-app="myApp">
+<html lang="en">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0">
@@ -14,10 +14,11 @@
     <link rel="stylesheet" href="bower_components/bootstrap-css/css/bootstrap.min.css" />
     <link rel="stylesheet" href="bower_components/vegas/dist/vegas.min.css" />
     <link rel="stylesheet" href="bower_components/nya-bootstrap-select/dist/css/nya-bs-select.css" />
+    <link rel="stylesheet" href="bower_components/angular-xeditable/dist/css/xeditable.css" />
     <!-- endbower -->
 
     <!-- css -->
-    <link rel="stylesheet" href="css/ba0bf73a.myApp.min.css"/>
+    <link rel="stylesheet" href="css/e3184929.myApp.min.css"/>
 
     <!-- bower:js -->
     <script src="bower_components/jquery/dist/jquery.js"></script>
@@ -33,41 +34,39 @@
     <script src="bower_components/angularjs-geolocation/src/geolocation.js"></script>
     <script src="bower_components/angular-bootstrap/ui-bootstrap-tpls.js"></script>
     <script src="bower_components/angular-ui-router/release/angular-ui-router.js"></script>
+    <script src="bower_components/angular-xeditable/dist/js/xeditable.js"></script>
+    <script src="bower_components/ng-file-upload/ng-file-upload.js"></script>
+    <script src="bower_components/spin.js/spin.js"></script>
+    <script src="bower_components/angular-spinner/angular-spinner.js"></script>
     <!-- endbower -->
 
     <!-- Javascript -->
     <script src="js/myApp.min.js"></script>
 
+    
+    
 
+    <!-- Vegas.js -->
     <script type="text/javascript">
         $(function() {
             $('body').vegas({
                 slides: [
-                    { src: '/dev/images/skylines_blur.jpg' }
+                    { src: 'images/blur-background-opac.png' }
                 ]
             });
         });
     </script>
 
 </head>
-<body>
+<body ng-app="myApp">
     <div class="pagewrap">
         <!-- Navbar from angular -->
-        <nav ng-include="'/dev/components/navbar.html'" ng-controller="navCtrl" class="navbar navbar-default navbar-fixed-top" id="header" role="navigation"></nav>
+        <nav ng-include="'components/navbar.html'" ng-controller="navCtrl" class="navbar navbar-default navbar-fixed-top" id="header" role="navigation"></nav>
 
         <!-- Page content goes here -->
         <div class="ui-view-container">
-            <div class="content" ui-view=>
+            <div class="content" ui-view>
             </div>
         </div>
 	</div>
 </body>
-
-
-
-
-
-
-
-
-

@@ -49,7 +49,7 @@ app.config(function($stateProvider, $urlRouterProvider) {
  
     $stateProvider
         .state('divided', {
-        	url: '/divided',
+        	url: '',
         	templateUrl: 'components/divided.html'
         })
 
@@ -96,7 +96,7 @@ app.config(function($stateProvider, $urlRouterProvider) {
         })
 
         .state('span', {
-        	url:'/span',
+        	url:'',
         	templateUrl: 'components/span.html',
         })
 
