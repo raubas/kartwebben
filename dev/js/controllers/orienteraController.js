@@ -59,7 +59,7 @@ app.controller('orienteraCtrl', function ($scope, $modal, $filter, mapService, m
 	//Open modal for preview
 	$scope.name = 'theNameHasBeenPassed';
 	
-	$scope.showModal = function(url, areaName, mapName) {
+	$scope.showModal = function(previewUrl, pdfUrl, areaName, mapName) {
 	  
 	  $scope.opts = {
 		  backdrop: true,
@@ -73,8 +73,8 @@ app.controller('orienteraCtrl', function ($scope, $modal, $filter, mapService, m
 	    
 	  
 	  $scope.opts.resolve.item = function() {
-	      return angular.copy({	previewUrl: url,
-	      						pdfUrl: '/dev/images/icons/fish.png',
+	      return angular.copy({	previewUrl: previewUrl,
+	      						pdfUrl: pdfUrl,
 	      						areaName: areaName,
 	      						mapName: mapName }); // pass name to Dialog
 	  }
