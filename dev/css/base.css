@@ -246,9 +246,23 @@ input.ng-dirty.ng-invalid {
 
     text-align: center;
     color: grey;
-    padding-top: 7px;
-    padding-left: 7px;
+    padding-top: 11px;
+    padding-left: 5px;
 }
+.drop-box-ok {
+    background: #F8F8F8;
+    border: 2px dashed green;
+    border-radius: 10px;
+    width: 70px;
+    height: 70px;
+
+    text-align: center;
+    color: green;
+    padding-top: 11px;
+    padding-left: 5px;
+
+}
+
 .dragover {
     border: 2px dashed darkgrey;
 }

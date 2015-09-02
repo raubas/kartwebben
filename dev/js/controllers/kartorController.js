@@ -1,4 +1,4 @@
-app.controller('uploadMapCtrl', function ($scope, $filter,$modal, uiGmapGoogleMapApi, mapService, markerService, scrollTo, $timeout, $http, Upload, PDFToPNG, usSpinnerService){
+app.controller('uploadMapCtrl', function ($scope, $filter, $q, $modal, uiGmapGoogleMapApi, mapService, markerService, scrollTo, $timeout, $http, Upload, PDFToPNG, usSpinnerService){
 
 
 
@@ -174,7 +174,7 @@ app.controller('uploadMapCtrl', function ($scope, $filter,$modal, uiGmapGoogleMa
         if ($file != null) {
         	usSpinnerService.spin('spinner-1');
     		var mapfile = new Parse.File("map.pdf",$file);
-    		PDFToPNG.makePNG($file).then(function(result) {
+    		var pdf = PDFToPNG.makePNG($file).then(function(result) {
     			var mapPreview = new Parse.File("map.png",{base64 : result});
     			mapPreview.save().then(function(){
     				$scope.newMap.uploadedMapPreview = mapPreview;
@@ -182,13 +182,18 @@ app.controller('uploadMapCtrl', function ($scope, $filter,$modal, uiGmapGoogleMa
     				console.log(error);
     			})
     		});
-    		mapfile.save().then(function(){
+    		var png = mapfile.save().then(function(){
     			$scope.newMap.uploadedMap = mapfile;
-    			$scope.$digest();
-    			usSpinnerService.stop('spinner-1');
+    			
+    			
     		}, function(error){
     			console.log(error);
     		});
+    		$q.all([pdf, png]).then(function(){
+    			$scope.dropBoxClass = "drop-box-ok"
+    			$scope.uploaded = true;
+				usSpinnerService.stop('spinner-1');
+    		})
         }
     };
 
@@ -219,6 +224,8 @@ app.controller('uploadMapCtrl', function ($scope, $filter,$modal, uiGmapGoogleMa
 				$scope.newMap.mapName = "";
 				$scope.newMap.mapLevel = "";
 				$scope.newMap.mapLevel = "";
+				$scope.dropBoxClass = "drop-box"
+				$scope.uploaded = false;
 
 			},
 			error: function(map, error) {
@@ -330,6 +337,9 @@ app.controller('uploadMapCtrl', function ($scope, $filter,$modal, uiGmapGoogleMa
 
 	//Init controller
 	var init = function () {
+
+		$scope.dropBoxClass = "drop-box";
+		$scope.uploaded = false;
 		//Add area form object
 		$scope.addArea = {};
 		//New map upload

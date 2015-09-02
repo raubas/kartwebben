@@ -54,10 +54,13 @@
             <div class="col-md-12 form-group">
 
               <div>Ladda upp fil</div>
-              <div ngf-drop ng-required="!files" ngf-select="onFileSelect($file)" ng-model="files" class="drop-box" 
+              <div ngf-drop ng-required="!files" ngf-select="onFileSelect($file)" ng-model="files" ng-class="dropBoxClass" 
                       ngf-drag-over-class="dragover" ngf-multiple="false" ngf-allow-dir="false"
                       accept="application/pdf" 
-                      ngf-pattern="'application/pdf'"><span class="glyphicon glyphicon-plus" style="font-size: 48px;" aria-hidden="true"></span></div>
+                      ngf-pattern="'application/pdf'">
+                        <span class="glyphicon glyphicon-plus" style="font-size: 40px;" aria-hidden="true" ng-hide="(dropBoxClass=='drop-box-ok')"></span>
+                        <span class="glyphicon glyphicon-ok" style="font-size: 40px;" aria-hidden="true" ng-hide="(dropBoxClass=='drop-box')"></span>
+                      </div>
               <div ngf-no-file-drop>Klicka här för att för att ladda upp en karta</div>
 
               <span us-spinner spinner-key="spinner-1"></span>
@@ -65,7 +68,7 @@
 
             </div>
             <div class="col-md-12 form-group">
-              <button class="btn btn-primary" ng-disabled="newMapForm.$invalid" ng-click="saveMap(area)" >Spara karta</button>
+              <button class="btn btn-primary" ng-disabled="newMapForm.$invalid || !uploaded" ng-click="saveMap(area)" >Spara karta</button>
             </div>
           </form>
         </div>
