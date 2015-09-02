@@ -74,8 +74,8 @@
           <div ng-repeat="map in area.attributes.maps | filter: { attributes: { difficulty: '1' } } ">
             <div class="col-md-4">
                 <p ng-bind="map.attributes.name"></p>
-                <img ng-src="{{::displayMap(map.attributes.file._url)}}" class="img-responsive" />
-                <button class="btn btn-default" ng-click="deleteMap(area, map)">Delete</button>
+                <img ng-src="{{::displayMap(map.attributes.mapPreview._url)}}" class="img-responsive" />
+                <button class="btn btn-danger btn-xs" ng-click="deleteMap(area, map)">Ta bort <span class="glyphicon glyphicon-trash"> </span></button>
             </div>
           </div>
          </div>
@@ -84,8 +84,8 @@
           <div ng-repeat="map in area.attributes.maps | filter: { attributes: { difficulty: '2' } } ">
             <div class="col-md-4">
                 <p ng-bind="map.attributes.name"></p>
-                <img ng-src="{{::displayMap(map.attributes.file._url)}}" class="img-responsive" />
-                <button class="btn btn-default" ng-click="deleteMap(area, map)">Delete</button>
+                <img ng-src="{{::displayMap(map.attributes.mapPreview._url)}}" class="img-responsive" />
+                <button class="btn btn-danger btn-xs" ng-click="deleteMap(area, map)">Ta bort <span class="glyphicon glyphicon-trash"> </span></button>
             </div>
           </div>
          </div>
@@ -94,8 +94,8 @@
           <div ng-repeat="map in area.attributes.maps | filter: { attributes: { difficulty: '3' } } ">
             <div class="col-md-4">
                 <p ng-bind="map.attributes.name"></p>
-                <img ng-src="{{::displayMap(map.attributes.file._url)}}" class="img-responsive" />
-                <button class="btn btn-default" ng-click="deleteMap(area, map)">Delete</button>
+                <img ng-src="{{::displayMap(map.attributes.mapPreview._url)}}" class="img-responsive" />
+                <button class="btn btn-danger btn-xs" ng-click="deleteMap(area, map)">Ta bort <span class="glyphicon glyphicon-trash"> </span></button>
             </div>
           </div>
          </div>
