@@ -1,5 +1,6 @@
 <!-- **** Content **** -->
-<div class="rightbar">
+<div class="rightbar" ng-show="showRightbar">
+  <div class="hideRightbar visible-sm visible-xs" ng-click="hideRightbar()"><span class="glyphicon glyphicon-chevron-up" aria-hidden="true"></span></div>
   <accordion close-others="true">
     <accordion-group heading="Lägg till ny skola" is-open="newSchoolPanel.open" class="barpanel">
 

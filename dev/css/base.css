@@ -266,3 +266,23 @@ input.ng-dirty.ng-invalid {
 .dragover {
     border: 2px dashed darkgrey;
 }
+
+.hideMap {
+	width: 100%;
+	height: 40px;
+	position: absolute;
+	bottom: 0px;
+	z-index: 1000;
+	text-align: center;
+}
+.hideMap, .hideRightbar span {
+	font-size: 30px;
+}
+
+.hideRightbar {
+	width: 100%;
+	height: 40px;
+	top: 0px;
+	z-index: 1000;
+	text-align: center;
+}

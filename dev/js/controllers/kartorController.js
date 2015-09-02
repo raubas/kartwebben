@@ -1,4 +1,4 @@
-app.controller('uploadMapCtrl', function ($scope, $filter, $q, $modal, uiGmapGoogleMapApi, mapService, markerService, scrollTo, $timeout, $http, Upload, PDFToPNG, usSpinnerService){
+app.controller('uploadMapCtrl', function ($scope, $filter, $q, $modal, uiGmapGoogleMapApi, mapService, markerService, scrollTo, $timeout, $http, Upload, PDFToPNG, usSpinnerService, mobileHider){
 
 
 
@@ -335,6 +335,21 @@ app.controller('uploadMapCtrl', function ($scope, $filter, $q, $modal, uiGmapGoo
 	    });
 	}; 
 
+	// Show and hide rightbar on moblie
+	$scope.hideRightbar = function() {
+		mobileHider.setRightbarVisibility(false);
+		mobileHider.setMapVisibility(true);
+	}
+
+	var watchVisibility = function(){
+		$scope.$watch(function () {
+        	return mobileHider.getRightbarVisibility();
+    	}, function (oldValue, newValue) {
+        	$scope.showRightbar = mobileHider.getRightbarVisibility();
+    	});
+	}
+
+
 	//Init controller
 	var init = function () {
 
@@ -354,6 +369,7 @@ app.controller('uploadMapCtrl', function ($scope, $filter, $q, $modal, uiGmapGoo
 
 	   	//Watch variables from map
 	   	watchClick();
+	   	watchVisibility();
 		watchDraggableMarker();
 	};
 
@@ -363,6 +379,8 @@ app.controller('uploadMapCtrl', function ($scope, $filter, $q, $modal, uiGmapGoo
 	//Remove watchers when view is unloaded
 	$scope.$on("$destroy", function(){
         watchClick();
+        watchVisibility();
+        watchDraggableMarker();
         //markerService.removeDraggableMarker();
     });
 

@@ -1,4 +1,4 @@
-app.controller('skolorCtrl', function ($scope,$modal, uiGmapGoogleMapApi, mapService, markerService, scrollTo, $filter, $timeout){
+app.controller('skolorCtrl', function ($scope,$modal, uiGmapGoogleMapApi, mapService, markerService, scrollTo, $filter, $timeout, mobileHider){
 
 	//Config marker after click on map, updates coords for clickedlocation
 	$scope.addMarker = function (obj) {
@@ -240,6 +240,20 @@ app.controller('skolorCtrl', function ($scope,$modal, uiGmapGoogleMapApi, mapSer
 	    });
 	}; 
 
+	// Show and hide rightbar on moblie
+	$scope.hideRightbar = function() {
+		mobileHider.setRightbarVisibility(false);
+		mobileHider.setMapVisibility(true);
+	}
+
+	var watchVisibility = function(){
+		$scope.$watch(function () {
+        	return mobileHider.getRightbarVisibility();
+    	}, function (oldValue, newValue) {
+        	$scope.showRightbar = mobileHider.getRightbarVisibility();
+    	});
+	}
+
  		//Make queries
 	var init = function () {
 	   	$scope.queryForSchools();
@@ -256,10 +270,18 @@ app.controller('skolorCtrl', function ($scope,$modal, uiGmapGoogleMapApi, mapSer
 
 	   	//Watch variables from map
 	   	watchClick();
+	   	watchVisibility();
 		watchDraggableMarker();
 	};
 
 	//Init function
 	init();
+
+	//Remove watchers when view is unloaded
+	$scope.$on("$destroy", function(){
+        watchClick();
+        watchDraggableMarker();
+        watchVisibility();
+    });
 	
 });
