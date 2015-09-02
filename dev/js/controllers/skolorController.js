@@ -87,6 +87,25 @@ app.controller('skolorCtrl', function ($scope,$modal, uiGmapGoogleMapApi, mapSer
 		    });
 	    });
  	}
+
+ 	$scope.queryForAreas = function () {
+		//Query for areas with maps
+		var query = new Parse.Query("Areas");
+		query.include("maps");
+		query.ascending("name");
+		query.find().then(function(result){
+			//Save results to scope
+			$scope.areas = result;
+			console.log('areas updated');
+			angular.forEach(result, function(value, key){
+				//Nullcheck for position attribute due to fucked up db
+				if (value.attributes.position != null) {
+					//Push to map using service
+					markerService.addToAreaMarkerArray(value);
+				};
+			});
+		});
+	}
  		
 
 	//Function to place draggable marker for changing of school location
@@ -223,8 +242,9 @@ app.controller('skolorCtrl', function ($scope,$modal, uiGmapGoogleMapApi, mapSer
 
  		//Make queries
 	var init = function () {
-	   $scope.queryForSchools();
-	   // Set var to collapse add new school.
+	   	$scope.queryForSchools();
+	   	$scope.queryForAreas();
+	   	// Set var to collapse add new school.
 		$scope.newSchoolPanel = { open: false };
 		//Set which accordion is open
 		$scope.openAccordion = {};

@@ -145,7 +145,7 @@ app.service('userManagement', function($rootScope, $state){
 app.service('mapService', function(){
 	//Config map
 	var map = 	{ 	center: { latitude: 65.588946, longitude: 22.157324 },
-					zoom: 14,
+					zoom: 12,
 					options: { scrollwheel: false }
 				};
 	var clickedMarker = {};
@@ -167,7 +167,7 @@ app.service('mapService', function(){
 	var focusOnObjectLocation = function(object){
 		map.center = { 	latitude: object.latitude,
 						longitude: object.longitude };
-		map.zoom = 14;
+		//map.zoom = 12;
 		focusOnLocation(map);
 	}
 

@@ -90,8 +90,23 @@ app.controller('uploadMapCtrl', function ($scope, $filter,$modal, uiGmapGoogleMa
 				};
 			});
 		});
-
 	}
+
+	$scope.queryForSchools = function() {
+ 		var query = new Parse.Query("Schools");
+ 		query.ascending("name");
+		query.include("contactPerson","areas", "areas.maps");
+		query.find().then(function(result){
+			$scope.schools = result;
+	        angular.forEach(result, function(value, key){
+				//Nullcheck for position attribute due to fucked up db
+				if (value.attributes.position != null) {
+					//Push to map using service
+					markerService.addToSchoolMarkerArray(value);
+				};
+		    });
+	    });
+ 	}
 
 	//Return url-string from parse-url
 	$scope.displayMap = function($url){
@@ -317,6 +332,7 @@ app.controller('uploadMapCtrl', function ($scope, $filter,$modal, uiGmapGoogleMa
 		$scope.openAccordion = {};
 		//Query for areas
 	   	$scope.queryForAreas();
+	   	$scope.queryForSchools();
 
 	   	//Watch variables from map
 	   	watchClick();
