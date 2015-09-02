@@ -11,7 +11,7 @@ app.controller('mapCtrl', function ($scope, uiGmapGoogleMapApi, geolocation, map
 		geolocation.getLocation().then(function(data){
 			//Comment to get user location
 			if (data.coords) {
-				mapService.focusOnObjectLocation(data.coords);
+				//mapService.focusOnObjectLocation(data.coords);
 			}
     	});
 	});
