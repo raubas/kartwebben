@@ -54,7 +54,7 @@
             <div class="col-md-12 form-group">
 
               <div>Ladda upp fil</div>
-              <div ngf-drop ngf-select="onFileSelect($file)" ng-model="files" class="drop-box" 
+              <div ngf-drop ng-required="!files" ngf-select="onFileSelect($file)" ng-model="files" class="drop-box" 
                       ngf-drag-over-class="dragover" ngf-multiple="false" ngf-allow-dir="false"
                       accept="application/pdf" 
                       ngf-pattern="'application/pdf'"><span class="glyphicon glyphicon-plus" style="font-size: 48px;" aria-hidden="true"></span></div>
@@ -75,8 +75,8 @@
           <div ng-repeat="map in area.attributes.maps | filter: { attributes: { difficulty: '1' } } ">
             <div class="col-md-4">
                 <p ng-bind="map.attributes.name"></p>
-                <img ng-src="{{::displayMap(map.attributes.file._url)}}" class="img-responsive" />
-                <button class="btn btn-default" ng-click="deleteMap(area, map)">Delete</button>
+                <img ng-src="{{::displayMap(map.attributes.mapPreview._url)}}" class="img-responsive" />
+                <button class="btn btn-danger btn-xs" ng-click="deleteMap(area, map)">Ta bort <span class="glyphicon glyphicon-trash"> </span></button>
             </div>
           </div>
          </div>
@@ -85,8 +85,8 @@
           <div ng-repeat="map in area.attributes.maps | filter: { attributes: { difficulty: '2' } } ">
             <div class="col-md-4">
                 <p ng-bind="map.attributes.name"></p>
-                <img ng-src="{{::displayMap(map.attributes.file._url)}}" class="img-responsive" />
-                <button class="btn btn-default" ng-click="deleteMap(area, map)">Delete</button>
+                <img ng-src="{{::displayMap(map.attributes.mapPreview._url)}}" class="img-responsive" />
+                <button class="btn btn-danger btn-xs" ng-click="deleteMap(area, map)">Ta bort <span class="glyphicon glyphicon-trash"> </span></button>
             </div>
           </div>
          </div>
@@ -95,8 +95,8 @@
           <div ng-repeat="map in area.attributes.maps | filter: { attributes: { difficulty: '3' } } ">
             <div class="col-md-4">
                 <p ng-bind="map.attributes.name"></p>
-                <img ng-src="{{::displayMap(map.attributes.file._url)}}" class="img-responsive" />
-                <button class="btn btn-default" ng-click="deleteMap(area, map)">Delete</button>
+                <img ng-src="{{::displayMap(map.attributes.mapPreview._url)}}" class="img-responsive" />
+                <button class="btn btn-danger btn-xs" ng-click="deleteMap(area, map)">Ta bort <span class="glyphicon glyphicon-trash"> </span></button>
             </div>
           </div>
          </div>
