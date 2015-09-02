@@ -1,6 +1,6 @@
 <!-- **** School Content **** -->
 <div class="rightbar">
-    <form class="form-inline">
+    <!-- <form class="form-inline">
       <div class="form-group">
         <div class="btn-group" dropdown is-open="status.isopen">
           <button type="button" class="btn btn-primary" dropdown-toggle ng-disabled="disabled">
@@ -13,17 +13,38 @@
           </ul>
         </div>
       </div>
-    </form>
+    </form> -->
     <accordion close-others="true">
-      <accordion-group heading="{{area.attributes.name}}" ng-repeat="area in areas" is-open="openAccordion[area.id]" class="barpanel" id="{{ area.id }}">
+      <accordion-group heading="{{::area.attributes.name}}" ng-repeat="area in areas" is-open="openAccordion[area.id]" class="barpanel" id="{{ ::area.id }}">
         <div class="col-md-12">
-            <h4>Kartor</h4>
-            <div ng-repeat="map in area.attributes.maps">
-                <div class="col-md-4">
-                    <p ng-bind="map.attributes.name"></p>
-                    <img ng-src="{{displayMap(map.attributes.file._url)}}" class="img-responsive" ng-click="showModal(map.attributes.file._url, area.attributes.name, map.attributes.name)"/>
-                </div>
+          <h4>Kartor</h4>
+          <strong><p>Nivå 1</p></strong>
+          <div class="row">
+            <div ng-repeat="map in area.attributes.maps | filter: { attributes: { difficulty: '1' } } ">
+              <div class="col-md-4">
+                  <p ng-bind="map.attributes.name"></p>
+                  <img ng-src="{{::displayMap(map.attributes.mapPreview._url)}}" class="img-responsive" ng-click="showModal(map.attributes.mapPreview._url, map.attributes.file._url, area.attributes.name, map.attributes.name)"/>
+              </div>
             </div>
+           </div>
+          <strong><p>Nivå 2</p></strong>
+          <div class="row">
+            <div ng-repeat="map in area.attributes.maps | filter: { attributes: { difficulty: '2' } } ">
+              <div class="col-md-4">
+                  <p ng-bind="map.attributes.name"></p>
+                  <img ng-src="{{::displayMap(map.attributes.mapPreview._url)}}" class="img-responsive" ng-click="showModal(map.attributes.mapPreview._url, map.attributes.file._url, area.attributes.name, map.attributes.name)"/>
+              </div>
+            </div>
+           </div>
+          <strong><p>Nivå 3</p></strong>
+          <div class="row">
+            <div ng-repeat="map in area.attributes.maps | filter: { attributes: { difficulty: '3' } } ">
+              <div class="col-md-4">
+                  <p ng-bind="map.attributes.name"></p>
+                  <img ng-src="{{::displayMap(map.attributes.mapPreview._url)}}" class="img-responsive" ng-click="showModal(map.attributes.mapPreview._url, map.attributes.file._url, area.attributes.name, map.attributes.name)"/>
+              </div>
+            </div>
+           </div>
         </div>
       </accordion-group>
     </accordion>

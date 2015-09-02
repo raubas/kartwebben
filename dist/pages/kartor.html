@@ -1,5 +1,12 @@
 <!-- **** Content **** -->
 <div class="rightbar">
+  <div>
+  <!-- PDF TO PNG -->
+  <div id="page" >
+    <canvas id="canvas" style="display:none"></canvas>
+  </div>
+      
+  </div>
   <accordion close-others="true">
     <accordion-group heading="Lägg till nytt område" is-open="newAreaPanel.open" class="barpanel">
       <div class="col-md-12">
@@ -18,13 +25,13 @@
             </div>
         </form>
       </div>
+
+
     </accordion-group>
-    <accordion-group heading="{{area.attributes.name}}" ng-repeat="area in areas" is-open="openAccordion[area.id]" class="barpanel" id="{{ area.id }}" emit-when="{event: 'newRendered', condition: $last}">
+    <accordion-group heading="{{::area.attributes.name}}" ng-repeat="area in areas" is-open="openAccordion[area.id]" class="barpanel" id="{{ ::area.id }}" emit-when="{event: 'newRendered', condition: $last}">
       <div class="col-md-12">
-        <button class="btn btn-default" ng-click="updateAreaPosition(area)">Spara!</button>
-        <button class="btn btn-default" ng-click="deleteArea(area)">Ta bort område + kartor!</button>
-        <button class="btn btn-default" ng-click="changeLocationOfArea(area)">Ändra plats</button>
-        <h4>Kartor</h4>
+
+        <h4>Lägg till karta</h4>
          <div class="newMap row"> 
           <form name="newMapForm">
             <div class="col-md-6">
@@ -45,20 +52,34 @@
              </label>
             </div>
             <div class="col-md-12 form-group">
-              <input ng-required="!newMap.uploadedMap" ng-model="newMap.uploadedMap"  type="file" onchange="angular.element(this).scope().uploadFile(this.files)"/>
+
+              <div>Ladda upp fil</div>
+              <div ngf-drop ng-required="!files" ngf-select="onFileSelect($file)" ng-model="files" ng-class="dropBoxClass" 
+                      ngf-drag-over-class="dragover" ngf-multiple="false" ngf-allow-dir="false"
+                      accept="application/pdf" 
+                      ngf-pattern="'application/pdf'">
+                        <span class="glyphicon glyphicon-plus" style="font-size: 40px;" aria-hidden="true" ng-hide="(dropBoxClass=='drop-box-ok')"></span>
+                        <span class="glyphicon glyphicon-ok" style="font-size: 40px;" aria-hidden="true" ng-hide="(dropBoxClass=='drop-box')"></span>
+                      </div>
+              <div ngf-no-file-drop>Klicka här för att för att ladda upp en karta</div>
+
+              <span us-spinner spinner-key="spinner-1"></span>
+              <!-- <input type="file" ngf-select="onFileSelect($file)" ngf-multiple="false" accept="application/pdf">Select File -->
+
             </div>
             <div class="col-md-12 form-group">
-              <button class="btn btn-primary" ng-disabled="newMapForm.$invalid" ng-click="saveMap(area)" >spara karta</button>
+              <button class="btn btn-primary" ng-disabled="newMapForm.$invalid || !uploaded" ng-click="saveMap(area)" >Spara karta</button>
             </div>
           </form>
         </div>
+        <h4>Kartor</h4>
         <strong><p>Nivå 1</p></strong>
         <div class="row">
           <div ng-repeat="map in area.attributes.maps | filter: { attributes: { difficulty: '1' } } ">
             <div class="col-md-4">
                 <p ng-bind="map.attributes.name"></p>
-                <img ng-src="{{displayMap(map.attributes.file._url)}}" class="img-responsive" />
-                <button class="btn btn-default" ng-click="deleteMap(area, map)">Delete</button>
+                <img ng-src="{{::displayMap(map.attributes.mapPreview._url)}}" class="img-responsive" />
+                <button class="btn btn-danger btn-xs" ng-click="deleteMap(area, map)">Ta bort <span class="glyphicon glyphicon-trash"> </span></button>
             </div>
           </div>
          </div>
@@ -67,8 +88,8 @@
           <div ng-repeat="map in area.attributes.maps | filter: { attributes: { difficulty: '2' } } ">
             <div class="col-md-4">
                 <p ng-bind="map.attributes.name"></p>
-                <img ng-src="{{displayMap(map.attributes.file._url)}}" class="img-responsive" />
-                <button class="btn btn-default" ng-click="deleteMap(area, map)">Delete</button>
+                <img ng-src="{{::displayMap(map.attributes.mapPreview._url)}}" class="img-responsive" />
+                <button class="btn btn-danger btn-xs" ng-click="deleteMap(area, map)">Ta bort <span class="glyphicon glyphicon-trash"> </span></button>
             </div>
           </div>
          </div>
@@ -77,12 +98,77 @@
           <div ng-repeat="map in area.attributes.maps | filter: { attributes: { difficulty: '3' } } ">
             <div class="col-md-4">
                 <p ng-bind="map.attributes.name"></p>
-                <img ng-src="{{displayMap(map.attributes.file._url)}}" class="img-responsive" />
-                <button class="btn btn-default" ng-click="deleteMap(area, map)">Delete</button>
+                <img ng-src="{{::displayMap(map.attributes.mapPreview._url)}}" class="img-responsive" />
+                <button class="btn btn-danger btn-xs" ng-click="deleteMap(area, map)">Ta bort <span class="glyphicon glyphicon-trash"> </span></button>
             </div>
           </div>
          </div>
+         <hr>
+      
+      
+      <button class="btn btn-primary" ng-click="changeLocationOfArea(area); area.isDragging = true" ng-hide="area.isDragging">Ändra plats <span class="glyphicon glyphicon-pushpin"> </span></button>
+      <button class="btn btn-primary" ng-click="updateAreaPosition(area); area.isDragging = false" ng-show="area.isDragging">Spara</button>
+      <button class="btn btn-danger" ng-click="showModal(area)" style="float:right">Ta bort område + kartor <span class="glyphicon glyphicon-trash"> </span></button>
       </div>
+
     </accordion-group>
   </accordion>
 </div>
+
+<!-- PDF TO PNG -->
+<script type="text/javascript">
+  
+  var pdfFile;
+  var fitScale = 1;
+  var canvas = document.getElementById('canvas');
+  var context = canvas.getContext('2d');
+
+  if (!window.requestAnimationFrame) {
+    window.requestAnimationFrame = (function() {
+      return window.webkitRequestAnimationFrame ||
+        window.mozRequestAnimationFrame ||
+        window.oRequestAnimationFrame ||
+        window.msRequestAnimationFrame ||
+        function(callback, element) {
+          window.setTimeout(callback, 1000 / 60);
+        };
+    })();
+  }
+
+  var openPage = function(pdfFile) {
+
+
+      pdfFile.getPage(1).then(function(page) {
+        var scale = 1;
+        viewport = page.getViewport(scale);
+
+        canvas.height = viewport.height;
+        canvas.width = viewport.width;
+
+        var renderContext = {
+          canvasContext: context,
+          viewport: viewport
+        };
+        console.log(renderContext);
+        page.render(renderContext);
+
+        
+
+      });
+    };
+
+    var makePNG = function(pdf){
+      PDFJS.disableStream = true;
+      read = new FileReader();
+      read.onload = function() {
+        PDFJS.getDocument(read.result).then(function(pdf) {
+          pdfFile = pdf;
+
+          openPage(pdf);
+        });
+      }
+      read.readAsArrayBuffer(pdf);
+      
+    };
+
+</script>

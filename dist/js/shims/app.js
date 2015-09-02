@@ -1,7 +1,9 @@
 Parse.initialize("6xK5z0dd13fPSziUDvcLiZTEqjkRc5qQais6zUSo", "dgHEctNMXBRjHFAYSSBZ7nnLfbuI46NSQEronPP8");
-var app = angular.module('myApp', ['ngAnimate', 'parse-angular','nya.bootstrap.select', 'uiGmapgoogle-maps', 'geolocation', 'ui.bootstrap', 'ui.router']);
+var app = angular.module('myApp', ['ngAnimate', 'parse-angular','nya.bootstrap.select', 'uiGmapgoogle-maps', 'geolocation', 'ui.bootstrap', 'ui.router','xeditable','ngFileUpload', 'angularSpinner']);
 
-app.run(function ($rootScope, $location, $state, userManagement) {
+app.run(function ($rootScope, $location, $state, userManagement, editableOptions) {
+
+	editableOptions.theme = 'bs3'; // bootstrap3 theme. Can be also 'bs2', 'default'
  	
  	//Log out user for dev purposes
     //Parse.User.logOut();
@@ -12,20 +14,25 @@ app.run(function ($rootScope, $location, $state, userManagement) {
 
     $rootScope.$on('$stateChangeStart', function(event, toState) {
 	    // don't check auth on login routes
-        console.log(toState);
+        $rootScope.$broadcast('stateChange');
         if (toState.name == "divided.orientera" || toState.name == "span.ovningar") {
         	console.log('tillåten sida');
         } else {
         	console.log('förbjuden sida');
             if (!userManagement.userState()) {
-                console.log('inne');
+                console.log('redirect');
                 event.preventDefault();
-                //$state.go('divided.orientera');
+                $state.go('divided.orientera');
                 return;
             }
         }
   	});
 });
+
+app.config(['usSpinnerConfigProvider', function (usSpinnerConfigProvider) {
+
+    usSpinnerConfigProvider.setDefaults({color: '#000', scale:0.15});
+}]);
 
 app.config(function(uiGmapGoogleMapApiProvider) {
     uiGmapGoogleMapApiProvider.configure({
@@ -42,7 +49,7 @@ app.config(function($stateProvider, $urlRouterProvider) {
  
     $stateProvider
         .state('divided', {
-        	url: '/divided',
+        	url: '',
         	templateUrl: 'components/divided.html'
         })
 
@@ -55,7 +62,7 @@ app.config(function($stateProvider, $urlRouterProvider) {
             	},
 	            'list' : {
 	            	templateUrl: 'pages/orientera.html',
-	            	controller: 'findMapsCtrl'
+	            	controller: 'orienteraCtrl'
 	            }
 	        } 
         })
@@ -69,7 +76,7 @@ app.config(function($stateProvider, $urlRouterProvider) {
             	},
 	            'list' : {
 	            	templateUrl: 'pages/skolor.html',
-	            	controller: 'schoolCtrl'
+	            	controller: 'skolorCtrl'
 	            }
 	        } 
         })
@@ -89,7 +96,7 @@ app.config(function($stateProvider, $urlRouterProvider) {
         })
 
         .state('span', {
-        	url:'/span',
+        	url:'',
         	templateUrl: 'components/span.html',
         })
 
@@ -110,7 +117,6 @@ app.service('userManagement', function($rootScope, $state){
 		    // Do stuff after successful login.
 		    console.log('login!');
 		    broadCastState();
-		    $state.go('divided.orientera');
 		    return;
 		  },
 		  error: function(user, error) {
@@ -132,21 +138,11 @@ app.service('userManagement', function($rootScope, $state){
 
 	this.userState = function(){
 		var currentUser = Parse.User.current();
-		console.log(currentUser);
-		if (currentUser) {
-			console.log('sann');
-			broadCastState();
-    		return true;
-		} else {
-			console.log('falsk');
-			broadCastState();
-    		return false;
-		}
+		return currentUser;
 	}
 
 	var broadCastState = function(){
-		$rootScope.sessionUser = Parse.User.current();
-		$rootScope.$broadcast('userState', { user: Parse.User.current() } );
+		$rootScope.$broadcast('stateChange');
 	}
 	
 });
@@ -155,7 +151,7 @@ app.service('mapService', function(){
 	//Config map
 	var map = 	{ 	center: { latitude: 65.588946, longitude: 22.157324 },
 					zoom: 12,
-					pan: {val: true}
+					options: { scrollwheel: false }
 				};
 	var clickedMarker = {};
 
@@ -165,18 +161,18 @@ app.service('mapService', function(){
 	};
 
 	//Takes Parse object with location
-	var focusOnParseLocation = function(object){
-		map = { center: { 	latitude: object.attributes.position._latitude,
-							longitude: object.attributes.position._longitude },
-				zoom: 12 };
-		focusOnLocation(map);
-	}
+	// var focusOnParseLocation = function(object){
+	// 	map.center = { 	latitude: object.attributes.position._latitude,
+	// 					longitude: object.attributes.position._longitude };
+	// 	map.zoom = 12;
+	// 	focusOnLocation(map);
+	// }
 
 	//Takes object with { lat, long }
 	var focusOnObjectLocation = function(object){
-		map = { center: { 	latitude: object.lat,
-							longitude: object.long },
-				zoom: 12 };
+		map.center = { 	latitude: object.latitude,
+						longitude: object.longitude };
+		//map.zoom = 12;
 		focusOnLocation(map);
 	}
 
@@ -192,7 +188,6 @@ app.service('mapService', function(){
 	var clickOnMarker = function(object){
 		if (object != null) {
 			clickedMarker = object;
-			console.log('click');
 		};
 	}
 
@@ -206,7 +201,7 @@ app.service('mapService', function(){
 	//Expose functions to controllers
 	return {
 	    getMap: getMap,
-	    focusOnParseLocation: focusOnParseLocation,
+	    // focusOnParseLocation: focusOnParseLocation,
 	    focusOnObjectLocation: focusOnObjectLocation,
 	    focusOnLocation: focusOnLocation,
 	    clickOnMarker: clickOnMarker,
@@ -222,13 +217,14 @@ app.service('markerService', function ($filter){
 	var draggableMarker = {};
 
 	var addDraggableMarker = function(object) {
-		draggableMarker = 	{	coords: { 	latitude: object.lat,
-											longitude: object.long },
+		draggableMarker = 	{	coords: { 	latitude: object.latitude,
+											longitude: object.longitude },
 								options: { 	draggable: true,
 											labelContent: 'Dra mig till rätt position!',
-							    			labelAnchor: "100 0",
-											labelClass: "marker-labels",
-											icon: '/dev/images/icons/fish.png' }
+							    			labelAnchor: "75 100",
+											labelClass: "draggable-marker-label",
+											icon: '/dev/images/icons/drag.png',
+											animation: google.maps.Animation.DROP }
 							};
 	};
 
@@ -247,15 +243,19 @@ app.service('markerService', function ($filter){
 	}
 
 	var addToAreaMarkerArray = function(object){
-		if ($filter('filter')(areaMarkers, { id: object.id }, true)[0] == null ) {
-			var marker = {
+		var areaInMarkerArray = $filter('filter')(areaMarkers, { id: object.id }, true)[0];
+		if (areaInMarkerArray) {
+			areaMarkers.splice(areaMarkers.indexOf(areaInMarkerArray), 1);
+		}
+		var marker = {
 					latitude: object.attributes.position._latitude,
 					longitude: object.attributes.position._longitude,
-					title: object.attributes.name
+					title: object.attributes.name,
+					options: { animation: google.maps.Animation.DROP, labelContent: object.attributes.name, labelAnchor:'50 75', labelClass:'marker-label' }
 				};
-			marker['id'] = object.id;
-			areaMarkers.push(marker);
-		}
+		marker['id'] = object.id;
+		areaMarkers.push(marker);
+
 	};
 
 	var removeFromAreaMarkerArray = function(object){
@@ -271,15 +271,18 @@ app.service('markerService', function ($filter){
 	};
 
 	var addToSchoolMarkerArray = function(object){
-		if ($filter('filter')(schoolMarkers, { id: object.id }, true)[0] == null ) {
-			var marker = {
-					latitude: object.attributes.position._latitude,
-					longitude: object.attributes.position._longitude,
-					title: object.attributes.name
-				};
-			marker['id'] = object.id;
-			schoolMarkers.push(marker);
+		var schoolInMarkerArray = $filter('filter')(schoolMarkers, { id: object.id }, true)[0];
+		if (schoolInMarkerArray) {
+			schoolMarkers.splice(schoolMarkers.indexOf(schoolInMarkerArray), 1);
 		}
+		var marker = {
+				latitude: object.attributes.position._latitude,
+				longitude: object.attributes.position._longitude,
+				title: object.attributes.name,
+				options: { animation: google.maps.Animation.DROP, labelContent: object.attributes.name, labelAnchor:'50 75', labelClass:'marker-label' }
+			};
+		marker['id'] = object.id;
+		schoolMarkers.push(marker);
   	};
 
   	var removeFromSchoolMarkerArray = function(object){
@@ -339,6 +342,78 @@ app.factory('scrollTo', function (){
 	};
 });
 
+app.service('PDFToPNG', function ($q){
+
+	var pdfFile;
+	var fitScale = 1;
+	var canvas = document.getElementById('canvas');
+	var context = canvas.getContext('2d');
+
+	if (!window.requestAnimationFrame) {
+	  window.requestAnimationFrame = (function() {
+	    return window.webkitRequestAnimationFrame ||
+	      window.mozRequestAnimationFrame ||
+	      window.oRequestAnimationFrame ||
+	      window.msRequestAnimationFrame ||
+	      function(callback, element) {
+	        window.setTimeout(callback, 1000 / 60);
+	      };
+	  })();
+	}
+
+	var openPage = function(pdfFile) {
+
+		var deferred = $q.defer();
+	    pdfFile.getPage(1).then(function(page) {
+	      var scale = 1;
+	      viewport = page.getViewport(scale);
+
+	      canvas.height = viewport.height;
+	      canvas.width = viewport.width;
+
+	      var renderContext = {
+	        canvasContext: context,
+	        viewport: viewport
+	      };
+	      //Step 1: store a refer to the renderer
+	      var pageRendering = page.render(renderContext);
+	      //Step : hook into the pdf render complete event
+	      var completeCallback = pageRendering.internalRenderTask.callback;
+	      pageRendering.internalRenderTask.callback = function (error) {
+	        //Step 2: what you want to do before calling the complete method                  
+	        completeCallback.call(this, error);
+	        //Step 3: do some more stuff
+	        var dataURL = canvas.toDataURL("image/png");
+	      	deferred.resolve(dataURL.replace(/^data:image\/(png|jpg);base64,/, ""));
+	      };
+
+	    });
+	    return deferred.promise;
+	  };
+
+	  var makePNG = function(pdf){
+	  	var deferred = $q.defer();
+	    PDFJS.disableStream = true;
+	    read = new FileReader();
+	    read.onload = function() {
+	      PDFJS.getDocument(read.result).then(function(pdf) {
+	        pdfFile = pdf;
+
+	        openPage(pdf).then(function(base64Img){
+	        	deferred.resolve(base64Img);
+	        });
+	        
+	      });
+	    }
+	    read.readAsArrayBuffer(pdf);
+	    return deferred.promise;
+	  };
+
+	  return {
+		makePNG: makePNG
+	};
+
+})
 
 
 var ModalInstanceCtrl = function($scope, $modalInstance, $modal, item) {
