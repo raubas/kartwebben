@@ -1,4 +1,6 @@
-app.controller('uploadMapCtrl', function ($scope, $filter,$modal, uiGmapGoogleMapApi, mapService, markerService, scrollTo, $timeout, $http, Upload, PDFToPNG){
+app.controller('uploadMapCtrl', function ($scope, $filter,$modal, uiGmapGoogleMapApi, mapService, markerService, scrollTo, $timeout, $http, Upload, PDFToPNG, usSpinnerService){
+
+
 
 
 	//Config marker after click on map, updates coords for clickedlocation
@@ -170,7 +172,7 @@ app.controller('uploadMapCtrl', function ($scope, $filter,$modal, uiGmapGoogleMa
 
     $scope.onFileSelect = function($file) {  
         if ($file != null) {
-        	console.log($file);
+        	usSpinnerService.spin('spinner-1');
     		var mapfile = new Parse.File("map.pdf",$file);
     		PDFToPNG.makePNG($file).then(function(result) {
     			var mapPreview = new Parse.File("map.png",{base64 : result});
@@ -183,6 +185,7 @@ app.controller('uploadMapCtrl', function ($scope, $filter,$modal, uiGmapGoogleMa
     		mapfile.save().then(function(){
     			$scope.newMap.uploadedMap = mapfile;
     			$scope.$digest();
+    			usSpinnerService.stop('spinner-1');
     		}, function(error){
     			console.log(error);
     		});

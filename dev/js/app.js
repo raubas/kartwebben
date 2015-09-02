@@ -29,6 +29,11 @@ app.run(function ($rootScope, $location, $state, userManagement, editableOptions
   	});
 });
 
+app.config(['usSpinnerConfigProvider', function (usSpinnerConfigProvider) {
+
+    usSpinnerConfigProvider.setDefaults({color: '#000', scale:0.15});
+}]);
+
 app.config(function(uiGmapGoogleMapApiProvider) {
     uiGmapGoogleMapApiProvider.configure({
         //    key: 'your api key',
