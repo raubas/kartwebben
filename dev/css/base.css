@@ -6,6 +6,7 @@ body, html{
     height: calc(100vh - 50px);
     margin: 0;
     padding: 0;
+    border-right: 1em solid #F8F8F8;
 }
 
 .angular-google-map-container {
