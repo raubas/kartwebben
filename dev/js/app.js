@@ -12,18 +12,25 @@ app.run(function ($rootScope, $location, $state, userManagement, editableOptions
  	//Save user to rootscope
     $rootScope.sessionUser = Parse.User.current();
 
-    $rootScope.$on('$stateChangeStart', function(event, toState) {
+    $rootScope.$on('$stateChangeStart', function(event, toState, toParams, fromState, fromParams) {
 	    // don't check auth on login routes
         $rootScope.$broadcast('stateChange');
         if (toState.name == "divided.orientera" || toState.name == "span.ovningar") {
         	console.log('tillåten sida');
         } else {
         	console.log('förbjuden sida');
+        	console.log(event);
+        	console.log(toState);
             if (!userManagement.userState()) {
                 console.log('redirect');
                 event.preventDefault();
                 $state.go('divided.orientera');
                 return;
+            } else if (toState.name == "divided"){
+            	event.preventDefault();
+            	$location.path('/skolor');
+            	console.log(fromState);
+            	console.log(fromParams);
             }
         }
   	});
@@ -44,17 +51,15 @@ app.config(function(uiGmapGoogleMapApiProvider) {
 
 
 app.config(function($stateProvider, $urlRouterProvider) {
-    
-    $urlRouterProvider.otherwise('/');
  
     $stateProvider
         .state('divided', {
-        	url: '',
+        	url: '/d',
         	templateUrl: 'components/divided.html'
         })
 
         .state('divided.orientera', {
-        	url: '/orientera',
+        	url: '^/orientera',
     		views: { 
         		'map' : {
             		templateUrl: 'components/map.html',
@@ -68,7 +73,7 @@ app.config(function($stateProvider, $urlRouterProvider) {
         })
 
         .state('divided.skolor', {
-        	url: '/skolor',
+        	url: '^/skolor',
     		views: { 
         		'map' : {
             		templateUrl: 'components/map.html',
@@ -82,7 +87,7 @@ app.config(function($stateProvider, $urlRouterProvider) {
         })
 
         .state('divided.kartor', {
-        	url: '/kartor',
+        	url: '^/kartor',
     		views: { 
         		'map' : {
             		templateUrl: 'components/map.html',
@@ -96,16 +101,16 @@ app.config(function($stateProvider, $urlRouterProvider) {
         })
 
         .state('span', {
-        	url:'',
+        	url:'/s',
         	templateUrl: 'components/span.html',
         })
 
         .state('span.ovningar', {
-        	url:'/ovningar',
+        	url:'^/ovningar',
         	templateUrl: 'pages/ovningar.html',
         })
 
-	$urlRouterProvider.otherwise('/divided/orientera');
+	$urlRouterProvider.otherwise('/orientera');
  
 });
 
