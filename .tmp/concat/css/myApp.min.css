@@ -277,6 +277,8 @@ input.ng-dirty.ng-invalid {
 .hideMap {
 	position: absolute;
 	left: 50%;
+	-ms-transform: translate(-50%); /* IE 9 */
+   	-webkit-transform: translate(-50%); /* Safari */
 	transform: translate(-50%);
 	width: 30%;
 	height: 40px;
