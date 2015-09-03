@@ -26,11 +26,6 @@ app.run(function ($rootScope, $location, $state, userManagement, editableOptions
                 event.preventDefault();
                 $state.go('divided.orientera');
                 return;
-            } else if (toState.name == "divided"){
-            	event.preventDefault();
-            	$location.path('/skolor');
-            	console.log(fromState);
-            	console.log(fromParams);
             }
         }
   	});

@@ -38,7 +38,7 @@
         <p>Namn: 
             <span editable-text="school.attributes.name" onaftersave="updateSchool(school)" e-form="schoolName">{{ school.attributes.name || "Tom" }}
             </span>
-            <a href="#">
+            <a href="">
               <span class="glyphicon glyphicon-pencil" aria-hidden="true" ng-click="schoolName.$show()" ng-hide="schoolName.$visible" style="float:right"></span>
             </a>
           </p>
@@ -47,14 +47,14 @@
           <p>Namn: 
             <span editable-text="school.attributes.contactPerson.attributes.name" onaftersave="updateSchool(school)" e-form="contactPersonName">{{ school.attributes.contactPerson.attributes.name || "Tom" }}
             </span>
-            <a href="#">
+            <a href="">
               <span class="glyphicon glyphicon-pencil" aria-hidden="true" ng-click="contactPersonName.$show()" ng-hide="contactPersonName.$visible" style="float:right"></span>
             </a>
           </p>
           <p>Telefonnummer:
             <span editable-text="school.attributes.contactPerson.attributes.phoneNumber" onaftersave="updateSchool(school)" e-form="contactPersonPhoneNumber"> {{ school.attributes.contactPerson.attributes.phoneNumber || "Tom" }}
             </span>
-            <a href="#">
+            <a href="">
               <span class="glyphicon glyphicon-pencil" aria-hidden="true" ng-click="contactPersonPhoneNumber.$show()" ng-hide="contactPersonPhoneNumber.$visible" style="float:right">  
               </span>
             </a>
@@ -62,7 +62,7 @@
           <p>Email: 
             <span editable-text="school.attributes.contactPerson.attributes.email" onaftersave="updateSchool(school)" e-form="contactPersonEmail">{{ school.attributes.contactPerson.attributes.email || "Tom" }}
             </span>
-            <a href="#">
+            <a href="">
               <span class="glyphicon glyphicon-pencil" aria-hidden="true" ng-click="contactPersonEmail.$show()" ng-hide="contactPersonEmail.$visible" style="float:right"></span>
             </a>
           </p>
