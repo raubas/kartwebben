@@ -272,6 +272,7 @@ app.controller('skolorCtrl', function ($scope,$modal, uiGmapGoogleMapApi, mapSer
 	   	watchClick();
 	   	watchVisibility();
 		watchDraggableMarker();
+		
 	};
 
 	//Init function
