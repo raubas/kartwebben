@@ -21,15 +21,3 @@ prod:
     path:
         local: dist/
         remote: skola/
-
-bower:
-    scheme: ftp
-    host: ftp.kartforeningen.se
-    port: 21
-    user: kartforeningen.se
-    pass: fhT-N3A-GFp-S2w
-    check: true
-    slots: 2
-    path:
-        local: bower_components/
-        remote: bower_components/
