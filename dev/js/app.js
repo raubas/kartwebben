@@ -1,10 +1,11 @@
 Parse.initialize("6xK5z0dd13fPSziUDvcLiZTEqjkRc5qQais6zUSo", "dgHEctNMXBRjHFAYSSBZ7nnLfbuI46NSQEronPP8");
+Parse.serverURL = 'https://luleakartforening.herokuapp.com/';
 var app = angular.module('myApp', ['ngAnimate', 'parse-angular','nya.bootstrap.select', 'uiGmapgoogle-maps', 'geolocation', 'ui.bootstrap', 'ui.router','xeditable','ngFileUpload', 'angularSpinner']);
 
 app.run(function ($rootScope, $location, $state, userManagement, editableOptions) {
 
 	editableOptions.theme = 'bs3'; // bootstrap3 theme. Can be also 'bs2', 'default'
- 	
+
  	//Log out user for dev purposes
     //Parse.User.logOut();
  	userManagement.userState();
@@ -38,7 +39,7 @@ app.config(['usSpinnerConfigProvider', function (usSpinnerConfigProvider) {
 
 app.config(function(uiGmapGoogleMapApiProvider) {
     uiGmapGoogleMapApiProvider.configure({
-        //    key: 'your api key',
+        key: 'AIzaSyCiMF62L32Yc89lRaVvbmiXplRLf_sM1mQ',
         v: '3.17',
         libraries: ''
     });
@@ -46,7 +47,7 @@ app.config(function(uiGmapGoogleMapApiProvider) {
 
 
 app.config(function($stateProvider, $urlRouterProvider) {
- 
+
     $stateProvider
         .state('divided', {
         	url: '/d',
@@ -55,7 +56,7 @@ app.config(function($stateProvider, $urlRouterProvider) {
 
         .state('divided.orientera', {
         	url: '^/orientera',
-    		views: { 
+    		views: {
         		'map' : {
             		templateUrl: 'components/map.html',
 	            	controller: 'mapCtrl'
@@ -64,12 +65,12 @@ app.config(function($stateProvider, $urlRouterProvider) {
 	            	templateUrl: 'pages/orientera.html',
 	            	controller: 'orienteraCtrl'
 	            }
-	        } 
+	        }
         })
 
         .state('divided.skolor', {
         	url: '^/skolor',
-    		views: { 
+    		views: {
         		'map' : {
             		templateUrl: 'components/map.html',
 	            	controller: 'mapCtrl'
@@ -78,12 +79,12 @@ app.config(function($stateProvider, $urlRouterProvider) {
 	            	templateUrl: 'pages/skolor.html',
 	            	controller: 'skolorCtrl'
 	            }
-	        } 
+	        }
         })
 
         .state('divided.kartor', {
         	url: '^/kartor',
-    		views: { 
+    		views: {
         		'map' : {
             		templateUrl: 'components/map.html',
 	            	controller: 'mapCtrl'
@@ -92,7 +93,7 @@ app.config(function($stateProvider, $urlRouterProvider) {
 	            	templateUrl: 'pages/kartor.html',
 	            	controller: 'uploadMapCtrl'
 	            }
-	        } 
+	        }
         })
 
         .state('span', {
@@ -106,7 +107,7 @@ app.config(function($stateProvider, $urlRouterProvider) {
         })
 
 	$urlRouterProvider.otherwise('/orientera');
- 
+
 });
 
 app.service('userManagement', function($rootScope, $state){
@@ -127,7 +128,7 @@ app.service('userManagement', function($rootScope, $state){
 		  }
 		});
 	}
-	
+
 	this.logOut = function(){
 		console.log('logut!');
 		Parse.User.logOut();
@@ -144,7 +145,7 @@ app.service('userManagement', function($rootScope, $state){
 	var broadCastState = function(){
 		$rootScope.$broadcast('stateChange');
 	}
-	
+
 });
 
 app.service('mapService', function(){
@@ -296,7 +297,7 @@ app.service('markerService', function ($filter){
   	var getSchoolMarkerArray = function(){
   		return schoolMarkers;
   	}
-  
+
 	return {
 		addDraggableMarker: addDraggableMarker,
 		removeDraggableMarker: removeDraggableMarker,
@@ -380,7 +381,7 @@ app.service('PDFToPNG', function ($q){
 	      //Step : hook into the pdf render complete event
 	      var completeCallback = pageRendering.internalRenderTask.callback;
 	      pageRendering.internalRenderTask.callback = function (error) {
-	        //Step 2: what you want to do before calling the complete method                  
+	        //Step 2: what you want to do before calling the complete method
 	        completeCallback.call(this, error);
 	        //Step 3: do some more stuff
 	        var dataURL = canvas.toDataURL("image/png");
@@ -402,7 +403,7 @@ app.service('PDFToPNG', function ($q){
 	        openPage(pdf).then(function(base64Img){
 	        	deferred.resolve(base64Img);
 	        });
-	        
+
 	      });
 	    }
 	    read.readAsArrayBuffer(pdf);
@@ -445,9 +446,9 @@ app.service('mobileHider', function (){
 
 	}
 })
-	
+
 var ModalInstanceCtrl = function($scope, $modalInstance, $modal, item) {
-    
+
 	$scope.item = item;
 
 	$scope.ok = function () {
