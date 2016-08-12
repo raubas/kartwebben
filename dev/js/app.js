@@ -1,5 +1,5 @@
-Parse.initialize("6xK5z0dd13fPSziUDvcLiZTEqjkRc5qQais6zUSo", "dgHEctNMXBRjHFAYSSBZ7nnLfbuI46NSQEronPP8");
-Parse.serverURL = 'https://luleakartforening.herokuapp.com/';
+Parse.initialize("6xK5z0dd13fPSziUDvcLiZTEqjkRc5qQais6zUSo", "rkHEPiMP6m8dMjRsr470BjeOdCmSYGsAB5gbskNy");
+Parse.serverURL = 'http://api.kartforeningen.se/';
 var app = angular.module('myApp', ['ngAnimate', 'parse-angular','nya.bootstrap.select', 'uiGmapgoogle-maps', 'geolocation', 'ui.bootstrap', 'ui.router','xeditable','ngFileUpload', 'angularSpinner']);
 
 app.run(function ($rootScope, $location, $state, userManagement, editableOptions) {
