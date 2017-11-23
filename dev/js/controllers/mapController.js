@@ -8,12 +8,12 @@ app.controller('mapCtrl', function ($scope, uiGmapGoogleMapApi, geolocation, map
 							};
 
 		//Focus on user location if enabled
-		geolocation.getLocation().then(function(data){
-			//Comment to get user location
-			if (data.coords) {
-				//mapService.focusOnObjectLocation(data.coords);
-			}
-    	});
+		// geolocation.getLocation().then(function(data){
+		// 	//Comment to get user location
+		// 	if (data.coords) {
+		// 		//mapService.focusOnObjectLocation(data.coords);
+		// 	}
+    // 	});
 	});
 
 	$scope.areaMarkers = markerService.getAreaMarkerArray();

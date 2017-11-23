@@ -1,6 +1,6 @@
 module.exports = function(grunt) {
 
-    // 1. All configuration goes here 
+    // 1. All configuration goes here
     grunt.initConfig({
         pkg: grunt.file.readJSON('package.json'),
 
@@ -11,12 +11,19 @@ module.exports = function(grunt) {
 
         wiredep: {
               task: {
-                src: ['dev/*.html']
+                src: ['dev/*.html'],
+                exclude: [
+                  'markerclustererplus',
+                  'google-maps-utility-library-v3-markerwithlabel',
+                  'google-maps-utility-library-v3-infobox',
+                  'google-maps-utility-library-v3-keydragzoom',
+                  'js-rich-marker'
+                ],
               }
         },
 
         clean: ["dist", '.tmp'],
- 
+
         copy: {
             main: {
                 expand: true,
@@ -31,28 +38,28 @@ module.exports = function(grunt) {
                 dest: 'dist/js/shims'
             }
         },
- 
+
         rev: {
             files: {
                 src: ['dist/**/*.{js,css}', '!dist/js/**']
             }
         },
- 
+
         useminPrepare: {
             html: 'dev/index.html'
         },
- 
+
         usemin: {
             html: ['dist/index.html']
         },
- 
+
         uglify: {
             options: {
                 report: 'min',
                 mangle: false
             }
         }
-        
+
     });
 
     // 3. Where we tell Grunt we plan to use this plug-in.

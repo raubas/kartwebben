@@ -1,6 +1,6 @@
 app.controller('orienteraCtrl', function ($scope, $modal, $filter, mapService, markerService, scrollTo, mobileHider){
 
-	
+
 	//Get areas from db
 	var query = new Parse.Query("Areas");
 	query.include("maps");
@@ -16,7 +16,7 @@ app.controller('orienteraCtrl', function ($scope, $modal, $filter, mapService, m
 		//Save areas to scope
 		$scope.areas = result;
 	});
-	
+
 	//Get schools from db
 	var query = new Parse.Query("Schools");
 	query.find().then(function (result){
@@ -30,7 +30,7 @@ app.controller('orienteraCtrl', function ($scope, $modal, $filter, mapService, m
 		$scope.schools = result;
 	});
 
-	
+
 	//Listen for map events
 	var watchClick = function(){
 		$scope.$watch(function () {
@@ -58,9 +58,9 @@ app.controller('orienteraCtrl', function ($scope, $modal, $filter, mapService, m
 
 	//Open modal for preview
 	$scope.name = 'theNameHasBeenPassed';
-	
+
 	$scope.showModal = function(previewUrl, pdfUrl, areaName, mapName) {
-	  
+
 	  $scope.opts = {
 		  backdrop: true,
 		  backdropClick: true,
@@ -70,24 +70,24 @@ app.controller('orienteraCtrl', function ($scope, $modal, $filter, mapService, m
 		  controller : ModalInstanceCtrl,
 		  resolve: {} // empty storage
 	    };
-	    
-	  
+
+
 	  $scope.opts.resolve.item = function() {
 	      return angular.copy({	previewUrl: previewUrl,
 	      						pdfUrl: pdfUrl,
 	      						areaName: areaName,
 	      						mapName: mapName }); // pass name to Dialog
 	  }
-	  
+
 	    var modalInstance = $modal.open($scope.opts);
-	    
+
 	    modalInstance.result.then(function(){
-	      //on ok button press 
+	      //on ok button press
 	    },function(){
 	      //on cancel button press
 	      console.log("Modal Closed");
 	    });
-	}; 
+	};
 
 	$scope.hideRightbar = function() {
 		mobileHider.setRightbarVisibility(false);

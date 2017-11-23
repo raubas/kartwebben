@@ -336,14 +336,18 @@ app.factory('scrollTo', function (){
 	return {
 		classId: function(container, anchor){
 		    var element = angular.element('#'+anchor);
-		    if (element[0]) {
-		    	angular.element('.'+container).animate({scrollTop: element.offset().top}, "slow");
-		    };
+        if (element) {
+          setTimeout(function(){
+            angular.element('.'+container).animate({scrollTop: element.prop('offsetTop')}, "slow");
+          }, 500)
+        }
 		},
 		idClass: function(container, anchor){
 			var element = angular.element('.'+anchor);
 			if (element[0]) {
-				angular.element('#'+container).animate({scrollTop: element.offset().top}, "slow");
+        setTimeout(function(){
+				  angular.element('#'+container).animate({scrollTop: element.prop('offsetTop')}, "slow");
+        }, 500)
 			};
 		}
 	};

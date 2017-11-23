@@ -9,66 +9,62 @@
             <div class="col-md-12">
             <h4>Skola</h4>
               <div class="form-group">
-                <input type="text" class="form-control" ng-required="!addSchool.schoolName" ng-model="addSchool.schoolName" placeholder="Namn på skolan" >
+                <input type="text" class="form-control" ng-required="!addSchool.schoolName" ng-model="addSchool.schoolName" placeholder="Namn på skolan" />
               </div>
               <div class="form-group">
-                <input ng-required="!addSchool.position" ng-model="addSchool.position" type="hidden">
+                <input ng-required="!addSchool.position" ng-model="addSchool.position" type="hidden" />
                 <button ng-click="addPositionToSchool()" class="btn btn-default">Välj position</button>
               </div>
               <div class="form-group">
                     <h4>Kontaktperson</h4>
-                    <input type="text" class="form-control" name="name" ng-model="contactPerson.name" placeholder="Namn på kontaktperson" >
+                    <input type="text" class="form-control" name="name" ng-model="contactPerson.name" placeholder="Namn på kontaktperson" />
               </div>
               <div class="form-group">
-                    <input type="text" class="form-control" name="phone" integer ng-pattern="/^(?:[0-9] ?){5,9}[0-9]$/" ng-model="contactPerson.phoneNumber" placeholder="Telefonnummer" >
+                    <input type="text" class="form-control" name="phone" integer ng-pattern="/^(?:[0-9] ?){5,9}[0-9]$/" ng-model="contactPerson.phoneNumber" placeholder="Telefonnummer" />
                     <span class="error-message" ng-show="newSchoolForm.phone.$error.pattern">Telefonnummret måste vara mellan 6 och 10 siffor!</span>
               </div>
               <div class="form-group">
-                    <input type="email" class="form-control" name="name" ng-model="contactPerson.email" placeholder="E-post">
+                    <input type="email" class="form-control" name="name" ng-model="contactPerson.email" placeholder="E-post" />
               </div>
 
               <button ng-disabled="addSchoolForm.$invalid" ng-click="saveNewSchool()" class="btn btn-primary">Lägg till</button>
             </div>
-          
+
         </form>
     </accordion-group>
     <accordion-group heading="{{school.attributes.name}}" ng-repeat="school in schools" is-open="openAccordion[school.id]" class="barpanel" id="{{ ::school.id }}" emit-when="{event: 'newRendered', condition: $last}">
       <div class="col-md-12">
         <h4>Skola</h4>
-        <p>Namn: 
-            <span editable-text="school.attributes.name" onaftersave="updateSchool(school)" e-form="schoolName">{{ school.attributes.name || "Tom" }}
-            </span>
+        <p>Namn:
+            <span editable-text="school.attributes.name" onaftersave="updateSchool(school)" e-form="schoolName">{{ school.attributes.name || "Tom" }}</span>
             <a href="">
               <span class="glyphicon glyphicon-pencil" aria-hidden="true" ng-click="schoolName.$show()" ng-hide="schoolName.$visible" style="float:right"></span>
             </a>
           </p>
         <h4>Kontaktperson</h4>
         <div class="test1">
-          <p>Namn: 
-            <span editable-text="school.attributes.contactPerson.attributes.name" onaftersave="updateSchool(school)" e-form="contactPersonName">{{ school.attributes.contactPerson.attributes.name || "Tom" }}
-            </span>
+          <p>Namn:
+            <span editable-text="school.attributes.contactPerson.attributes.name" onaftersave="updateSchool(school)" e-form="contactPersonName">{{ school.attributes.contactPerson.attributes.name || "Tom" }}</span>
             <a href="">
               <span class="glyphicon glyphicon-pencil" aria-hidden="true" ng-click="contactPersonName.$show()" ng-hide="contactPersonName.$visible" style="float:right"></span>
             </a>
           </p>
           <p>Telefonnummer:
-            <span editable-text="school.attributes.contactPerson.attributes.phoneNumber" onaftersave="updateSchool(school)" e-form="contactPersonPhoneNumber"> {{ school.attributes.contactPerson.attributes.phoneNumber || "Tom" }}
-            </span>
+            <span editable-text="school.attributes.contactPerson.attributes.phoneNumber" onaftersave="updateSchool(school)" e-form="contactPersonPhoneNumber"> {{ school.attributes.contactPerson.attributes.phoneNumber || "Tom" }}</span>
             <a href="">
-              <span class="glyphicon glyphicon-pencil" aria-hidden="true" ng-click="contactPersonPhoneNumber.$show()" ng-hide="contactPersonPhoneNumber.$visible" style="float:right">  
+              <span class="glyphicon glyphicon-pencil" aria-hidden="true" ng-click="contactPersonPhoneNumber.$show()" ng-hide="contactPersonPhoneNumber.$visible" style="float:right">
               </span>
             </a>
           </p>
-          <p>Email: 
-            <span editable-text="school.attributes.contactPerson.attributes.email" onaftersave="updateSchool(school)" e-form="contactPersonEmail">{{ school.attributes.contactPerson.attributes.email || "Tom" }}
-            </span>
+          <p>Email:
+            <span editable-text="school.attributes.contactPerson.attributes.email" onaftersave="updateSchool(school)" e-form="contactPersonEmail">{{ school.attributes.contactPerson.attributes.email || "Tom" }}</span>
             <a href="">
               <span class="glyphicon glyphicon-pencil" aria-hidden="true" ng-click="contactPersonEmail.$show()" ng-hide="contactPersonEmail.$visible" style="float:right"></span>
             </a>
           </p>
         </div>
         <hr>
-        
+
         <button class="btn btn-primary" ng-click="changeLocationOfSchool(school); school.isDragging = true;" ng-hide="school.isDragging">Ändra plats</button>
         <button class="btn btn-primary" ng-click="updateSchool(school); school.isDragging = false;" ng-show="school.isDragging">Spara</button>
         <button class="btn btn-danger" data-toggle="modal" ng-click="showModal(school)" style="float:right" >Ta bort <span class="glyphicon glyphicon-trash"> </span></button>
@@ -78,4 +74,3 @@
     </accordion-group>
   </accordion>
 </div>
-
