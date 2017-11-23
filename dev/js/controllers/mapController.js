@@ -6,7 +6,7 @@ app.controller('mapCtrl', function ($scope, uiGmapGoogleMapApi, geolocation, map
 		$scope.markerprops = { 	school: { 	url: '/dev/images/icons/skola.png'},
 								area: 	{ 	url: '/dev/images/icons/karta.png'}
 							};
-		
+
 		//Focus on user location if enabled
 		geolocation.getLocation().then(function(data){
 			//Comment to get user location
@@ -19,7 +19,7 @@ app.controller('mapCtrl', function ($scope, uiGmapGoogleMapApi, geolocation, map
 	$scope.areaMarkers = markerService.getAreaMarkerArray();
 	$scope.schoolMarkers = markerService.getSchoolMarkerArray();
 	$scope.draggableMarker = markerService.getDraggableMarker();
-	
+
 
 	//Listen for map events
 	var watchMap = function(){
@@ -73,7 +73,7 @@ app.controller('mapCtrl', function ($scope, uiGmapGoogleMapApi, geolocation, map
 	$scope.$on("$destroy", function(){
         watchMap();
         watchVisibility();
-		watchDraggableMarker();
+				watchDraggableMarker();
     });
 
 

@@ -19,7 +19,7 @@
       <accordion-group heading="{{::area.attributes.name}}" ng-repeat="area in areas" is-open="openAccordion[area.id]" class="barpanel" id="{{ ::area.id }}">
         <div class="col-md-12">
           <h4>Kartor</h4>
-          <strong><p>Nivå 1</p></strong>
+          <strong><p>Åk 1-3</p></strong>
           <div class="row">
             <div ng-repeat="map in area.attributes.maps | filter: { attributes: { difficulty: '1' } } ">
               <div class="col-md-4">
@@ -28,7 +28,7 @@
               </div>
             </div>
            </div>
-          <strong><p>Nivå 2</p></strong>
+          <strong><p>Åk 4-6</p></strong>
           <div class="row">
             <div ng-repeat="map in area.attributes.maps | filter: { attributes: { difficulty: '2' } } ">
               <div class="col-md-4">
@@ -37,7 +37,7 @@
               </div>
             </div>
            </div>
-          <strong><p>Nivå 3</p></strong>
+          <strong><p>Åk 7-9</p></strong>
           <div class="row">
             <div ng-repeat="map in area.attributes.maps | filter: { attributes: { difficulty: '3' } } ">
               <div class="col-md-4">
@@ -46,6 +46,15 @@
               </div>
             </div>
            </div>
+           <strong><p>Ren karta</p></strong>
+           <div class="row">
+             <div ng-repeat="map in area.attributes.maps | filter: { attributes: { difficulty: '4' } } ">
+               <div class="col-md-4">
+                   <p ng-bind="map.attributes.name"></p>
+                   <img ng-src="{{::displayMap(map.attributes.mapPreview._url)}}" class="img-responsive" ng-click="showModal(map.attributes.mapPreview._url, map.attributes.file._url, area.attributes.name, map.attributes.name)"/>
+               </div>
+             </div>
+            </div>
         </div>
       </accordion-group>
     </accordion>

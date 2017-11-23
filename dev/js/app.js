@@ -20,8 +20,6 @@ app.run(function ($rootScope, $location, $state, userManagement, editableOptions
         	console.log('tillåten sida');
         } else {
         	console.log('förbjuden sida');
-        	console.log(event);
-        	console.log(toState);
             if (!userManagement.userState()) {
                 console.log('redirect');
                 event.preventDefault();
@@ -40,7 +38,7 @@ app.config(['usSpinnerConfigProvider', function (usSpinnerConfigProvider) {
 app.config(function(uiGmapGoogleMapApiProvider) {
     uiGmapGoogleMapApiProvider.configure({
         key: 'AIzaSyCiMF62L32Yc89lRaVvbmiXplRLf_sM1mQ',
-        v: '3.17',
+        v: '3.30',
         libraries: ''
     });
 });
@@ -218,15 +216,21 @@ app.service('markerService', function ($filter){
 	var draggableMarker = {};
 
 	var addDraggableMarker = function(object) {
-		draggableMarker = 	{	coords: { 	latitude: object.latitude,
-											longitude: object.longitude },
-								options: { 	draggable: true,
-											labelContent: 'Dra mig till rätt position!',
-							    			labelAnchor: "75 100",
-											labelClass: "draggable-marker-label",
-											icon: '/dev/images/icons/drag.png',
-											animation: google.maps.Animation.DROP }
-							};
+    var anim = (window && window.google) ? window.google.maps.Animation.DROP : 2
+    draggableMarker = 	{
+      coords: {
+        latitude: object.latitude,
+				longitude: object.longitude
+      },
+			options: {
+        draggable: true,
+				labelContent: 'Dra mig till rätt position!',
+    		labelAnchor: "50 60",
+				labelClass: "draggable-marker-label",
+				icon: '/dev/images/icons/drag.png',
+				animation: anim
+      }
+		};
 	};
 
 	var removeDraggableMarker = function(){
@@ -248,11 +252,12 @@ app.service('markerService', function ($filter){
 		if (areaInMarkerArray) {
 			areaMarkers.splice(areaMarkers.indexOf(areaInMarkerArray), 1);
 		}
+    var anim = (window && window.google) ? window.google.maps.Animation.DROP : 2
 		var marker = {
 					latitude: object.attributes.position._latitude,
 					longitude: object.attributes.position._longitude,
 					title: object.attributes.name,
-					options: { animation: google.maps.Animation.DROP, labelContent: object.attributes.name, labelAnchor:'50 75', labelClass:'marker-label' }
+					options: { animation: anim, labelContent: object.attributes.name, labelAnchor:'35 50', labelClass:'marker-label' }
 				};
 		marker['id'] = object.id;
 		areaMarkers.push(marker);
@@ -276,11 +281,12 @@ app.service('markerService', function ($filter){
 		if (schoolInMarkerArray) {
 			schoolMarkers.splice(schoolMarkers.indexOf(schoolInMarkerArray), 1);
 		}
+    var anim = (window && window.google) ? window.google.maps.Animation.DROP : 2
 		var marker = {
 				latitude: object.attributes.position._latitude,
 				longitude: object.attributes.position._longitude,
 				title: object.attributes.name,
-				options: { animation: google.maps.Animation.DROP, labelContent: object.attributes.name, labelAnchor:'50 75', labelClass:'marker-label' }
+				options: { animation: anim, labelContent: object.attributes.name, labelAnchor:'50 50', labelClass:'marker-label' }
 			};
 		marker['id'] = object.id;
 		schoolMarkers.push(marker);

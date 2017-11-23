@@ -6,7 +6,7 @@
   <div id="page" >
     <canvas id="canvas" style="display:none"></canvas>
   </div>
-      
+
   </div>
   <accordion close-others="true">
     <accordion-group heading="Lägg till nytt område" is-open="newAreaPanel.open" class="barpanel">
@@ -33,7 +33,7 @@
       <div class="col-md-12">
 
         <h4>Lägg till karta</h4>
-         <div class="newMap row"> 
+         <div class="newMap row">
           <form name="newMapForm">
             <div class="col-md-6">
              <div class="form-group">
@@ -43,21 +43,24 @@
             <div class="col-md-6">
              <p>Välj Svårighetsgrad</p>
              <label class="radio-inline">
-               <input type="radio" ng-required="!newMap.mapLevel" ng-model="newMap.mapLevel" ng-value="1"> 1
+               <input type="radio" ng-required="!newMap.mapLevel" ng-model="newMap.mapLevel" ng-value="1"> År 1-3
              </label>
              <label class="radio-inline">
-               <input type="radio" ng-required="!newMap.mapLevel" ng-model="newMap.mapLevel" ng-value="2"> 2
+               <input type="radio" ng-required="!newMap.mapLevel" ng-model="newMap.mapLevel" ng-value="2"> År 4-6
              </label>
              <label class="radio-inline">
-               <input type="radio" ng-required="!newMap.mapLevel" ng-model="newMap.mapLevel" ng-value="3"> 3
+               <input type="radio" ng-required="!newMap.mapLevel" ng-model="newMap.mapLevel" ng-value="3"> År 7-9
+             </label>
+             <label class="radio-inline">
+               <input type="radio" ng-required="!newMap.mapLevel" ng-model="newMap.mapLevel" ng-value="4"> Ren karta
              </label>
             </div>
             <div class="col-md-12 form-group">
 
               <div>Ladda upp fil</div>
-              <div ngf-drop ng-required="!files" ngf-select="onFileSelect($file)" ng-model="files" ng-class="dropBoxClass" 
+              <div ngf-drop ng-required="!files" ngf-select="onFileSelect($file)" ng-model="files" ng-class="dropBoxClass"
                       ngf-drag-over-class="dragover" ngf-multiple="false" ngf-allow-dir="false"
-                      accept="application/pdf" 
+                      accept="application/pdf"
                       ngf-pattern="'application/pdf'">
                         <span class="glyphicon glyphicon-plus" style="font-size: 40px;" aria-hidden="true" ng-hide="(dropBoxClass=='drop-box-ok')"></span>
                         <span class="glyphicon glyphicon-ok" style="font-size: 40px;" aria-hidden="true" ng-hide="(dropBoxClass=='drop-box')"></span>
@@ -74,7 +77,7 @@
           </form>
         </div>
         <h4>Kartor</h4>
-        <strong><p>Nivå 1</p></strong>
+        <strong><p>År 1-3</p></strong>
         <div class="row">
           <div ng-repeat="map in area.attributes.maps | filter: { attributes: { difficulty: '1' } } ">
             <div class="col-md-4">
@@ -84,7 +87,7 @@
             </div>
           </div>
          </div>
-        <strong><p>Nivå 2</p></strong>
+        <strong><p>År 4-6</p></strong>
         <div class="row">
           <div ng-repeat="map in area.attributes.maps | filter: { attributes: { difficulty: '2' } } ">
             <div class="col-md-4">
@@ -94,7 +97,7 @@
             </div>
           </div>
          </div>
-        <strong><p>Nivå 3</p></strong>
+        <strong><p>År 7-9</p></strong>
         <div class="row">
           <div ng-repeat="map in area.attributes.maps | filter: { attributes: { difficulty: '3' } } ">
             <div class="col-md-4">
@@ -104,9 +107,19 @@
             </div>
           </div>
          </div>
+         <strong><p>Ren karta</p></strong>
+         <div class="row">
+           <div ng-repeat="map in area.attributes.maps | filter: { attributes: { difficulty: '4' } } ">
+             <div class="col-md-4">
+                 <p ng-bind="map.attributes.name"></p>
+                 <img ng-src="{{::displayMap(map.attributes.mapPreview._url)}}" class="img-responsive" />
+                 <button class="btn btn-danger btn-xs" ng-click="deleteMap(area, map)">Ta bort <span class="glyphicon glyphicon-trash"> </span></button>
+             </div>
+           </div>
+          </div>
          <hr>
-      
-      
+
+
       <button class="btn btn-primary" ng-click="changeLocationOfArea(area); area.isDragging = true" ng-hide="area.isDragging">Ändra plats <span class="glyphicon glyphicon-pushpin"> </span></button>
       <button class="btn btn-primary" ng-click="updateAreaPosition(area); area.isDragging = false" ng-show="area.isDragging">Spara</button>
       <button class="btn btn-danger" ng-click="showModal(area)" style="float:right">Ta bort område + kartor <span class="glyphicon glyphicon-trash"> </span></button>
@@ -118,7 +131,7 @@
 
 <!-- PDF TO PNG -->
 <script type="text/javascript">
-  
+
   var pdfFile;
   var fitScale = 1;
   var canvas = document.getElementById('canvas');
@@ -153,7 +166,7 @@
         console.log(renderContext);
         page.render(renderContext);
 
-        
+
 
       });
     };
@@ -169,7 +182,7 @@
         });
       }
       read.readAsArrayBuffer(pdf);
-      
+
     };
 
 </script>
