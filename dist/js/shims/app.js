@@ -227,7 +227,7 @@ app.service('markerService', function ($filter){
 				labelContent: 'Dra mig till rätt position!',
     		labelAnchor: "50 60",
 				labelClass: "draggable-marker-label",
-				icon: '/componentsimages/icons/drag.png',
+				icon: '/images/icons/drag.png',
 				animation: anim
       }
 		};

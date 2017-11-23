@@ -3,8 +3,8 @@ app.controller('mapCtrl', function ($scope, uiGmapGoogleMapApi, geolocation, map
 	//Initiate google map on Luleå
 	uiGmapGoogleMapApi.then(function (maps) {
 		$scope.map = mapService.getMap();
-		$scope.markerprops = { 	school: { 	url: '/componentsimages/icons/skola.png'},
-								area: 	{ 	url: '/componentsimages/icons/karta.png'}
+		$scope.markerprops = { 	school: { 	url: '/images/icons/skola.png'},
+								area: 	{ 	url: '/images/icons/karta.png'}
 							};
 
 		//Focus on user location if enabled

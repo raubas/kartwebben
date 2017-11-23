@@ -31,7 +31,7 @@ app.controller('navCtrl', function($scope, $location, $modal, userManagement){
 		  backdropClick: true,
 		  dialogFade: false,
 		  keyboard: true,
-		  templateUrl : '/componentscomponents/loginModal.html',
+		  templateUrl : '/components/loginModal.html',
 		  controller : ModalInstanceCtrl,
 		  resolve: {} // empty storage
 	    };
