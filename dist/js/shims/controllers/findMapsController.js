@@ -73,7 +73,7 @@ app.controller('findMapsCtrl', function ($scope, $modal, $filter, mapService, ma
 	  
 	  $scope.opts.resolve.item = function() {
 	      return angular.copy({	previewUrl: url,
-	      						pdfUrl: '/dev/images/icons/fish.png',
+	      						pdfUrl: '/images/icons/fish.png',
 	      						areaName: areaName,
 	      						mapName: mapName }); // pass name to Dialog
 	  }
