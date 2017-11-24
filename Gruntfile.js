@@ -78,7 +78,7 @@ module.exports = function(grunt) {
     grunt.registerTask('default', [ 'wiredep' ]);
     grunt.registerTask('changes', ['watch']);
     grunt.registerTask('build', [
-        'wiredep', 'copy', 'useminPrepare', 'concat', 'uglify', 'cssmin', 'rev', 'usemin'
+        'clean', 'wiredep', 'copy', 'useminPrepare', 'concat', 'uglify', 'cssmin', 'rev', 'usemin'
     ]);
 
 

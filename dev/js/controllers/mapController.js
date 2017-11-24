@@ -1,11 +1,12 @@
 app.controller('mapCtrl', function ($scope, uiGmapGoogleMapApi, geolocation, mapService, markerService, $filter, mobileHider){
 
 	//Initiate google map on Luleå
+  $scope.map = mapService.getMap();
+	$scope.markerprops = {
+		school: { 	url: '/dev/images/icons/skola.png'},
+		area: 	{ 	url: '/dev/images/icons/karta.png'}
+	};
 	uiGmapGoogleMapApi.then(function (maps) {
-		$scope.map = mapService.getMap();
-		$scope.markerprops = { 	school: { 	url: '/dev/images/icons/skola.png'},
-								area: 	{ 	url: '/dev/images/icons/karta.png'}
-							};
 
 		//Focus on user location if enabled
 		// geolocation.getLocation().then(function(data){

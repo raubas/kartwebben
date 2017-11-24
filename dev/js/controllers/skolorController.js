@@ -45,7 +45,6 @@ app.controller('skolorCtrl', function ($scope,$modal, uiGmapGoogleMapApi, mapSer
 	//Listen for when draggable marker moves
 	var watchDraggableMarker = function(){
 		$scope.$watch(function () {
-			console.log("HEHEHE");
         	return markerService.getDraggableMarker();
     	}, function (oldValue, newValue) {
         	$scope.draggableMarker = markerService.getDraggableMarker();
@@ -106,7 +105,7 @@ app.controller('skolorCtrl', function ($scope,$modal, uiGmapGoogleMapApi, mapSer
 			});
 		});
 	}
- 		
+
 
 	//Function to place draggable marker for changing of school location
 	$scope.changeLocationOfSchool = function (school){
@@ -115,7 +114,7 @@ app.controller('skolorCtrl', function ($scope,$modal, uiGmapGoogleMapApi, mapSer
 		$scope.addMarker(school.attributes.position);
 	}
 
-	
+
 
 	$scope.saveNewSchool = function(school, contactPerson, newSchoolForm){
 		var School = Parse.Object.extend("Schools");
@@ -134,11 +133,11 @@ app.controller('skolorCtrl', function ($scope,$modal, uiGmapGoogleMapApi, mapSer
 		school.save(null, {
 			success: function(school) {
 				console.log('sparad school');
-				// Close panel 
+				// Close panel
 			  	$scope.newSchoolPanel = {
 		    		open: false
 		    	};
-			    
+
 			    markerService.removeDraggableMarker();
 		    	markerService.addToSchoolMarkerArray(school);
 
@@ -146,9 +145,9 @@ app.controller('skolorCtrl', function ($scope,$modal, uiGmapGoogleMapApi, mapSer
 			    $scope.contactPerson.name = "";
 			    $scope.contactPerson.phoneNumber = "";
 			    $scope.contactPerson.email = "";
-			    
+
 			    $scope.schools.push(school);
-			    
+
 			    scrollToSchool(school);
 			},
 			error: function(school, error) {
@@ -162,7 +161,7 @@ app.controller('skolorCtrl', function ($scope,$modal, uiGmapGoogleMapApi, mapSer
 	$scope.updateSchool = function(school){
 		var position = new Parse.GeoPoint($scope.draggableMarker.coords);
 		console.log(position);
-		
+
 		if (position.latitude == 0) {
 
 		} else {
@@ -178,7 +177,7 @@ app.controller('skolorCtrl', function ($scope,$modal, uiGmapGoogleMapApi, mapSer
 				console.log('Uppdaterat skolan!');
 				markerService.removeDraggableMarker();
 		    	markerService.addToSchoolMarkerArray(school);
-				
+
 			},
 			error: function(school, error) {
 				//alert('Failed to create new object, with error code: ' + error.message);
@@ -213,7 +212,7 @@ app.controller('skolorCtrl', function ($scope,$modal, uiGmapGoogleMapApi, mapSer
 	}
 
 	$scope.showModal = function(school) {
-	  
+
 	  $scope.opts = {
 		  backdrop: true,
 		  backdropClick: true,
@@ -223,14 +222,14 @@ app.controller('skolorCtrl', function ($scope,$modal, uiGmapGoogleMapApi, mapSer
 		  controller : ModalInstanceCtrl,
 		  resolve: {} // empty storage
 	    };
-	    
-	  
+
+
 	  $scope.opts.resolve.item = function() {
 	      return angular.copy({	school: school}); // pass name to Dialog
 	  }
-	  
+
 	    var modalInstance = $modal.open($scope.opts);
-	    
+
 	    modalInstance.result.then(function(scope){
 	      //on ok button press
 
@@ -238,7 +237,7 @@ app.controller('skolorCtrl', function ($scope,$modal, uiGmapGoogleMapApi, mapSer
 	    },function(){
 	      //on cancel button press
 	    });
-	}; 
+	};
 
 	// Show and hide rightbar on moblie
 	$scope.hideRightbar = function() {
@@ -272,7 +271,7 @@ app.controller('skolorCtrl', function ($scope,$modal, uiGmapGoogleMapApi, mapSer
 	   	watchClick();
 	   	watchVisibility();
 		watchDraggableMarker();
-		
+
 	};
 
 	//Init function
@@ -284,5 +283,5 @@ app.controller('skolorCtrl', function ($scope,$modal, uiGmapGoogleMapApi, mapSer
         watchDraggableMarker();
         watchVisibility();
     });
-	
+
 });
