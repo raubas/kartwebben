@@ -24,7 +24,7 @@
 $(function() {
     $('body').vegas({
         slides: [
-            { src: '/images/skylines_blur.jpg' }
+            { src: '/dev/images/skylines_blur.jpg' }
         ]
     });
 });

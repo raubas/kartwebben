@@ -276,6 +276,25 @@ input.ng-dirty.ng-invalid {
 	padding-top: 0.5em
 }
 
+.ovning-bild {
+  width: 100%;
+  height: auto;
+}
+
+.ol-link {
+  color: black;
+  text-decoration: underline;;
+}
+
+.ol-link:hover {
+	color: black;
+	font-weight: 500;
+}
+
+.ol-link:hover:after {
+  content: " 🌟";
+}
+
 .dragover {
     border: 2px dashed darkgrey;
 }
