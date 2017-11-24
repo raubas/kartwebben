@@ -48,8 +48,12 @@ app.controller('orienteraCtrl', function ($scope, $modal, $filter, mapService, m
     	});
 	}
 
-	$scope.displayMap = function($url){
-		return $url;
+	$scope.displayMap = function($url, open){
+    if (open === $scope.openAccordion.id) {
+			return $url;
+    }else {
+    	return null
+    }
 	}
 
 	// $scope.focusOnSchool = function(school){
